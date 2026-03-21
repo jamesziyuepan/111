@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎾 网球教练平台 · DC/MD/VA</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: linear-gradient(135deg, #0a2e1a 0%, #0d3b23 50%, #1a5c38 100%);
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+}
+.card {
+  background: white; border-radius: 24px;
+  padding: 48px 40px; width: 420px; max-width: 95vw;
+  text-align: center;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+}
+.logo {
+  width: 72px; height: 72px; border-radius: 20px;
+  background: linear-gradient(135deg, #0d3b23, #2d9a57);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px; margin: 0 auto 16px;
+  box-shadow: 0 8px 24px rgba(13,59,35,0.4);
+}
+h1 { font-size: 24px; font-weight: 900; color: #111; margin-bottom: 6px; }
+.sub { font-size: 13px; color: #999; margin-bottom: 36px; }
+
+.btn {
+  display: block; width: 100%;
+  padding: 16px; border-radius: 14px;
+  font-size: 15px; font-weight: 800;
+  text-decoration: none; margin-bottom: 14px;
+  transition: opacity 0.15s; font-family: inherit;
+  cursor: pointer; border: none;
+}
+.btn-client {
+  background: linear-gradient(135deg, #1a6b3a, #2d9a57);
+  color: white;
+  box-shadow: 0 4px 16px rgba(26,107,58,0.35);
+}
+.btn-admin {
+  background: #f7f8fa; color: #333;
+  border: 1.5px solid #e8e8e8;
+}
+.btn:hover { opacity: 0.88; }
+
+.btn-icon { font-size: 20px; margin-right: 8px; }
+.btn-sub { font-size: 11px; font-weight: 400; opacity: 0.75; display: block; margin-top: 3px; }
+.divider { height: 1px; background: #f0f0f0; margin: 20px 0; }
+.footer { font-size: 11px; color: #bbb; margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">🎾</div>
+  <h1>网球教练平台</h1>
+  <p class="sub">DC · MD · VA 华人网球社区</p>
+
+  <a class="btn btn-client" href="/tennis-client.html">
+    <span class="btn-icon">🎾</span> 学员入口
+    <span class="btn-sub">浏览教练 · 在线约课 · 查看预约</span>
+  </a>
+
+  <div class="divider"></div>
+
+  <a class="btn btn-admin" href="/tennis-admin.html">
+    <span class="btn-icon">⚙️</span> 管理后台
+    <span class="btn-sub">平台管理员专用</span>
+  </a>
+
+  <p class="footer">© 2026 Tennis Platform DC/MD/VA</p>
+</div>
+</body>
+</html>
