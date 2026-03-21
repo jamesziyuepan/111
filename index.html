@@ -1402,6 +1402,199 @@ body.has-banner .sidebar, body.has-banner .main { margin-top: 42px; }
   font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit;
 }
 .coach-book-btn:hover { opacity: 0.88; }
+
+/* ════════════════════════════════
+   MOBILE RESPONSIVE (max-width: 768px)
+   侧边栏 → 底部导航栏
+   ════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* Body fills screen */
+  body {
+    overflow: hidden;
+    height: 100dvh;
+  }
+
+  /* Stack vertically instead of side by side */
+  body > .sidebar,
+  body > .main {
+    position: fixed;
+  }
+
+  /* ── HIDE desktop sidebar ── */
+  .sidebar {
+    display: none !important;
+  }
+
+  /* ── MAIN takes full width ── */
+  .main {
+    width: 100% !important;
+    height: 100dvh !important;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── TOPBAR: simpler on mobile ── */
+  .topbar {
+    height: 52px;
+    padding: 0 16px;
+  }
+
+  .topbar-search,
+  .topbar-btn { display: none !important; }
+
+  .topbar-title { font-size: 16px !important; }
+
+  /* ── PAGE BODY: leave room for bottom nav ── */
+  .page-body {
+    padding: 16px;
+    padding-bottom: 80px !important;
+  }
+
+  /* ── BOTTOM NAV BAR ── */
+  .mobile-nav {
+    display: flex !important;
+  }
+
+  /* ── HERO: shorter on mobile ── */
+  .home-hero-banner {
+    padding: 20px 18px;
+    border-radius: 14px;
+    margin-bottom: 16px;
+  }
+
+  .hero-title { font-size: 22px !important; }
+  .hero-ball { font-size: 50px !important; right: 16px !important; }
+  .hero-stats { gap: 18px !important; }
+  .hero-stat-num { font-size: 20px !important; }
+
+  /* ── STATS STRIP: 2 columns ── */
+  .stats-strip {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .stat-card { padding: 14px !important; }
+  .stat-card-val { font-size: 18px !important; }
+
+  /* ── COACH GRID: 1 column ── */
+  .coach-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+
+  .coach-list-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+
+  .coach-img-wrap { height: 110px !important; }
+
+  /* ── PROFILE: single column ── */
+  .profile-layout {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .profile-sidebar-card { position: static !important; }
+
+  /* ── BOOKING: single column ── */
+  .booking-layout {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .order-panel { position: static !important; }
+
+  .type-grid { grid-template-columns: 1fr 1fr !important; }
+
+  .time-slots-bk { grid-template-columns: repeat(3,1fr) !important; }
+
+  /* ── PACKAGES: single column ── */
+  .pkg-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ── CHAT: hide list col, show window only ── */
+  .chat-layout {
+    grid-template-columns: 1fr !important;
+    height: calc(100dvh - 52px - 64px) !important;
+  }
+
+  .chat-list-col { display: none !important; }
+
+  /* ── MY PROFILE: single column ── */
+  .my-profile-layout {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  /* ── BOOKING MODAL: full screen ── */
+  .booking-modal {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    border-radius: 0 !important;
+    padding: 20px 16px !important;
+  }
+
+  .form-row-2 { grid-template-columns: 1fr !important; }
+  .slot-grid { grid-template-columns: repeat(3,1fr) !important; }
+
+  /* ── ADMIN: scrollable table ── */
+  .admin-tbl { min-width: 600px; }
+
+  /* ── FILTER CHIPS: scrollable row ── */
+  .coach-list-filters {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+  }
+
+  .filter-group {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+  }
+
+  .pkg-tabs {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+  }
+}
+
+/* ── MOBILE BOTTOM NAV (always hidden on desktop) ── */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 64px;
+  background: white;
+  border-top: 1px solid var(--border);
+  z-index: 500;
+  justify-content: space-around;
+  align-items: center;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.mobile-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 10px;
+  color: var(--mute);
+  font-size: 10px;
+  font-weight: 500;
+  transition: color 0.15s;
+  flex: 1;
+}
+
+.mobile-nav-item.active { color: var(--green); }
+.mobile-nav-icon { font-size: 22px; }
+
 </style>
 </head>
 <body>
@@ -3077,6 +3270,30 @@ coachCardHTML = function(c) {
 // ════════════════════════════════
 panelTitles['admin'] = '预约管理后台';
 
+
+// ════════════════════════════════
+// MOBILE NAV
+// ════════════════════════════════
+function mobileNav(panelId, el) {
+  // Update active state
+  document.querySelectorAll('.mobile-nav-item').forEach(function(i) {
+    i.classList.remove('active');
+  });
+  el.classList.add('active');
+  // Reuse existing showPanel but without nav-item highlight (desktop sidebar)
+  document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+  var panel = document.getElementById('panel-' + panelId);
+  if (panel) panel.classList.add('active');
+  document.getElementById('topbar-title').textContent = panelTitles[panelId] || panelId;
+  if (panelId === 'coaches') renderCoachList();
+  if (panelId === 'home') renderHomeGrid('all');
+  if (panelId === 'packages') renderPackagesWeb();
+  if (panelId === 'booking') buildCalendarWeb();
+  // Scroll to top
+  var pb = document.querySelector('.page-body');
+  if (pb) pb.scrollTop = 0;
+}
+
 // ════════════════════════════════
 // INIT
 // ════════════════════════════════
@@ -3084,5 +3301,30 @@ renderHomeGrid('all');
 renderPackagesWeb();
 buildCalendarWeb();
 </script>
+
+<!-- ── MOBILE BOTTOM NAV ── -->
+<div class="mobile-nav" id="mobile-nav">
+  <div class="mobile-nav-item active" onclick="mobileNav('home', this)">
+    <div class="mobile-nav-icon">🏠</div>
+    <span>首页</span>
+  </div>
+  <div class="mobile-nav-item" onclick="mobileNav('coaches', this)">
+    <div class="mobile-nav-icon">🎾</div>
+    <span>找教练</span>
+  </div>
+  <div class="mobile-nav-item" onclick="mobileNav('packages', this)">
+    <div class="mobile-nav-icon">📦</div>
+    <span>套餐</span>
+  </div>
+  <div class="mobile-nav-item" onclick="mobileNav('chat', this)">
+    <div class="mobile-nav-icon">💬</div>
+    <span>消息</span>
+  </div>
+  <div class="mobile-nav-item" onclick="mobileNav('profile', this)">
+    <div class="mobile-nav-icon">👤</div>
+    <span>我的</span>
+  </div>
+</div>
+
 </body>
 </html>
