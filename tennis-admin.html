@@ -164,6 +164,59 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);height:100vh;ove
   .page-body{padding:14px;}
   .stats-grid{grid-template-columns:1fr 1fr!important;}
 }
+
+/* ── HOUR SELECTOR ── */
+.hour-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+.hour-btn {
+  padding: 8px 4px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: #f9f9f9;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+  color: #aaa;
+  font-family: inherit;
+}
+.hour-btn:hover {
+  border-color: #52b788;
+  background: #e8f5e9;
+  color: #1a6b3a;
+}
+.hour-btn.on {
+  background: #1a6b3a !important;
+  border-color: #1a6b3a !important;
+  color: white !important;
+  box-shadow: 0 2px 6px rgba(26,107,58,0.3);
+}
+.hour-quick-btns {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.hour-quick-btn {
+  padding: 6px 14px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  color: #555;
+  transition: all 0.15s;
+}
+.hour-quick-btn:hover {
+  background: #e8f5e9;
+  border-color: #1a6b3a;
+  color: #1a6b3a;
+}
 </style>
 </head>
 <body>
@@ -447,11 +500,11 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);height:100vh;ove
           <div class="cf-sec">可约天（点击切换）</div>
           <div class="avail-grid" id="cf-avail-grid"></div>
 
-          <div class="cf-sec" style="margin-top:16px;">可约时间段（9:00 - 21:00，点击选择/取消）</div>
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
-            <button class="hour-all-btn" onclick="hoursSelectAll()" type="button">全选</button>
-            <button class="hour-all-btn" onclick="hoursSelectNone()" type="button">清空</button>
-            <span style="font-size:11px;color:var(--mute);">选中的时段将对学员开放</span>
+          <div class="cf-sec" style="margin-top:16px;">可约时间段（点击选择，绿色=开放）</div>
+          <div class="hour-quick-btns">
+            <button class="hour-quick-btn" type="button" onclick="hoursSelectAll()">全选</button>
+            <button class="hour-quick-btn" type="button" onclick="hoursSelectNone()">清空</button>
+            <span style="font-size:11px;color:var(--mute);align-self:center;">已选 <span id="cf-hours-count">0</span> 个时段</span>
           </div>
           <div class="hour-grid" id="cf-hour-grid"></div>
 
@@ -862,8 +915,10 @@ function buildHourGrid() {
   if(!grid) return;
   grid.innerHTML = ALL_HOURS.map(function(h) {
     var isOn = cfHours.indexOf(h) > -1;
-    return '<button class="hour-btn'+(isOn?' on':'')+'" data-hour="'+h+'" onclick="toggleHour(this)" type="button">'+h+'</button>';
+    return '<button class="hour-btn' + (isOn ? ' on' : '') + '" data-hour="' + h + '" onclick="toggleHour(this)" type="button">' + h + '</button>';
   }).join('');
+  var countEl = document.getElementById('cf-hours-count');
+  if(countEl) countEl.textContent = cfHours.length;
 }
 
 function toggleHour(btn) {
@@ -874,12 +929,14 @@ function toggleHour(btn) {
     btn.classList.remove('on');
   } else {
     cfHours.push(h);
-    // Keep sorted
     cfHours.sort(function(a,b){
       return parseInt(a.split(':')[0]) - parseInt(b.split(':')[0]);
     });
     btn.classList.add('on');
   }
+  // Update counter
+  var countEl = document.getElementById('cf-hours-count');
+  if(countEl) countEl.textContent = cfHours.length;
 }
 
 function hoursSelectAll() {
