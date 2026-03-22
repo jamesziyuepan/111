@@ -100,6 +100,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 
 .sidebar-footer { padding: 14px 12px 18px; border-top: 1px solid rgba(255,255,255,0.08); }
 .user-card { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 10px; cursor: pointer; transition: background 0.15s; }
+.user-card:hover { background: rgba(255,255,255,0.12) !important; }
 .user-card:hover { background: rgba(255,255,255,0.08); }
 .user-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg,#2d9a57,#52b788); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; overflow: hidden; }
 .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
@@ -660,13 +661,14 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
       <div class="nav-item" onclick="showPanel('coaches',this);setRegion('arlington')"><span class="nav-icon">📍</span> Arlington / McLean</div>
     </div>
     <div class="sidebar-footer">
-      <div class="user-card">
+      <div class="user-card" id="sb-user-card" onclick="sidebarUserClick()" style="cursor:pointer;">
         <div class="user-avatar" id="sb-avatar">😊</div>
-        <div style="min-width:0;">
+        <div style="min-width:0;flex:1;">
           <div class="user-name" id="sb-name">加载中…</div>
           <div class="user-email" id="sb-email"></div>
-          <div class="logout-link" onclick="logout()">退出登录</div>
+          <div id="sb-action-link" class="logout-link" onclick="event.stopPropagation();sidebarActionClick()">退出登录</div>
         </div>
+        <div id="sb-login-arrow" style="color:rgba(255,255,255,0.4);font-size:14px;flex-shrink:0;">›</div>
       </div>
     </div>
   </div>
@@ -1140,23 +1142,14 @@ function checkSession() {
 }
 
 function onUserLoggedIn() {
-  // Update UI with user info
-  document.getElementById('sb-name').textContent = currentUser.name;
-  document.getElementById('sb-email').textContent = currentUser.email;
-  document.getElementById('hero-greeting').textContent = '👋 你好，' + currentUser.name + '！';
-  // Show logout, hide login prompt
-  document.getElementById('sb-login-btn') && (document.getElementById('sb-login-btn').style.display='none');
-  document.getElementById('sb-user-info') && (document.getElementById('sb-user-info').style.display='flex');
+  var greet = document.getElementById('hero-greeting');
+  if(greet) greet.textContent = '👋 你好，' + currentUser.name + '！';
+  updateSidebarUser();
   loadMyBookings();
 }
 
 function initApp() {
-  // Update sidebar for guest
-  if(!currentUser) {
-    document.getElementById('sb-name').textContent = '游客';
-    document.getElementById('sb-email').textContent = '登录后可预约课程';
-  }
-  // Load coaches from DB (falls back to local James data if DB empty)
+  updateSidebarUser();
   loadCoachesFromDB();
 }
 
@@ -1966,6 +1959,53 @@ async function submitGate() {
 
 // ─── Update logout to go back to guest mode ───
 var origLogout = typeof logout === 'function' ? logout : null;
+// Sidebar user area click
+function sidebarUserClick() {
+  if(!currentUser) {
+    // Guest - show login gate
+    showLoginGate();
+  }
+  // Logged in - do nothing (logout is on the link)
+}
+
+function sidebarActionClick() {
+  if(currentUser) {
+    logout();
+  } else {
+    showLoginGate();
+  }
+}
+
+// Update sidebar based on login state
+function updateSidebarUser() {
+  var nameEl = document.getElementById('sb-name');
+  var emailEl = document.getElementById('sb-email');
+  var actionEl = document.getElementById('sb-action-link');
+  var arrowEl = document.getElementById('sb-login-arrow');
+  var avatarEl = document.getElementById('sb-avatar');
+
+  if(currentUser) {
+    if(nameEl) nameEl.textContent = currentUser.name;
+    if(emailEl) emailEl.textContent = currentUser.email;
+    if(actionEl) actionEl.textContent = '退出登录';
+    if(arrowEl) arrowEl.style.display = 'none';
+    if(avatarEl) {
+      var initials = currentUser.name ? currentUser.name.charAt(0).toUpperCase() : '👤';
+      avatarEl.textContent = initials;
+      avatarEl.style.background = 'linear-gradient(135deg,#2d9a57,#52b788)';
+    }
+  } else {
+    if(nameEl) nameEl.textContent = '游客';
+    if(emailEl) emailEl.textContent = '点击登录 / 注册';
+    if(actionEl) actionEl.textContent = '登录账号';
+    if(arrowEl) arrowEl.style.display = 'block';
+    if(avatarEl) {
+      avatarEl.textContent = '👤';
+      avatarEl.style.background = 'rgba(255,255,255,0.15)';
+    }
+  }
+}
+
 function logout() {
   localStorage.removeItem('sb_session');
   currentUser = null;
