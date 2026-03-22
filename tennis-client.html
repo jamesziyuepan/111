@@ -499,7 +499,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
         <div class="stats-strip">
           <div class="stat-card"><div class="stat-icon si-amber">📅</div><div><div class="stat-val" id="st-upcoming">—</div><div class="stat-lbl">即将上课</div></div></div>
           <div class="stat-card"><div class="stat-icon si-green">✅</div><div><div class="stat-val" id="st-done">—</div><div class="stat-lbl">已完成课时</div></div></div>
-          <div class="stat-card"><div class="stat-icon si-blue">🎾</div><div><div class="stat-val">11</div><div class="stat-lbl">认证教练</div></div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">🎾</div><div><div class="stat-val" id="stat-coaches">—</div><div class="stat-lbl">认证教练</div></div></div>
           <div class="stat-card"><div class="stat-icon si-purple">📍</div><div><div class="stat-val">6</div><div class="stat-lbl">服务地区</div></div></div>
         </div>
 
@@ -617,8 +617,9 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
         <option>青少年培训</option>
       </select>
 
-      <div class="form-sec">选择日期（仅周六）</div>
-      <input class="form-inp" id="bm-date" type="date" style="width:100%;" onchange="loadSlots()">
+      <div class="form-sec">选择日期</div>
+      <div id="bm-calendar" style="background:var(--bg);border-radius:12px;padding:14px;"></div>
+      <input type="hidden" id="bm-date">
 
       <div class="form-sec">选择时间段</div>
       <div class="slot-grid" id="bm-slots">
@@ -920,197 +921,228 @@ function launchApp() {
 // ═══════════════════════════
 // COACHES DATA
 // ═══════════════════════════
-var COACHES = [
-  { id:1, lang:'中文 · English', name:'James 教练', badge:'NCAA D1', sub:'NCAA D1 助理教练 · 运动科学在读', price:'$75/时', priceNum:75, location:'McLean, VA', region:'mclean',
-    tags:['网球提升','体能训练','S&C'], gradient:'linear-gradient(135deg,#0d3b23,#2d9a57)', photo:true,
-    utr:'8.3', ranking:'151', cert:'D1',
-    bio:'你好！我是 James，现任 NCAA Division I 运动表现与体能助理教练，同时在读运动科学与运动医学专业。我曾是 NCAA D3 大学网球校队成员，职业生涯最高 UTR 8.3，中国网球巡回赛最高排名 151，现已退役。无论你是想从零开始学网球，还是希望在力量、速度、耐力上突破瓶颈，我都能结合专业运动科学为你制定个性化方案。',
-    achievements:['NCAA D1 运动表现与体能助理教练（现任）','运动科学 & 运动医学在读','NCAA D3 大学网球校队 · 最高 UTR 8.3','中国网球巡回赛最高排名 151，退役运动员','张家港站 男单十六强 · 男双八强','天津市锦标赛 U18/U16/U14 单双打前五','国家二级运动员'],
-    specs:['网球入门','技术提升','运动表现','体能训练','力量 & 速度','S&C 专项'],
-    courts:[{name:'VA Highlands Park',addr:'Arlington, Virginia'},{name:'OneLife Fitness – McLean',addr:'McLean, Virginia'}],
-    avail:[0,0,0,0,0,1,0] }
-];
+// ═══════════════════════════════════════
+// COACHES — 完全从 Supabase 数据库读取
+// ═══════════════════════════════════════
+var COACHES = []; // 启动时为空，由 loadCoachesFromDB() 填充
 
-// ── LOAD COACHES FROM SUPABASE ──
-// Converts DB row format to COACHES array format
+// 把数据库行转成本地格式
 function dbCoachToLocal(row) {
+  // 解析 courts: jsonb array [{name,addr}] 或 null
+  var courts = [];
+  if (row.courts) {
+    try {
+      courts = typeof row.courts === 'string' ? JSON.parse(row.courts) : row.courts;
+    } catch(e) { courts = []; }
+  }
+  // 解析 avail: integer array [0,0,0,0,0,1,0] 或 null
+  var avail = row.avail || [0,0,0,0,0,1,0];
   return {
-    id: row.id,
-    lang: row.lang || '中文 · English',
-    name: row.name || '',
-    badge: row.badge || '',
-    sub: row.sub || '',
-    price: '$' + (row.price||75) + '/时',
-    priceNum: row.price || 75,
-    location: row.location || '',
-    region: row.region || 'dc',
-    tags: row.tags || [],
-    gradient: row.gradient || 'linear-gradient(135deg,#0d3b23,#2d9a57)',
-    photo: false,
-    photo_url: row.photo_url || null,
-    utr: row.utr || '—',
-    ranking: row.ranking || '—',
-    cert: row.badge || '—',
-    bio: row.bio || '',
+    id:           row.id,
+    lang:         row.lang         || '中文 · English',
+    name:         row.name         || '',
+    badge:        row.badge        || '',
+    sub:          row.sub          || '',
+    price:        '$' + (row.price || 75) + '/时',
+    priceNum:     row.price        || 75,
+    location:     row.location     || '',
+    region:       row.region       || 'dc',
+    tags:         row.tags         || [],
+    gradient:     row.gradient     || 'linear-gradient(135deg,#0d3b23,#2d9a57)',
+    photo:        false,
+    photo_url:    row.photo_url    || null,
+    utr:          row.utr          || '—',
+    ranking:      row.ranking      || '—',
+    cert:         row.badge        || '—',
+    bio:          row.bio          || '',
     achievements: row.achievements || [],
-    specs: row.specs || [],
-    courts: row.courts || [],
-    avail: row.avail || [0,0,0,0,0,1,0]
+    specs:        row.specs        || row.tags || [],
+    courts:       courts,
+    avail:        avail
   };
 }
 
+// 从数据库加载教练列表
 async function loadCoachesFromDB() {
   try {
-    var r = await fetch(SB_URL + '/rest/v1/coaches?order=created_at.asc&limit=100', {
-      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
-    });
-    if (!r.ok) return;
+    var r = await fetch(
+      SB_URL + '/rest/v1/coaches?select=*&order=created_at.asc&limit=100',
+      { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY } }
+    );
+    if (!r.ok) throw new Error('HTTP ' + r.status);
     var data = await r.json();
-    if (data && data.length > 0) {
+    if (Array.isArray(data) && data.length > 0) {
       COACHES = data.map(dbCoachToLocal);
+    } else {
+      COACHES = []; // 数据库为空时显示空列表
     }
   } catch(e) {
-    console.log('Using local COACHES data:', e.message);
+    console.warn('DB load failed, showing empty list:', e.message);
+    COACHES = [];
   }
-  // Re-render after loading
+  // 渲染
   renderCoaches();
   renderHomeCoaches('all');
+  updateHomeStats();
 }
 
+// 更新首页统计数字
+function updateHomeStats() {
+  var coachCount = document.getElementById('stat-coaches');
+  if (coachCount) coachCount.textContent = COACHES.length;
+}
+
+
+// ═══════════════════════════════════════
+// COACH CARD HTML
+// ═══════════════════════════════════════
+var JAMES_PHOTO = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgFBgcGBQgHBgcJCAgJDBMMDAsLDBgREg4THBgdHRsYGxofIywlHyEqIRobJjQnKi4vMTIxHiU2OjYwOiwwMTD/wAARCAAoACgDASIAAhEBAxEB/8QAGwAAAgMBAQEAAAAAAAAAAAAAAAUDBAYCAQf/xAAsEAACAQQBBAECBgMAAAAAAAABAgMABAUREiExBhNBUWEUIjJCUnGhsf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8A8Z0jSLrWbxLSzjLyEZYnhVHuT4FR7V5ZW3UPc3pjWHllcRIgXzHjgDoT+Ky7yjh4q7/tMsgJRHuUeVY+R7j5qr6dqlzpN2t1aSFJAMEHlWHsw8GgLPaW7afcLbXkayRBuSV4zjzz71c0PW7jRb5LiB2MecTRA8JB4P8Ax5pvLdLqMM4VVy4VlDkgjB4qv0+6hbUYJxEjFpF7lWxzxQLSdSbT9VhvYJnjkjOUbPI+PB8GvQ9G1GPUrSO7giIRxgiQFSPbHivOs2URTF3a3C7VyCM8GvX9P1e20OyW1u4j8wfZ4yDj7vHFAYNB0W30C0Gn21wJYWUyABt8ZOT47j/AHVi6s7W5B2yshByzjnHiujdQ0jtcMuXZY2jGxV/c4yN3J/96rXkCW7SJAhaONyqM6bSwBxk+fBoA/8ASmkra6bLJJPILiMmVFJAOcduKy10/Tdtg01x8LHBO1kGeKsT3rR2VqLcQpJJHvYhSS2TnPP+fWjGnO4YC1QkqIxlm4xzQbV22t2sNvLGtxFBcTKo2g4yQgPiuqtHxOPNULvTuoJtVjZkIkZFEiDaFOBg4GB0r0z4Q/EWkzX1r08kVraFnPYR7gVUAhiM9/kV5bPqN5czGaS5kLk5JDH+qA//9k=';
+
 function coachCardHTML(c) {
+  var isJames = (c.name && c.name.indexOf('James') > -1);
   var img = c.photo_url
     ? '<img src="'+c.photo_url+'" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 10%;">'
-    : c.photo
-    ? '<img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgFBgcGBQgHBgcJCAgJDBMMDAsLDBgREg4THBgdHRsYGxofIywlHyEqIRobJjQnKi4vMTIxHiU2OjYwOiwwMTD/wAARCAAoACgDASIAAhEBAxEB/8QAGwAAAgMBAQEAAAAAAAAAAAAAAAUDBAYCAQf/xAAsEAACAQQBBAECBgMAAAAAAAABAgMABAUREiExBhNBUWEUIjJCUnGhsf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8A8Z0jSLrWbxLSzjLyEZYnhVHuT4FR7V5ZW3UPc3pjWHllcRIgXzHjgDoT+Ky7yjh4q7/tMsgJRHuUeVY+R7j5qr6dqlzpN2t1aSFJAMEHlWHsw8GgLPaW7afcLbXkayRBuSV4zjzz71c0PW7jRb5LiB2MecTRA8JB4P8Ax5pvLdLqMM4VVy4VlDkgjB4qv0+6hbUYJxEjFpF7lWxzxQLSdSbT9VhvYJnjkjOUbPI+PB8GvQ9G1GPUrSO7giIRxgiQFSPbHivOs2URTF3a3C7VyCM8GvX9P1e20OyW1u4j8wfZ4yDj7vHFAYNB0W30C0Gn21wJYWUyABt8ZOT47j/AHVi6s7W5B2yshByzjnHiujdQ0jtcMuXZY2jGxV/c4yN3J/96rXkCW7SJAhaONyqM6bSwBxk+fBoA/8ASmkra6bLJJPILiMmVFJAOcduKy10/Tdtg01x8LHBO1kGeKsT3rR2VqLcQpJJHvYhSS2TnPP+fWjGnO4YC1QkqIxlm4xzQbV22t2sNvLGtxFBcTKo2g4yQgPiuqtHxOPNULvTuoJtVjZkIkZFEiDaFOBg4GB0r0z4Q/EWkzX1r08kVraFnPYR7gVUAhiM9/kV5bPqN5czGaS5kLk5JDH+qA//9k=" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 10%;">'
-    : '<div class="coach-img-ph">🎾</div>';
-  var tags = c.tags.slice(0,2).map(function(t){ return '<span class="ctag">'+t+'</span>'; }).join('');
-  return '<div class="coach-card" onclick="openCoachProfile('+c.id+')" style="cursor:pointer;">'
-    +'<div class="coach-img" style="background:'+c.gradient+';">'+img
-    +'<div class="coach-badge-tag">'+c.badge+'</div>'
-    +'<div class="coach-price-tag">'+c.price+'</div></div>'
+    : isJames
+      ? '<img src="'+JAMES_PHOTO+'" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 10%;">'
+      : '<div class="coach-img-ph">🎾</div>';
+  var tags = (c.tags||[]).slice(0,2).map(function(t){
+    return '<span class="ctag">'+t+'</span>';
+  }).join('');
+  return '<div class="coach-card" onclick="openCoachProfile(\''+c.id+'\')" style="cursor:pointer;">'
+    +'<div class="coach-img" style="background:'+(c.gradient||'linear-gradient(135deg,#0d3b23,#2d9a57)')+';">'+img
+    +'<div class="coach-badge-tag">'+(c.badge||'')+'</div>'
+    +'<div class="coach-price-tag">$'+(c.priceNum||c.price||75)+'/时</div></div>'
     +'<div class="coach-body">'
-    +'<div class="coach-name">'+c.name+'</div>'
-    +'<div class="coach-sub-txt">'+c.sub+'</div>'
-    +'<div class="coach-tags"><span class="lang-tag">🗣 '+c.lang+'</span>'+tags+'</div>'
-    +'<button class="coach-book-btn" onclick="event.stopPropagation();openCoachProfile('+c.id+')">查看详情 →</button>'
+    +'<div class="coach-name">'+(c.name||'')+'</div>'
+    +'<div class="coach-sub-txt">'+(c.sub||'')+'</div>'
+    +'<div class="coach-tags"><span class="lang-tag">🗣 '+(c.lang||'')+'</span>'+tags+'</div>'
+    +'<button class="coach-book-btn" onclick="event.stopPropagation();openCoachProfile(\''+c.id+'\')">查看详情 →</button>'
     +'</div></div>';
 }
 
-function renderCoaches() {
-  var q = (document.getElementById('coach-search')||{value:''}).value.toLowerCase();
-  var list = COACHES.filter(c => {
-    var rOk = currentRegion==='all'||c.region===currentRegion;
-    var lOk = currentLang==='all'||(currentLang==='zh'&&c.lang.includes('中文'))||(currentLang==='en'&&c.lang.includes('English'));
-    var sOk = !q||c.name.toLowerCase().includes(q)||c.location.toLowerCase().includes(q)||c.tags.join(' ').toLowerCase().includes(q);
-    return rOk&&lOk&&sOk;
-  });
-  document.getElementById('coach-count').textContent = '共 '+list.length+' 位教练';
-  document.getElementById('coaches-grid').innerHTML = list.map(coachCardHTML).join('');
-}
-
-function renderHomeCoaches(region) {
-  var list = region==='all'?COACHES:COACHES.filter(c=>c.region===region);
-  document.getElementById('home-coaches').innerHTML = list.slice(0,6).map(coachCardHTML).join('');
-}
-
-function filterHomeRegion(el, region) {
-  document.querySelectorAll('#panel-home .fchip').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');
-  renderHomeCoaches(region);
-}
-
-function setRegion(region, el) {
-  currentRegion = region;
-  if(el) { document.querySelectorAll('#region-chips .fchip').forEach(c=>c.classList.remove('active')); el.classList.add('active'); }
-  renderCoaches();
-}
-
-function setLang(lang, el) {
-  currentLang = lang;
-  document.querySelectorAll('#panel-coaches .fchip:not(#region-chips .fchip)').forEach(c=>c.classList.remove('active'));
-  if(el) el.classList.add('active');
-  renderCoaches();
-}
-
-// ═══════════════════════════
-// MY BOOKINGS
-// ═══════════════════════════
-async function loadMyBookings() {
-  if(!currentUser) return;
-  var result = await sbSelect('bookings', ['student_email=eq.'+encodeURIComponent(currentUser.email)], 'order=booking_date.desc', currentUser.token);
-  var list = result.data || [];
-
-  // Update stats
-  var now = new Date();
-  var upcoming = list.filter(b=>new Date(b.booking_date)>=now&&b.status!=='cancelled').length;
-  var done = list.filter(b=>new Date(b.booking_date)<now&&b.status==='confirmed').length;
-  document.getElementById('st-upcoming').textContent = upcoming;
-  document.getElementById('st-done').textContent = done;
-
-  // Render upcoming on home
-  var upList = list.filter(b=>new Date(b.booking_date)>=now&&b.status!=='cancelled').slice(0,3);
-  if(upList.length===0) {
-    document.getElementById('home-upcoming').innerHTML = '<div class="empty-st"><div class="empty-st-icon">📅</div><div>暂无即将到来的课程</div></div>';
-  } else {
-    document.getElementById('home-upcoming').innerHTML = upList.map(bkCardHTML).join('');
-  }
-
-  // Render all in my-bookings
-  if(list.length===0) {
-    document.getElementById('my-bookings-list').innerHTML = '<div class="empty-st"><div class="empty-st-icon">📋</div><div>暂无预约记录，去找一位教练预约吧！</div></div>';
-  } else {
-    document.getElementById('my-bookings-list').innerHTML = list.map(bkCardHTML).join('');
-  }
-}
-
-function bkCardHTML(b) {
-  var d = new Date(b.booking_date+'T00:00:00');
-  var months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-  var days = ['周日','周一','周二','周三','周四','周五','周六'];
-  var sc = {pending:'s-pending',confirmed:'s-confirmed',cancelled:'s-cancelled'}[b.status]||'s-pending';
-  var sl = {pending:'⏳ 待确认',confirmed:'✅ 已确认',cancelled:'❌ 已取消'}[b.status]||b.status;
-  return '<div class="bk-card">'
-    +'<div class="bk-date-blk"><div class="bk-month">'+months[d.getMonth()]+'</div><div class="bk-day">'+d.getDate()+'</div><div class="bk-wd">'+days[d.getDay()]+'</div></div>'
-    +'<div style="flex:1;">'
-    +'<span class="bk-time">'+b.booking_time+'</span>'
-    +'<span class="bk-coach-nm">James 教练</span>'
-    +'<span class="bk-loc">📍 '+(b.court||'—')+'</span>'
-    +'<span class="bk-type-tag">'+b.lesson_type+'</span>'
-    +'</div>'
-    +'<span class="sbadge '+sc+'">'+sl+'</span>'
-    +'</div>';
-}
-
-// ═══════════════════════════
+// ═══════════════════════════════════════
 // BOOKING MODAL
-// ═══════════════════════════
+// ═══════════════════════════════════════
 function openBM(coachId) {
-  // Check if user is logged in - if not, show login gate
   if(!currentUser) {
-    pendingBookingCoachId = coachId; // remember which coach they wanted
+    pendingBookingCoachId = coachId;
     showLoginGate();
     return;
   }
-  var c = COACHES.find(x=>x.id===coachId)||COACHES[0];
-  bmState = { coachId:c.id, coachName:c.name, price:parseInt(c.price)||75, date:null, time:null, court:null };
+  var c = COACHES.find(function(x){ return String(x.id)===String(coachId); });
+  if(!c) return;
+
+  // Build set of available weekday numbers (0=Sun,1=Mon,...,6=Sat)
+  // avail is [0,0,0,0,0,1,0] array OR we derive from available_days text array
+  var availDays = new Set();
+  if(c.avail && c.avail.length === 7) {
+    c.avail.forEach(function(v,i){ if(v) availDays.add(i); });
+  } else if(c.available_days && c.available_days.length) {
+    var dayMap = {'周日':0,'周一':1,'周二':2,'周三':3,'周四':4,'周五':5,'周六':6,
+                  'Sunday':0,'Monday':1,'Tuesday':2,'Wednesday':3,'Thursday':4,'Friday':5,'Saturday':6};
+    c.available_days.forEach(function(d){ if(dayMap[d]!==undefined) availDays.add(dayMap[d]); });
+  } else {
+    availDays.add(6); // fallback: Saturday
+  }
+
+  bmState = { coachId:c.id, coachName:c.name, price:c.priceNum||75, date:null, time:null, court:null, availDays:availDays };
   document.getElementById('bm-nm').textContent = c.name;
-  document.getElementById('bm-sub').textContent = c.sub;
-  document.getElementById('bm-pr').textContent = c.price.split('/')[0];
+  document.getElementById('bm-sub').textContent = c.sub||'';
+  document.getElementById('bm-pr').textContent = '$'+(c.priceNum||75);
   document.getElementById('bm-type').value = '';
-  document.getElementById('bm-date').value = '';
-  document.getElementById('bm-notes').value = '';
+  if(document.getElementById('bm-notes')) document.getElementById('bm-notes').value = '';
   document.getElementById('bm-slots').innerHTML = '<div style="grid-column:1/-1;font-size:12px;color:var(--mute);padding:6px 0;">请先选择日期</div>';
-  document.querySelectorAll('.court-opt').forEach(c=>c.classList.remove('sel'));
+  document.querySelectorAll('.court-opt').forEach(function(el){ el.classList.remove('sel'); });
   document.getElementById('bm-err').style.display = 'none';
   document.getElementById('bm-form').style.display = 'block';
   document.getElementById('bm-success').style.display = 'none';
-  // Set min date to next Saturday
-  var today = new Date(), day = today.getDay();
-  var daysToSat = (6-day+7)%7||7;
-  var sat = new Date(today); sat.setDate(today.getDate()+daysToSat);
-  document.getElementById('bm-date').min = sat.toISOString().split('T')[0];
+
+  // Render calendar picker
+  var calDate = new Date();
+  calDate.setDate(1);
+  bmState.calDate = calDate;
+  renderBMCalendar();
+
   document.getElementById('bm-overlay').style.display = 'flex';
   document.body.style.overflow = 'hidden';
+}
+
+// Render a custom calendar in the booking modal
+function renderBMCalendar() {
+  var cal = document.getElementById('bm-calendar');
+  if(!cal) return;
+  var d = bmState.calDate;
+  var year = d.getFullYear(), month = d.getMonth();
+  var today = new Date(); today.setHours(0,0,0,0);
+  var months = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
+  var weekdays = ['日','一','二','三','四','五','六'];
+  var firstDay = new Date(year, month, 1).getDay();
+  var daysInMonth = new Date(year, month+1, 0).getDate();
+
+  var html = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">'
+    +'<button onclick="bmCalPrev()" style="width:28px;height:28px;border:1px solid var(--border);border-radius:8px;background:white;cursor:pointer;font-size:14px;">‹</button>'
+    +'<span style="font-size:13px;font-weight:700;">'+year+'年 '+months[month]+'</span>'
+    +'<button onclick="bmCalNext()" style="width:28px;height:28px;border:1px solid var(--border);border-radius:8px;background:white;cursor:pointer;font-size:14px;">›</button>'
+    +'</div>';
+
+  // Weekday headers
+  html += '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:4px;">';
+  weekdays.forEach(function(w,i){
+    var isAvail = bmState.availDays.has(i);
+    html += '<div style="text-align:center;font-size:11px;font-weight:700;padding:4px 0;color:'+(isAvail?'var(--green)':'#ccc')+';">'+w+'</div>';
+  });
+  html += '</div>';
+
+  // Days grid
+  html += '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;">';
+  // Empty cells
+  for(var i=0;i<firstDay;i++) html += '<div></div>';
+  // Day cells
+  for(var day=1;day<=daysInMonth;day++){
+    var thisDate = new Date(year, month, day);
+    thisDate.setHours(0,0,0,0);
+    var dow = thisDate.getDay();
+    var isAvail = bmState.availDays.has(dow);
+    var isPast = thisDate <= today;
+    var dateStr = year+'-'+String(month+1).padStart(2,'0')+'-'+String(day).padStart(2,'0');
+    var isSelected = bmState.date === dateStr;
+
+    var bg, color, cursor, onclick;
+    if(isSelected) {
+      bg='var(--green)'; color='white'; cursor='pointer'; onclick='selectBMDate("'+dateStr+'")';
+    } else if(!isAvail || isPast) {
+      bg='#f5f5f5'; color='#ccc'; cursor='default'; onclick='';
+    } else {
+      bg='white'; color='var(--text)'; cursor='pointer'; onclick='selectBMDate("'+dateStr+'")';
+    }
+
+    html += '<div onclick="'+onclick+'" style="text-align:center;padding:6px 2px;border-radius:8px;'
+      +'background:'+bg+';color:'+color+';cursor:'+cursor+';font-size:12px;font-weight:'+(isAvail&&!isPast?'600':'400')+';">'
+      +day+'</div>';
+  }
+  html += '</div>';
+
+  // Available days legend
+  var availNames = [];
+  var dayNames = ['周日','周一','周二','周三','周四','周五','周六'];
+  bmState.availDays.forEach(function(i){ availNames.push(dayNames[i]); });
+  html += '<div style="margin-top:10px;font-size:11px;color:var(--mute);">✅ 可约：'+(availNames.join(' / ') || '暂无可用日期')+'</div>';
+
+  cal.innerHTML = html;
+}
+
+function bmCalPrev() {
+  bmState.calDate.setMonth(bmState.calDate.getMonth()-1);
+  renderBMCalendar();
+}
+function bmCalNext() {
+  bmState.calDate.setMonth(bmState.calDate.getMonth()+1);
+  renderBMCalendar();
+}
+function selectBMDate(dateStr) {
+  bmState.date = dateStr;
+  renderBMCalendar();
+  loadSlots();
 }
 
 function closeBM() {
@@ -1120,40 +1152,46 @@ function closeBM() {
 }
 
 async function loadSlots() {
-  var dateVal = document.getElementById('bm-date').value;
+  var dateVal = bmState.date;
   if(!dateVal) return;
-  bmState.date = dateVal;
   bmState.time = null;
+
+  // Check if this date's weekday is in the coach's available days
   var d = new Date(dateVal+'T00:00:00');
-  if(d.getDay()!==6) {
-    document.getElementById('bm-slots').innerHTML = '<div style="grid-column:1/-1;font-size:12px;color:var(--red);padding:6px 0;">⚠️ 请选择周六日期</div>';
+  var dow = d.getDay();
+  if(!bmState.availDays || !bmState.availDays.has(dow)) {
+    document.getElementById('bm-slots').innerHTML = '<div style="grid-column:1/-1;font-size:12px;color:var(--red);padding:6px 0;">⚠️ 教练该日不可约，请选择绿色日期</div>';
     return;
   }
-  var slots = ['11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00'];
+
+  var slots = ['9:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00'];
   var booked = [];
-  var res = await sbSelect('bookings', ['booking_date=eq.'+dateVal,'status=neq.cancelled'], '', currentUser&&currentUser.token);
-  booked = (res.data||[]).map(b=>b.booking_time);
+  try {
+    var res = await sbSelect('bookings',['booking_date=eq.'+dateVal,'status=neq.cancelled'],'',currentUser&&currentUser.token);
+    booked = (res.data||[]).map(function(b){ return b.booking_time; });
+  } catch(e){}
   document.getElementById('bm-slots').innerHTML = slots.map(function(s) {
-    var taken = booked.includes(s);
-    var cls = 'slot-btn'+(taken?' taken':'');
-    var attr = taken ? 'disabled' : ('onclick="selectSlot(this,\''+s+'\')"');
-    return '<button class="'+cls+'" '+attr+'>'+s+(taken?'<br><span style="font-size:10px;">已约</span>':'')+'</button>';
+    var taken = booked.indexOf(s) > -1;
+    if(taken) return '<button class="slot-btn taken" disabled>'+s+'<br><span style="font-size:10px;">已约</span></button>';
+    return '<button class="slot-btn" onclick="selectSlot(this,\'' + s + '\')">'+s+'</button>';
   }).join('');
 }
 
 function selectSlot(el, t) {
-  document.querySelectorAll('.slot-btn').forEach(b=>b.classList.remove('sel'));
-  el.classList.add('sel'); bmState.time = t;
+  document.querySelectorAll('.slot-btn').forEach(function(b){ b.classList.remove('sel'); });
+  el.classList.add('sel');
+  bmState.time = t;
 }
 
 function selectCourt(el, name) {
-  document.querySelectorAll('.court-opt').forEach(c=>c.classList.remove('sel'));
-  el.classList.add('sel'); bmState.court = name;
+  document.querySelectorAll('.court-opt').forEach(function(c){ c.classList.remove('sel'); });
+  el.classList.add('sel');
+  bmState.court = name;
 }
 
 async function submitBM() {
   var type = document.getElementById('bm-type').value;
-  var notes = document.getElementById('bm-notes').value.trim();
+  var notes = document.getElementById('bm-notes') ? document.getElementById('bm-notes').value.trim() : '';
   var errEl = document.getElementById('bm-err');
   errEl.style.display = 'none';
   var errs = [];
@@ -1164,7 +1202,8 @@ async function submitBM() {
   if(errs.length){ errEl.textContent='⚠️ '+errs.join(' · '); errEl.style.display='block'; return; }
 
   var btn = document.getElementById('bm-btn');
-  btn.disabled = true; btn.innerHTML = '<span class="spin"></span>提交中…';
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span>提交中…';
 
   var row = {
     student_name: currentUser.name,
@@ -1177,10 +1216,18 @@ async function submitBM() {
     status: 'pending'
   };
 
-  var res = await sbInsert('bookings', row, currentUser&&currentUser.token);
-  btn.disabled = false; btn.textContent = '确认预约 →';
-
-  if(res.error){ errEl.textContent='❌ 提交失败：'+(res.error.message||JSON.stringify(res.error)); errEl.style.display='block'; return; }
+  try {
+    var r = await fetch(SB_URL+'/rest/v1/bookings', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+(currentUser.token||SB_KEY),'Prefer':'return=minimal' },
+      body: JSON.stringify(row)
+    });
+    btn.disabled = false; btn.textContent = '确认预约 →';
+    if(!r.ok){ var e=await r.json().catch(function(){return{};}); errEl.textContent='❌ 提交失败：'+(e.message||r.status); errEl.style.display='block'; return; }
+  } catch(e) {
+    btn.disabled = false; btn.textContent = '确认预约 →';
+    errEl.textContent='❌ 提交失败：'+e.message; errEl.style.display='block'; return;
+  }
 
   var d = new Date(bmState.date+'T00:00:00');
   document.getElementById('suc-coach').textContent = bmState.coachName;
@@ -1191,10 +1238,64 @@ async function submitBM() {
   document.getElementById('bm-success').style.display = 'block';
 }
 
-// ═══════════════════════════
-// NAV
-// ═══════════════════════════
-var panelTitles = { home:'首页', coaches:'找教练', 'coach-profile':'教练详情', 'my-bookings':'我的预约', packages:'课程套餐' };
+// ═══════════════════════════════════════
+// RENDER COACHES
+// ═══════════════════════════════════════
+function renderCoaches() {
+  var q = (document.getElementById('coach-search') || {value:''}).value.toLowerCase();
+  var list = COACHES.filter(function(c) {
+    var rOk = currentRegion === 'all' || c.region === currentRegion;
+    var lOk = currentLang === 'all'
+      || (currentLang === 'zh' && c.lang && c.lang.includes('中文'))
+      || (currentLang === 'en' && c.lang && c.lang.includes('English'));
+    var sOk = !q || c.name.toLowerCase().includes(q)
+      || (c.location||'').toLowerCase().includes(q)
+      || (c.tags||[]).join(' ').toLowerCase().includes(q);
+    return rOk && lOk && sOk;
+  });
+  var countEl = document.getElementById('coach-count');
+  if (countEl) countEl.textContent = '共 ' + list.length + ' 位教练';
+  var grid = document.getElementById('coaches-grid');
+  if (!grid) return;
+  if (list.length === 0) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--mute);"><div style="font-size:36px;margin-bottom:10px;">🎾</div><div style="font-weight:600;">暂无教练</div></div>';
+    return;
+  }
+  grid.innerHTML = list.map(coachCardHTML).join('');
+}
+
+function renderHomeCoaches(region) {
+  var list = region === 'all' ? COACHES : COACHES.filter(function(c){ return c.region === region; });
+  var grid = document.getElementById('home-coaches');
+  if (!grid) return;
+  if (list.length === 0) {
+    grid.innerHTML = '<div style="text-align:center;padding:40px;color:var(--mute);grid-column:1/-1;"><div style="font-size:32px;margin-bottom:8px;">🎾</div><div>教练数据加载中…</div></div>';
+    return;
+  }
+  grid.innerHTML = list.slice(0, 6).map(coachCardHTML).join('');
+}
+
+function filterHomeRegion(el, region) {
+  document.querySelectorAll('#panel-home .fchip').forEach(function(c){ c.classList.remove('active'); });
+  el.classList.add('active');
+  renderHomeCoaches(region);
+}
+
+function setRegion(region, el) {
+  currentRegion = region;
+  if (el) {
+    document.querySelectorAll('#region-chips .fchip').forEach(function(c){ c.classList.remove('active'); });
+    el.classList.add('active');
+  }
+  renderCoaches();
+}
+
+function setLang(lang, el) {
+  currentLang = lang;
+  document.querySelectorAll('#panel-coaches .fchip:not(#region-chips .fchip)').forEach(function(c){ c.classList.remove('active'); });
+  if (el) el.classList.add('active');
+  renderCoaches();
+}
 
 // ── COACH PROFILE PAGE ──
 var profileFromPanel = 'coaches';
