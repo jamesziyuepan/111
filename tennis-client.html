@@ -780,104 +780,1762 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 }
 
 
-/* ── PAYMENT STEP ── */
-.pay-step {
+/* ── MY BOOKINGS CARDS ── */
+.bk-record-card {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px; background: white;
+  border-radius: 14px; margin-bottom: 10px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  border-left: 4px solid var(--green-light);
+  transition: box-shadow 0.15s;
+}
+.bk-record-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+.bk-record-card:last-child { margin-bottom: 0; }
+
+.bk-date-blk {
+  background: var(--green-light); border-radius: 12px;
+  padding: 10px 12px; text-align: center; flex-shrink: 0; min-width: 54px;
+}
+.bk-month { font-size: 10px; font-weight: 800; color: var(--green); letter-spacing: 1px; }
+.bk-day   { font-size: 26px; font-weight: 900; line-height: 1.1; }
+.bk-wd    { font-size: 10px; color: var(--mute); margin-top: 1px; }
+
+.bk-status-badge {
+  display: inline-block; padding: 5px 12px;
+  border-radius: 20px; font-size: 12px; font-weight: 700;
+  white-space: nowrap;
+}
+.status-pending   { background: #fff3cd; color: #856404; }
+.status-confirmed { background: var(--green-light); color: var(--green); }
+.status-cancelled { background: #fdecea; color: var(--red); }
+
+
+/* ══════════════════════════════════════════
+   MOBILE — 竖屏手机完整适配
+   ══════════════════════════════════════════ */
+
+/* ── BOTTOM NAV BAR ── */
+.mobile-nav {
   display: none;
-  flex-direction: column;
-  gap: 16px;
-}
-.pay-step.active { display: flex; }
-
-.pay-header {
-  display: flex; align-items: center; gap: 10px;
-  padding-bottom: 14px; border-bottom: 1px solid var(--border);
-}
-.pay-back-btn {
-  width: 32px; height: 32px; border: 1.5px solid var(--border);
-  border-radius: 8px; background: white; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 16px; flex-shrink: 0;
-}
-.pay-title { font-size: 18px; font-weight: 900; }
-
-.pay-amount-card {
-  background: linear-gradient(135deg, #0d3b23, #1a6b3a);
-  border-radius: 16px; padding: 20px 22px; color: white;
-}
-.pay-amount-label { font-size: 12px; opacity: 0.7; margin-bottom: 4px; }
-.pay-amount-usd { font-size: 28px; font-weight: 900; margin-bottom: 2px; }
-.pay-amount-cny { font-size: 22px; font-weight: 800; color: #7fff7f; margin-bottom: 6px; }
-.pay-rate-row { font-size: 11px; opacity: 0.6; display: flex; align-items: center; gap: 6px; }
-.pay-rate-loading { display: inline-block; width: 10px; height: 10px; border: 1.5px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; }
-
-.pay-methods { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.pay-method-btn {
-  border: 2px solid var(--border); border-radius: 14px;
-  padding: 16px 12px; text-align: center; cursor: pointer;
-  transition: all 0.15s; background: white;
-}
-.pay-method-btn:hover { border-color: var(--green-mid); }
-.pay-method-btn.selected { border-color: var(--green); background: var(--green-light); }
-.pay-method-icon { font-size: 32px; display: block; margin-bottom: 6px; }
-.pay-method-name { font-size: 13px; font-weight: 700; }
-
-.pay-qr-area {
-  background: var(--bg); border-radius: 14px;
-  padding: 20px; text-align: center;
-}
-.pay-qr-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; color: var(--sub); }
-.pay-qr-img {
-  width: 180px; height: 180px; border-radius: 12px;
-  background: white; margin: 0 auto 10px;
-  display: flex; align-items: center; justify-content: center;
-  border: 1px solid var(--border);
-  font-size: 12px; color: var(--mute);
-  overflow: hidden;
-}
-.pay-qr-img img { width: 100%; height: 100%; object-fit: contain; }
-.pay-qr-hint { font-size: 11px; color: var(--mute); line-height: 1.6; }
-.pay-qr-amount-badge {
-  display: inline-block; background: var(--green);
-  color: white; font-size: 13px; font-weight: 800;
-  padding: 5px 16px; border-radius: 20px; margin-bottom: 8px;
-}
-
-.pay-contact-section { display: flex; flex-direction: column; gap: 10px; }
-.pay-contact-label { font-size: 12px; font-weight: 700; color: var(--sub); margin-bottom: 2px; display: block; }
-.pay-contact-inp {
-  width: 100%; height: 44px; border: 1.5px solid var(--border);
-  border-radius: 10px; padding: 0 14px; font-size: 14px;
-  font-family: inherit; outline: none; transition: border-color 0.15s;
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: 64px;
   background: white;
+  border-top: 1px solid var(--border);
+  z-index: 500;
+  justify-content: space-around;
+  align-items: center;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
 }
-.pay-contact-inp:focus { border-color: var(--green); }
-
-.pay-confirm-btn {
-  width: 100%; padding: 15px; margin-top: 4px;
-  background: linear-gradient(135deg, #07a33a, #0cc44a);
-  color: white; border: none; border-radius: 14px;
-  font-size: 15px; font-weight: 900; cursor: pointer;
-  font-family: inherit; box-shadow: 0 4px 16px rgba(7,163,58,0.35);
-  transition: opacity 0.15s;
+.mob-nav-item {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 3px; cursor: pointer; padding: 6px 8px;
+  border-radius: 12px; color: var(--mute);
+  font-size: 10px; font-weight: 500; flex: 1;
+  transition: color 0.15s;
 }
-.pay-confirm-btn:hover { opacity: 0.92; }
-.pay-confirm-btn:disabled { background: #e0e0e0; color: #aaa; box-shadow: none; cursor: not-allowed; }
-.pay-confirm-hint { font-size: 11px; color: var(--mute); text-align: center; line-height: 1.6; }
-.pay-err { background: #fdecea; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: var(--red); display: none; }
-
-/* Success page update */
-.bk-suc-service-note {
-  background: #fff8e1; border-radius: 12px;
-  padding: 14px 16px; margin: 14px 0;
-  border-left: 3px solid #f59e0b;
-}
-.bk-suc-service-note-title { font-size: 13px; font-weight: 700; color: #92400e; margin-bottom: 4px; }
-.bk-suc-service-note-text { font-size: 12px; color: #78350f; line-height: 1.6; }
+.mob-nav-item.active { color: var(--green); }
+.mob-nav-icon { font-size: 20px; line-height: 1; }
 
 @media (max-width: 768px) {
-  .pay-methods { grid-template-columns: 1fr 1fr !important; }
-  .pay-qr-img { width: 160px !important; height: 160px !important; }
+
+  /* ── CORE LAYOUT ── */
+  .sidebar { display: none !important; }
+  .main { width: 100% !important; height: 100dvh !important; }
+  .mobile-nav { display: flex !important; }
+
+  /* ── TOPBAR ── */
+  .topbar { height: 54px; padding: 0 16px; }
+  .topbar-title { font-size: 17px !important; }
+  .topbar-search, .topbar-btn { display: none !important; }
+
+  /* ── PAGE BODY ── */
+  .page-body {
+    padding: 14px 14px 80px !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ── HOME HERO ── */
+  .home-hero {
+    padding: 20px 18px !important;
+    border-radius: 16px !important;
+    margin-bottom: 14px !important;
+  }
+  .hero-title { font-size: 22px !important; line-height: 1.3 !important; }
+  .hero-ball { display: none !important; }
+  .hero-greeting { font-size: 13px !important; }
+
+  /* ── STATS STRIP ── */
+  .stats-strip {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+    margin-bottom: 16px !important;
+  }
+  .stat-card { padding: 12px !important; }
+  .stat-icon { width: 36px !important; height: 36px !important; font-size: 18px !important; }
+  .stat-val { font-size: 18px !important; }
+  .stat-lbl { font-size: 10px !important; }
+
+  /* ── SECTION HEADERS ── */
+  .sec-hd { margin-bottom: 10px !important; }
+  .sec-title { font-size: 14px !important; }
+
+  /* ── COACH GRID ── */
+  .coach-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+  .coach-card { border-radius: 12px !important; }
+  .coach-img { height: 115px !important; }
+  .coach-name { font-size: 13px !important; }
+  .coach-sub-txt { font-size: 10px !important; }
+  .coach-tags { gap: 3px !important; margin-bottom: 6px !important; }
+  .ctag, .lang-tag { font-size: 9px !important; padding: 2px 5px !important; }
+  .coach-book-btn { font-size: 11px !important; padding: 7px !important; }
+  .coach-body { padding: 8px 10px 10px !important; }
+  .coach-badge-tag { font-size: 9px !important; }
+  .coach-price-tag { font-size: 10px !important; }
+
+  /* ── FILTER CHIPS ── */
+  .filter-chips {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    margin-bottom: 12px !important;
+  }
+  .filter-chips::-webkit-scrollbar { display: none; }
+  .fchip { font-size: 11px !important; padding: 5px 12px !important; white-space: nowrap; }
+
+  /* ── COACH SEARCH BAR ── */
+  #region-chips {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    gap: 6px !important;
+  }
+  #region-chips::-webkit-scrollbar { display: none; }
+
+  /* ── COACH PROFILE PAGE ── */
+  .profile-layout {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  .profile-side-card { position: static !important; }
+  .profile-hero-img { height: 200px !important; }
+  .profile-name { font-size: 20px !important; }
+  .profile-price { font-size: 22px !important; }
+  .pcard { padding: 16px !important; }
+  .pcard-title { font-size: 14px !important; margin-bottom: 12px !important; }
+  .ach-item { padding: 8px 10px !important; }
+  .ach-txt { font-size: 11px !important; }
+  .spec-tags { gap: 6px !important; }
+  .spec-tag { font-size: 10px !important; padding: 4px 10px !important; }
+  .avail-row { gap: 6px !important; }
+  .avail-dot { width: 28px !important; height: 28px !important; font-size: 10px !important; }
+  .profile-cta-btns { gap: 8px !important; }
+  .btn-book-primary { font-size: 13px !important; padding: 12px !important; }
+  .btn-msg-secondary { font-size: 13px !important; padding: 12px !important; }
+  .breadcrumb { font-size: 13px !important; margin-bottom: 12px !important; }
+
+  /* ── MY BOOKINGS ── */
+  .bk-record-card {
+    padding: 12px !important;
+    gap: 10px !important;
+  }
+  .bk-date-blk { padding: 8px 10px !important; min-width: 48px !important; }
+  .bk-day { font-size: 22px !important; }
+  .bk-status-badge { font-size: 11px !important; padding: 4px 10px !important; }
+
+  /* ── CONTENT CARDS ── */
+  .content-card { padding: 16px !important; border-radius: 12px !important; }
+  .cc-title { font-size: 14px !important; }
+
+  /* ── BOOKING MODAL — full screen ── */
+  .bk-overlay { align-items: flex-end !important; }
+  .bk-modal {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 94dvh !important;
+    max-height: 94dvh !important;
+    border-radius: 20px 20px 0 0 !important;
+    padding: 18px 16px 24px !important;
+    display: flex;
+    flex-direction: column;
+  }
+  #bm-form { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  #bm-form::-webkit-scrollbar { display: none; }
+  .bk-layout { grid-template-columns: 1fr !important; gap: 12px !important; }
+  .bk-modal-title { font-size: 17px !important; }
+
+  /* Order panel on mobile: appears after steps */
+  .bk-order-panel {
+    position: static !important;
+    order: 10;
+    border-radius: 14px !important;
+    padding: 16px !important;
+  }
+  .total-price { font-size: 22px !important; }
+  .bk-confirm-btn { padding: 13px !important; font-size: 14px !important; }
+
+  /* Type cards: 2 column on mobile */
+  .type-grid { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+  .type-card { padding: 12px !important; }
+  .type-icon { font-size: 20px !important; }
+  .type-name { font-size: 12px !important; }
+  .type-desc { font-size: 10px !important; }
+  .type-price { font-size: 14px !important; }
+
+  /* Calendar: compact */
+  .cal-day { font-size: 12px !important; }
+  .m-label { font-size: 14px !important; }
+
+  /* Time slots: 3 cols */
+  .time-slots-bk { grid-template-columns: repeat(3, 1fr) !important; gap: 6px !important; }
+  .t-slot-bk { padding: 8px 4px !important; }
+  .t-slot-bk span:first-child { font-size: 12px !important; }
+  .t-slot-bk span:last-child { font-size: 9px !important; }
+
+  /* Court cards */
+  .court-card { padding: 10px 12px !important; margin-bottom: 8px !important; }
+  .cc-name { font-size: 13px !important; }
+  .cc-addr { font-size: 10px !important; }
+
+  /* ── LOGIN GATE MODAL ── */
+  #login-gate > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 20px 20px 0 0 !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    padding-bottom: env(safe-area-inset-bottom, 20px) !important;
+  }
+  #login-gate {
+    align-items: flex-end !important;
+  }
+
+  /* ── AUTH SCREEN ── */
+  .auth-card {
+    padding: 32px 24px !important;
+    border-radius: 20px !important;
+    width: 92vw !important;
+  }
+
+  /* ── MISC ── */
+  .step-lbl { font-size: 14px !important; }
+  .notice-band { font-size: 11px !important; padding: 7px 12px !important; }
+  .bk-step-card { padding: 14px !important; border-radius: 12px !important; }
+  .coach-mini { padding: 10px !important; }
+  .coach-mini-name { font-size: 13px !important; }
 }
+
+
+/* ── MY BOOKINGS CARDS ── */
+.bk-record-card {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px; background: white;
+  border-radius: 14px; margin-bottom: 10px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  border-left: 4px solid var(--green-light);
+  transition: box-shadow 0.15s;
+}
+.bk-record-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+.bk-record-card:last-child { margin-bottom: 0; }
+
+.bk-date-blk {
+  background: var(--green-light); border-radius: 12px;
+  padding: 10px 12px; text-align: center; flex-shrink: 0; min-width: 54px;
+}
+.bk-month { font-size: 10px; font-weight: 800; color: var(--green); letter-spacing: 1px; }
+.bk-day   { font-size: 26px; font-weight: 900; line-height: 1.1; }
+.bk-wd    { font-size: 10px; color: var(--mute); margin-top: 1px; }
+
+.bk-status-badge {
+  display: inline-block; padding: 5px 12px;
+  border-radius: 20px; font-size: 12px; font-weight: 700;
+  white-space: nowrap;
+}
+.status-pending   { background: #fff3cd; color: #856404; }
+.status-confirmed { background: var(--green-light); color: var(--green); }
+.status-cancelled { background: #fdecea; color: var(--red); }
+
+
+/* ══════════════════════════════════════════
+   MOBILE — 竖屏手机完整适配
+   ══════════════════════════════════════════ */
+
+/* ── BOTTOM NAV BAR ── */
+.mobile-nav {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: 64px;
+  background: white;
+  border-top: 1px solid var(--border);
+  z-index: 500;
+  justify-content: space-around;
+  align-items: center;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+}
+.mob-nav-item {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 3px; cursor: pointer; padding: 6px 8px;
+  border-radius: 12px; color: var(--mute);
+  font-size: 10px; font-weight: 500; flex: 1;
+  transition: color 0.15s;
+}
+.mob-nav-item.active { color: var(--green); }
+.mob-nav-icon { font-size: 20px; line-height: 1; }
+
+@media (max-width: 768px) {
+
+  /* ── CORE LAYOUT ── */
+  .sidebar { display: none !important; }
+  .main { width: 100% !important; height: 100dvh !important; }
+  .mobile-nav { display: flex !important; }
+
+  /* ── TOPBAR ── */
+  .topbar { height: 54px; padding: 0 16px; }
+  .topbar-title { font-size: 17px !important; }
+  .topbar-search, .topbar-btn { display: none !important; }
+
+  /* ── PAGE BODY ── */
+  .page-body {
+    padding: 14px 14px 80px !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ── HOME HERO ── */
+  .home-hero {
+    padding: 20px 18px !important;
+    border-radius: 16px !important;
+    margin-bottom: 14px !important;
+  }
+  .hero-title { font-size: 22px !important; line-height: 1.3 !important; }
+  .hero-ball { display: none !important; }
+  .hero-greeting { font-size: 13px !important; }
+
+  /* ── STATS STRIP ── */
+  .stats-strip {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+    margin-bottom: 16px !important;
+  }
+  .stat-card { padding: 12px !important; }
+  .stat-icon { width: 36px !important; height: 36px !important; font-size: 18px !important; }
+  .stat-val { font-size: 18px !important; }
+  .stat-lbl { font-size: 10px !important; }
+
+  /* ── SECTION HEADERS ── */
+  .sec-hd { margin-bottom: 10px !important; }
+  .sec-title { font-size: 14px !important; }
+
+  /* ── COACH GRID ── */
+  .coach-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+  .coach-card { border-radius: 12px !important; }
+  .coach-img { height: 115px !important; }
+  .coach-name { font-size: 13px !important; }
+  .coach-sub-txt { font-size: 10px !important; }
+  .coach-tags { gap: 3px !important; margin-bottom: 6px !important; }
+  .ctag, .lang-tag { font-size: 9px !important; padding: 2px 5px !important; }
+  .coach-book-btn { font-size: 11px !important; padding: 7px !important; }
+  .coach-body { padding: 8px 10px 10px !important; }
+  .coach-badge-tag { font-size: 9px !important; }
+  .coach-price-tag { font-size: 10px !important; }
+
+  /* ── FILTER CHIPS ── */
+  .filter-chips {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    margin-bottom: 12px !important;
+  }
+  .filter-chips::-webkit-scrollbar { display: none; }
+  .fchip { font-size: 11px !important; padding: 5px 12px !important; white-space: nowrap; }
+
+  /* ── COACH SEARCH BAR ── */
+  #region-chips {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    gap: 6px !important;
+  }
+  #region-chips::-webkit-scrollbar { display: none; }
+
+  /* ── COACH PROFILE PAGE ── */
+  .profile-layout {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  .profile-side-card { position: static !important; }
+  .profile-hero-img { height: 200px !important; }
+  .profile-name { font-size: 20px !important; }
+  .profile-price { font-size: 22px !important; }
+  .pcard { padding: 16px !important; }
+  .pcard-title { font-size: 14px !important; margin-bottom: 12px !important; }
+  .ach-item { padding: 8px 10px !important; }
+  .ach-txt { font-size: 11px !important; }
+  .spec-tags { gap: 6px !important; }
+  .spec-tag { font-size: 10px !important; padding: 4px 10px !important; }
+  .avail-row { gap: 6px !important; }
+  .avail-dot { width: 28px !important; height: 28px !important; font-size: 10px !important; }
+  .profile-cta-btns { gap: 8px !important; }
+  .btn-book-primary { font-size: 13px !important; padding: 12px !important; }
+  .btn-msg-secondary { font-size: 13px !important; padding: 12px !important; }
+  .breadcrumb { font-size: 13px !important; margin-bottom: 12px !important; }
+
+  /* ── MY BOOKINGS ── */
+  .bk-record-card {
+    padding: 12px !important;
+    gap: 10px !important;
+  }
+  .bk-date-blk { padding: 8px 10px !important; min-width: 48px !important; }
+  .bk-day { font-size: 22px !important; }
+  .bk-status-badge { font-size: 11px !important; padding: 4px 10px !important; }
+
+  /* ── CONTENT CARDS ── */
+  .content-card { padding: 16px !important; border-radius: 12px !important; }
+  .cc-title { font-size: 14px !important; }
+
+  /* ── BOOKING MODAL — full screen ── */
+  .bk-overlay { align-items: flex-end !important; }
+  .bk-modal {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 94dvh !important;
+    max-height: 94dvh !important;
+    border-radius: 20px 20px 0 0 !important;
+    padding: 18px 16px 24px !important;
+    display: flex;
+    flex-direction: column;
+  }
+  #bm-form { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  #bm-form::-webkit-scrollbar { display: none; }
+  .bk-layout { grid-template-columns: 1fr !important; gap: 12px !important; }
+  .bk-modal-title { font-size: 17px !important; }
+
+  /* Order panel on mobile: appears after steps */
+  .bk-order-panel {
+    position: static !important;
+    order: 10;
+    border-radius: 14px !important;
+    padding: 16px !important;
+  }
+  .total-price { font-size: 22px !important; }
+  .bk-confirm-btn { padding: 13px !important; font-size: 14px !important; }
+
+  /* Type cards: 2 column on mobile */
+  .type-grid { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+  .type-card { padding: 12px !important; }
+  .type-icon { font-size: 20px !important; }
+  .type-name { font-size: 12px !important; }
+  .type-desc { font-size: 10px !important; }
+  .type-price { font-size: 14px !important; }
+
+  /* Calendar: compact */
+  .cal-day { font-size: 12px !important; }
+  .m-label { font-size: 14px !important; }
+
+  /* Time slots: 3 cols */
+  .time-slots-bk { grid-template-columns: repeat(3, 1fr) !important; gap: 6px !important; }
+  .t-slot-bk { padding: 8px 4px !important; }
+  .t-slot-bk span:first-child { font-size: 12px !important; }
+  .t-slot-bk span:last-child { font-size: 9px !important; }
+
+  /* Court cards */
+  .court-card { padding: 10px 12px !important; margin-bottom: 8px !important; }
+  .cc-name { font-size: 13px !important; }
+  .cc-addr { font-size: 10px !important; }
+
+  /* ── LOGIN GATE MODAL ── */
+  #login-gate > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 20px 20px 0 0 !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    padding-bottom: env(safe-area-inset-bottom, 20px) !important;
+  }
+  #login-gate {
+    align-items: flex-end !important;
+  }
+
+  /* ── AUTH SCREEN ── */
+  .auth-card {
+    padding: 32px 24px !important;
+    border-radius: 20px !important;
+    width: 92vw !important;
+  }
+
+  /* ── MISC ── */
+  .step-lbl { font-size: 14px !important; }
+  .notice-band { font-size: 11px !important; padding: 7px 12px !important; }
+  .bk-step-card { padding: 14px !important; border-radius: 12px !important; }
+  .coach-mini { padding: 10px !important; }
+  .coach-mini-name { font-size: 13px !important; }
+}
+
+
+/* ── MY BOOKINGS CARDS ── */
+.bk-record-card {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px; background: white;
+  border-radius: 14px; margin-bottom: 10px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  border-left: 4px solid var(--green-light);
+  transition: box-shadow 0.15s;
+}
+.bk-record-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+.bk-record-card:last-child { margin-bottom: 0; }
+
+.bk-date-blk {
+  background: var(--green-light); border-radius: 12px;
+  padding: 10px 12px; text-align: center; flex-shrink: 0; min-width: 54px;
+}
+.bk-month { font-size: 10px; font-weight: 800; color: var(--green); letter-spacing: 1px; }
+.bk-day   { font-size: 26px; font-weight: 900; line-height: 1.1; }
+.bk-wd    { font-size: 10px; color: var(--mute); margin-top: 1px; }
+
+.bk-status-badge {
+  display: inline-block; padding: 5px 12px;
+  border-radius: 20px; font-size: 12px; font-weight: 700;
+  white-space: nowrap;
+}
+.status-pending   { background: #fff3cd; color: #856404; }
+.status-confirmed { background: var(--green-light); color: var(--green); }
+.status-cancelled { background: #fdecea; color: var(--red); }
+
+
+/* ══════════════════════════════════════════
+   MOBILE — 竖屏手机完整适配
+   ══════════════════════════════════════════ */
+
+/* ── BOTTOM NAV BAR ── */
+.mobile-nav {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: 64px;
+  background: white;
+  border-top: 1px solid var(--border);
+  z-index: 500;
+  justify-content: space-around;
+  align-items: center;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+}
+.mob-nav-item {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 3px; cursor: pointer; padding: 6px 8px;
+  border-radius: 12px; color: var(--mute);
+  font-size: 10px; font-weight: 500; flex: 1;
+  transition: color 0.15s;
+}
+.mob-nav-item.active { color: var(--green); }
+.mob-nav-icon { font-size: 20px; line-height: 1; }
+
+@media (max-width: 768px) {
+
+  /* ── CORE LAYOUT ── */
+  .sidebar { display: none !important; }
+  .main { width: 100% !important; height: 100dvh !important; }
+  .mobile-nav { display: flex !important; }
+
+  /* ── TOPBAR ── */
+  .topbar { height: 54px; padding: 0 16px; }
+  .topbar-title { font-size: 17px !important; }
+  .topbar-search, .topbar-btn { display: none !important; }
+
+  /* ── PAGE BODY ── */
+  .page-body {
+    padding: 14px 14px 80px !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ── HOME HERO ── */
+  .home-hero {
+    padding: 20px 18px !important;
+    border-radius: 16px !important;
+    margin-bottom: 14px !important;
+  }
+  .hero-title { font-size: 22px !important; line-height: 1.3 !important; }
+  .hero-ball { display: none !important; }
+  .hero-greeting { font-size: 13px !important; }
+
+  /* ── STATS STRIP ── */
+  .stats-strip {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+    margin-bottom: 16px !important;
+  }
+  .stat-card { padding: 12px !important; }
+  .stat-icon { width: 36px !important; height: 36px !important; font-size: 18px !important; }
+  .stat-val { font-size: 18px !important; }
+  .stat-lbl { font-size: 10px !important; }
+
+  /* ── SECTION HEADERS ── */
+  .sec-hd { margin-bottom: 10px !important; }
+  .sec-title { font-size: 14px !important; }
+
+  /* ── COACH GRID ── */
+  .coach-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+  .coach-card { border-radius: 12px !important; }
+  .coach-img { height: 115px !important; }
+  .coach-name { font-size: 13px !important; }
+  .coach-sub-txt { font-size: 10px !important; }
+  .coach-tags { gap: 3px !important; margin-bottom: 6px !important; }
+  .ctag, .lang-tag { font-size: 9px !important; padding: 2px 5px !important; }
+  .coach-book-btn { font-size: 11px !important; padding: 7px !important; }
+  .coach-body { padding: 8px 10px 10px !important; }
+  .coach-badge-tag { font-size: 9px !important; }
+  .coach-price-tag { font-size: 10px !important; }
+
+  /* ── FILTER CHIPS ── */
+  .filter-chips {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    margin-bottom: 12px !important;
+  }
+  .filter-chips::-webkit-scrollbar { display: none; }
+  .fchip { font-size: 11px !important; padding: 5px 12px !important; white-space: nowrap; }
+
+  /* ── COACH SEARCH BAR ── */
+  #region-chips {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    gap: 6px !important;
+  }
+  #region-chips::-webkit-scrollbar { display: none; }
+
+  /* ── COACH PROFILE PAGE ── */
+  .profile-layout {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  .profile-side-card { position: static !important; }
+  .profile-hero-img { height: 200px !important; }
+  .profile-name { font-size: 20px !important; }
+  .profile-price { font-size: 22px !important; }
+  .pcard { padding: 16px !important; }
+  .pcard-title { font-size: 14px !important; margin-bottom: 12px !important; }
+  .ach-item { padding: 8px 10px !important; }
+  .ach-txt { font-size: 11px !important; }
+  .spec-tags { gap: 6px !important; }
+  .spec-tag { font-size: 10px !important; padding: 4px 10px !important; }
+  .avail-row { gap: 6px !important; }
+  .avail-dot { width: 28px !important; height: 28px !important; font-size: 10px !important; }
+  .profile-cta-btns { gap: 8px !important; }
+  .btn-book-primary { font-size: 13px !important; padding: 12px !important; }
+  .btn-msg-secondary { font-size: 13px !important; padding: 12px !important; }
+  .breadcrumb { font-size: 13px !important; margin-bottom: 12px !important; }
+
+  /* ── MY BOOKINGS ── */
+  .bk-record-card {
+    padding: 12px !important;
+    gap: 10px !important;
+  }
+  .bk-date-blk { padding: 8px 10px !important; min-width: 48px !important; }
+  .bk-day { font-size: 22px !important; }
+  .bk-status-badge { font-size: 11px !important; padding: 4px 10px !important; }
+
+  /* ── CONTENT CARDS ── */
+  .content-card { padding: 16px !important; border-radius: 12px !important; }
+  .cc-title { font-size: 14px !important; }
+
+  /* ── BOOKING MODAL — full screen ── */
+  .bk-overlay { align-items: flex-end !important; }
+  .bk-modal {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 94dvh !important;
+    max-height: 94dvh !important;
+    border-radius: 20px 20px 0 0 !important;
+    padding: 18px 16px 24px !important;
+    display: flex;
+    flex-direction: column;
+  }
+  #bm-form { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  #bm-form::-webkit-scrollbar { display: none; }
+  .bk-layout { grid-template-columns: 1fr !important; gap: 12px !important; }
+  .bk-modal-title { font-size: 17px !important; }
+
+  /* Order panel on mobile: appears after steps */
+  .bk-order-panel {
+    position: static !important;
+    order: 10;
+    border-radius: 14px !important;
+    padding: 16px !important;
+  }
+  .total-price { font-size: 22px !important; }
+  .bk-confirm-btn { padding: 13px !important; font-size: 14px !important; }
+
+  /* Type cards: 2 column on mobile */
+  .type-grid { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+  .type-card { padding: 12px !important; }
+  .type-icon { font-size: 20px !important; }
+  .type-name { font-size: 12px !important; }
+  .type-desc { font-size: 10px !important; }
+  .type-price { font-size: 14px !important; }
+
+  /* Calendar: compact */
+  .cal-day { font-size: 12px !important; }
+  .m-label { font-size: 14px !important; }
+
+  /* Time slots: 3 cols */
+  .time-slots-bk { grid-template-columns: repeat(3, 1fr) !important; gap: 6px !important; }
+  .t-slot-bk { padding: 8px 4px !important; }
+  .t-slot-bk span:first-child { font-size: 12px !important; }
+  .t-slot-bk span:last-child { font-size: 9px !important; }
+
+  /* Court cards */
+  .court-card { padding: 10px 12px !important; margin-bottom: 8px !important; }
+  .cc-name { font-size: 13px !important; }
+  .cc-addr { font-size: 10px !important; }
+
+  /* ── LOGIN GATE MODAL ── */
+  #login-gate > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 20px 20px 0 0 !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    padding-bottom: env(safe-area-inset-bottom, 20px) !important;
+  }
+  #login-gate {
+    align-items: flex-end !important;
+  }
+
+  /* ── AUTH SCREEN ── */
+  .auth-card {
+    padding: 32px 24px !important;
+    border-radius: 20px !important;
+    width: 92vw !important;
+  }
+
+  /* ── MISC ── */
+  .step-lbl { font-size: 14px !important; }
+  .notice-band { font-size: 11px !important; padding: 7px 12px !important; }
+  .bk-step-card { padding: 14px !important; border-radius: 12px !important; }
+  .coach-mini { padding: 10px !important; }
+  .coach-mini-name { font-size: 13px !important; }
+}
+/* ── MY BOOKINGS CARDS ── */
+.bk-record-card {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px; background: white;
+  border-radius: 14px; margin-bottom: 10px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  border-left: 4px solid var(--green-light);
+  transition: box-shadow 0.15s;
+}
+.bk-record-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+.bk-record-card:last-child { margin-bottom: 0; }
+
+.bk-date-blk {
+  background: var(--green-light); border-radius: 12px;
+  padding: 10px 12px; text-align: center; flex-shrink: 0; min-width: 54px;
+}
+.bk-month { font-size: 10px; font-weight: 800; color: var(--green); letter-spacing: 1px; }
+.bk-day   { font-size: 26px; font-weight: 900; line-height: 1.1; }
+.bk-wd    { font-size: 10px; color: var(--mute); margin-top: 1px; }
+
+.bk-status-badge {
+  display: inline-block; padding: 5px 12px;
+  border-radius: 20px; font-size: 12px; font-weight: 700;
+  white-space: nowrap;
+}
+.status-pending   { background: #fff3cd; color: #856404; }
+.status-confirmed { background: var(--green-light); color: var(--green); }
+.status-cancelled { background: #fdecea; color: var(--red); }
+
+
+/* ══════════════════════════════════════════
+   MOBILE — 竖屏手机完整适配
+   ══════════════════════════════════════════ */
+
+/* ── BOTTOM NAV BAR ── */
+.mobile-nav {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: 64px;
+  background: white;
+  border-top: 1px solid var(--border);
+  z-index: 500;
+  justify-content: space-around;
+  align-items: center;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+}
+.mob-nav-item {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 3px; cursor: pointer; padding: 6px 8px;
+  border-radius: 12px; color: var(--mute);
+  font-size: 10px; font-weight: 500; flex: 1;
+  transition: color 0.15s;
+}
+.mob-nav-item.active { color: var(--green); }
+.mob-nav-icon { font-size: 20px; line-height: 1; }
+
+@media (max-width: 768px) {
+
+  /* ── CORE LAYOUT ── */
+  .sidebar { display: none !important; }
+  .main { width: 100% !important; height: 100dvh !important; }
+  .mobile-nav { display: flex !important; }
+
+  /* ── TOPBAR ── */
+  .topbar { height: 54px; padding: 0 16px; }
+  .topbar-title { font-size: 17px !important; }
+  .topbar-search, .topbar-btn { display: none !important; }
+
+  /* ── PAGE BODY ── */
+  .page-body {
+    padding: 14px 14px 80px !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ── HOME HERO ── */
+  .home-hero {
+    padding: 20px 18px !important;
+    border-radius: 16px !important;
+    margin-bottom: 14px !important;
+  }
+  .hero-title { font-size: 22px !important; line-height: 1.3 !important; }
+  .hero-ball { display: none !important; }
+  .hero-greeting { font-size: 13px !important; }
+
+  /* ── STATS STRIP ── */
+  .stats-strip {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+    margin-bottom: 16px !important;
+  }
+  .stat-card { padding: 12px !important; }
+  .stat-icon { width: 36px !important; height: 36px !important; font-size: 18px !important; }
+  .stat-val { font-size: 18px !important; }
+  .stat-lbl { font-size: 10px !important; }
+
+  /* ── SECTION HEADERS ── */
+  .sec-hd { margin-bottom: 10px !important; }
+  .sec-title { font-size: 14px !important; }
+
+  /* ── COACH GRID ── */
+  .coach-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+  .coach-card { border-radius: 12px !important; }
+  .coach-img { height: 115px !important; }
+  .coach-name { font-size: 13px !important; }
+  .coach-sub-txt { font-size: 10px !important; }
+  .coach-tags { gap: 3px !important; margin-bottom: 6px !important; }
+  .ctag, .lang-tag { font-size: 9px !important; padding: 2px 5px !important; }
+  .coach-book-btn { font-size: 11px !important; padding: 7px !important; }
+  .coach-body { padding: 8px 10px 10px !important; }
+  .coach-badge-tag { font-size: 9px !important; }
+  .coach-price-tag { font-size: 10px !important; }
+
+  /* ── FILTER CHIPS ── */
+  .filter-chips {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    margin-bottom: 12px !important;
+  }
+  .filter-chips::-webkit-scrollbar { display: none; }
+  .fchip { font-size: 11px !important; padding: 5px 12px !important; white-space: nowrap; }
+
+  /* ── COACH SEARCH BAR ── */
+  #region-chips {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    gap: 6px !important;
+  }
+  #region-chips::-webkit-scrollbar { display: none; }
+
+  /* ── COACH PROFILE PAGE ── */
+  .profile-layout {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  .profile-side-card { position: static !important; }
+  .profile-hero-img { height: 200px !important; }
+  .profile-name { font-size: 20px !important; }
+  .profile-price { font-size: 22px !important; }
+  .pcard { padding: 16px !important; }
+  .pcard-title { font-size: 14px !important; margin-bottom: 12px !important; }
+  .ach-item { padding: 8px 10px !important; }
+  .ach-txt { font-size: 11px !important; }
+  .spec-tags { gap: 6px !important; }
+  .spec-tag { font-size: 10px !important; padding: 4px 10px !important; }
+  .avail-row { gap: 6px !important; }
+  .avail-dot { width: 28px !important; height: 28px !important; font-size: 10px !important; }
+  .profile-cta-btns { gap: 8px !important; }
+  .btn-book-primary { font-size: 13px !important; padding: 12px !important; }
+  .btn-msg-secondary { font-size: 13px !important; padding: 12px !important; }
+  .breadcrumb { font-size: 13px !important; margin-bottom: 12px !important; }
+
+  /* ── MY BOOKINGS ── */
+  .bk-record-card {
+    padding: 12px !important;
+    gap: 10px !important;
+  }
+  .bk-date-blk { padding: 8px 10px !important; min-width: 48px !important; }
+  .bk-day { font-size: 22px !important; }
+  .bk-status-badge { font-size: 11px !important; padding: 4px 10px !important; }
+
+  /* ── CONTENT CARDS ── */
+  .content-card { padding: 16px !important; border-radius: 12px !important; }
+  .cc-title { font-size: 14px !important; }
+
+  /* ── BOOKING MODAL — full screen ── */
+  .bk-overlay { align-items: flex-end !important; }
+  .bk-modal {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 94dvh !important;
+    max-height: 94dvh !important;
+    border-radius: 20px 20px 0 0 !important;
+    padding: 18px 16px 24px !important;
+    display: flex;
+    flex-direction: column;
+  }
+  #bm-form { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  #bm-form::-webkit-scrollbar { display: none; }
+  .bk-layout { grid-template-columns: 1fr !important; gap: 12px !important; }
+  .bk-modal-title { font-size: 17px !important; }
+
+  /* Order panel on mobile: appears after steps */
+  .bk-order-panel {
+    position: static !important;
+    order: 10;
+    border-radius: 14px !important;
+    padding: 16px !important;
+  }
+  .total-price { font-size: 22px !important; }
+  .bk-confirm-btn { padding: 13px !important; font-size: 14px !important; }
+
+  /* Type cards: 2 column on mobile */
+  .type-grid { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+  .type-card { padding: 12px !important; }
+  .type-icon { font-size: 20px !important; }
+  .type-name { font-size: 12px !important; }
+  .type-desc { font-size: 10px !important; }
+  .type-price { font-size: 14px !important; }
+
+  /* Calendar: compact */
+  .cal-day { font-size: 12px !important; }
+  .m-label { font-size: 14px !important; }
+
+  /* Time slots: 3 cols */
+  .time-slots-bk { grid-template-columns: repeat(3, 1fr) !important; gap: 6px !important; }
+  .t-slot-bk { padding: 8px 4px !important; }
+  .t-slot-bk span:first-child { font-size: 12px !important; }
+  .t-slot-bk span:last-child { font-size: 9px !important; }
+
+  /* Court cards */
+  .court-card { padding: 10px 12px !important; margin-bottom: 8px !important; }
+  .cc-name { font-size: 13px !important; }
+  .cc-addr { font-size: 10px !important; }
+
+  /* ── LOGIN GATE MODAL ── */
+  #login-gate > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 20px 20px 0 0 !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    padding-bottom: env(safe-area-inset-bottom, 20px) !important;
+  }
+  #login-gate {
+    align-items: flex-end !important;
+  }
+
+  /* ── AUTH SCREEN ── */
+  .auth-card {
+    padding: 32px 24px !important;
+    border-radius: 20px !important;
+    width: 92vw !important;
+  }
+
+  /* ── MISC ── */
+  .step-lbl { font-size: 14px !important; }
+  .notice-band { font-size: 11px !important; padding: 7px 12px !important; }
+  .bk-step-card { padding: 14px !important; border-radius: 12px !important; }
+  .coach-mini { padding: 10px !important; }
+  .coach-mini-name { font-size: 13px !important; }
+}
+
+
+/* ── MY BOOKINGS CARDS ── */
+.bk-record-card {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px; background: white;
+  border-radius: 14px; margin-bottom: 10px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  border-left: 4px solid var(--green-light);
+  transition: box-shadow 0.15s;
+}
+.bk-record-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+.bk-record-card:last-child { margin-bottom: 0; }
+
+.bk-date-blk {
+  background: var(--green-light); border-radius: 12px;
+  padding: 10px 12px; text-align: center; flex-shrink: 0; min-width: 54px;
+}
+.bk-month { font-size: 10px; font-weight: 800; color: var(--green); letter-spacing: 1px; }
+.bk-day   { font-size: 26px; font-weight: 900; line-height: 1.1; }
+.bk-wd    { font-size: 10px; color: var(--mute); margin-top: 1px; }
+
+.bk-status-badge {
+  display: inline-block; padding: 5px 12px;
+  border-radius: 20px; font-size: 12px; font-weight: 700;
+  white-space: nowrap;
+}
+.status-pending   { background: #fff3cd; color: #856404; }
+.status-confirmed { background: var(--green-light); color: var(--green); }
+.status-cancelled { background: #fdecea; color: var(--red); }
+
+
+/* ══════════════════════════════════════════
+   MOBILE — 竖屏手机完整适配
+   ══════════════════════════════════════════ */
+
+/* ── BOTTOM NAV BAR ── */
+.mobile-nav {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: 64px;
+  background: white;
+  border-top: 1px solid var(--border);
+  z-index: 500;
+  justify-content: space-around;
+  align-items: center;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+}
+.mob-nav-item {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 3px; cursor: pointer; padding: 6px 8px;
+  border-radius: 12px; color: var(--mute);
+  font-size: 10px; font-weight: 500; flex: 1;
+  transition: color 0.15s;
+}
+.mob-nav-item.active { color: var(--green); }
+.mob-nav-icon { font-size: 20px; line-height: 1; }
+
+@media (max-width: 768px) {
+
+  /* ── CORE LAYOUT ── */
+  .sidebar { display: none !important; }
+  .main { width: 100% !important; height: 100dvh !important; }
+  .mobile-nav { display: flex !important; }
+
+  /* ── TOPBAR ── */
+  .topbar { height: 54px; padding: 0 16px; }
+  .topbar-title { font-size: 17px !important; }
+  .topbar-search, .topbar-btn { display: none !important; }
+
+  /* ── PAGE BODY ── */
+  .page-body {
+    padding: 14px 14px 80px !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ── HOME HERO ── */
+  .home-hero {
+    padding: 20px 18px !important;
+    border-radius: 16px !important;
+    margin-bottom: 14px !important;
+  }
+  .hero-title { font-size: 22px !important; line-height: 1.3 !important; }
+  .hero-ball { display: none !important; }
+  .hero-greeting { font-size: 13px !important; }
+
+  /* ── STATS STRIP ── */
+  .stats-strip {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+    margin-bottom: 16px !important;
+  }
+  .stat-card { padding: 12px !important; }
+  .stat-icon { width: 36px !important; height: 36px !important; font-size: 18px !important; }
+  .stat-val { font-size: 18px !important; }
+  .stat-lbl { font-size: 10px !important; }
+
+  /* ── SECTION HEADERS ── */
+  .sec-hd { margin-bottom: 10px !important; }
+  .sec-title { font-size: 14px !important; }
+
+  /* ── COACH GRID ── */
+  .coach-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+  .coach-card { border-radius: 12px !important; }
+  .coach-img { height: 115px !important; }
+  .coach-name { font-size: 13px !important; }
+  .coach-sub-txt { font-size: 10px !important; }
+  .coach-tags { gap: 3px !important; margin-bottom: 6px !important; }
+  .ctag, .lang-tag { font-size: 9px !important; padding: 2px 5px !important; }
+  .coach-book-btn { font-size: 11px !important; padding: 7px !important; }
+  .coach-body { padding: 8px 10px 10px !important; }
+  .coach-badge-tag { font-size: 9px !important; }
+  .coach-price-tag { font-size: 10px !important; }
+
+  /* ── FILTER CHIPS ── */
+  .filter-chips {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    margin-bottom: 12px !important;
+  }
+  .filter-chips::-webkit-scrollbar { display: none; }
+  .fchip { font-size: 11px !important; padding: 5px 12px !important; white-space: nowrap; }
+
+  /* ── COACH SEARCH BAR ── */
+  #region-chips {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    gap: 6px !important;
+  }
+  #region-chips::-webkit-scrollbar { display: none; }
+
+  /* ── COACH PROFILE PAGE ── */
+  .profile-layout {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  .profile-side-card { position: static !important; }
+  .profile-hero-img { height: 200px !important; }
+  .profile-name { font-size: 20px !important; }
+  .profile-price { font-size: 22px !important; }
+  .pcard { padding: 16px !important; }
+  .pcard-title { font-size: 14px !important; margin-bottom: 12px !important; }
+  .ach-item { padding: 8px 10px !important; }
+  .ach-txt { font-size: 11px !important; }
+  .spec-tags { gap: 6px !important; }
+  .spec-tag { font-size: 10px !important; padding: 4px 10px !important; }
+  .avail-row { gap: 6px !important; }
+  .avail-dot { width: 28px !important; height: 28px !important; font-size: 10px !important; }
+  .profile-cta-btns { gap: 8px !important; }
+  .btn-book-primary { font-size: 13px !important; padding: 12px !important; }
+  .btn-msg-secondary { font-size: 13px !important; padding: 12px !important; }
+  .breadcrumb { font-size: 13px !important; margin-bottom: 12px !important; }
+
+  /* ── MY BOOKINGS ── */
+  .bk-record-card {
+    padding: 12px !important;
+    gap: 10px !important;
+  }
+  .bk-date-blk { padding: 8px 10px !important; min-width: 48px !important; }
+  .bk-day { font-size: 22px !important; }
+  .bk-status-badge { font-size: 11px !important; padding: 4px 10px !important; }
+
+  /* ── CONTENT CARDS ── */
+  .content-card { padding: 16px !important; border-radius: 12px !important; }
+  .cc-title { font-size: 14px !important; }
+
+  /* ── BOOKING MODAL — full screen ── */
+  .bk-overlay { align-items: flex-end !important; }
+  .bk-modal {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 94dvh !important;
+    max-height: 94dvh !important;
+    border-radius: 20px 20px 0 0 !important;
+    padding: 18px 16px 24px !important;
+    display: flex;
+    flex-direction: column;
+  }
+  #bm-form { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  #bm-form::-webkit-scrollbar { display: none; }
+  .bk-layout { grid-template-columns: 1fr !important; gap: 12px !important; }
+  .bk-modal-title { font-size: 17px !important; }
+
+  /* Order panel on mobile: appears after steps */
+  .bk-order-panel {
+    position: static !important;
+    order: 10;
+    border-radius: 14px !important;
+    padding: 16px !important;
+  }
+  .total-price { font-size: 22px !important; }
+  .bk-confirm-btn { padding: 13px !important; font-size: 14px !important; }
+
+  /* Type cards: 2 column on mobile */
+  .type-grid { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+  .type-card { padding: 12px !important; }
+  .type-icon { font-size: 20px !important; }
+  .type-name { font-size: 12px !important; }
+  .type-desc { font-size: 10px !important; }
+  .type-price { font-size: 14px !important; }
+
+  /* Calendar: compact */
+  .cal-day { font-size: 12px !important; }
+  .m-label { font-size: 14px !important; }
+
+  /* Time slots: 3 cols */
+  .time-slots-bk { grid-template-columns: repeat(3, 1fr) !important; gap: 6px !important; }
+  .t-slot-bk { padding: 8px 4px !important; }
+  .t-slot-bk span:first-child { font-size: 12px !important; }
+  .t-slot-bk span:last-child { font-size: 9px !important; }
+
+  /* Court cards */
+  .court-card { padding: 10px 12px !important; margin-bottom: 8px !important; }
+  .cc-name { font-size: 13px !important; }
+  .cc-addr { font-size: 10px !important; }
+
+  /* ── LOGIN GATE MODAL ── */
+  #login-gate > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 20px 20px 0 0 !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    padding-bottom: env(safe-area-inset-bottom, 20px) !important;
+  }
+  #login-gate {
+    align-items: flex-end !important;
+  }
+
+  /* ── AUTH SCREEN ── */
+  .auth-card {
+    padding: 32px 24px !important;
+    border-radius: 20px !important;
+    width: 92vw !important;
+  }
+
+  /* ── MISC ── */
+  .step-lbl { font-size: 14px !important; }
+  .notice-band { font-size: 11px !important; padding: 7px 12px !important; }
+  .bk-step-card { padding: 14px !important; border-radius: 12px !important; }
+  .coach-mini { padding: 10px !important; }
+  .coach-mini-name { font-size: 13px !important; }
+}
+
+
+/* ── MY BOOKINGS CARDS ── */
+.bk-record-card {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px; background: white;
+  border-radius: 14px; margin-bottom: 10px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  border-left: 4px solid var(--green-light);
+  transition: box-shadow 0.15s;
+}
+.bk-record-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+.bk-record-card:last-child { margin-bottom: 0; }
+
+.bk-date-blk {
+  background: var(--green-light); border-radius: 12px;
+  padding: 10px 12px; text-align: center; flex-shrink: 0; min-width: 54px;
+}
+.bk-month { font-size: 10px; font-weight: 800; color: var(--green); letter-spacing: 1px; }
+.bk-day   { font-size: 26px; font-weight: 900; line-height: 1.1; }
+.bk-wd    { font-size: 10px; color: var(--mute); margin-top: 1px; }
+
+.bk-status-badge {
+  display: inline-block; padding: 5px 12px;
+  border-radius: 20px; font-size: 12px; font-weight: 700;
+  white-space: nowrap;
+}
+.status-pending   { background: #fff3cd; color: #856404; }
+.status-confirmed { background: var(--green-light); color: var(--green); }
+.status-cancelled { background: #fdecea; color: var(--red); }
+
+
+/* ══════════════════════════════════════════
+   MOBILE — 竖屏手机完整适配
+   ══════════════════════════════════════════ */
+
+/* ── BOTTOM NAV BAR ── */
+.mobile-nav {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: 64px;
+  background: white;
+  border-top: 1px solid var(--border);
+  z-index: 500;
+  justify-content: space-around;
+  align-items: center;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+}
+.mob-nav-item {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 3px; cursor: pointer; padding: 6px 8px;
+  border-radius: 12px; color: var(--mute);
+  font-size: 10px; font-weight: 500; flex: 1;
+  transition: color 0.15s;
+}
+.mob-nav-item.active { color: var(--green); }
+.mob-nav-icon { font-size: 20px; line-height: 1; }
+
+@media (max-width: 768px) {
+
+  /* ── CORE LAYOUT ── */
+  .sidebar { display: none !important; }
+  .main { width: 100% !important; height: 100dvh !important; }
+  .mobile-nav { display: flex !important; }
+
+  /* ── TOPBAR ── */
+  .topbar { height: 54px; padding: 0 16px; }
+  .topbar-title { font-size: 17px !important; }
+  .topbar-search, .topbar-btn { display: none !important; }
+
+  /* ── PAGE BODY ── */
+  .page-body {
+    padding: 14px 14px 80px !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ── HOME HERO ── */
+  .home-hero {
+    padding: 20px 18px !important;
+    border-radius: 16px !important;
+    margin-bottom: 14px !important;
+  }
+  .hero-title { font-size: 22px !important; line-height: 1.3 !important; }
+  .hero-ball { display: none !important; }
+  .hero-greeting { font-size: 13px !important; }
+
+  /* ── STATS STRIP ── */
+  .stats-strip {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+    margin-bottom: 16px !important;
+  }
+  .stat-card { padding: 12px !important; }
+  .stat-icon { width: 36px !important; height: 36px !important; font-size: 18px !important; }
+  .stat-val { font-size: 18px !important; }
+  .stat-lbl { font-size: 10px !important; }
+
+  /* ── SECTION HEADERS ── */
+  .sec-hd { margin-bottom: 10px !important; }
+  .sec-title { font-size: 14px !important; }
+
+  /* ── COACH GRID ── */
+  .coach-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+  .coach-card { border-radius: 12px !important; }
+  .coach-img { height: 115px !important; }
+  .coach-name { font-size: 13px !important; }
+  .coach-sub-txt { font-size: 10px !important; }
+  .coach-tags { gap: 3px !important; margin-bottom: 6px !important; }
+  .ctag, .lang-tag { font-size: 9px !important; padding: 2px 5px !important; }
+  .coach-book-btn { font-size: 11px !important; padding: 7px !important; }
+  .coach-body { padding: 8px 10px 10px !important; }
+  .coach-badge-tag { font-size: 9px !important; }
+  .coach-price-tag { font-size: 10px !important; }
+
+  /* ── FILTER CHIPS ── */
+  .filter-chips {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    margin-bottom: 12px !important;
+  }
+  .filter-chips::-webkit-scrollbar { display: none; }
+  .fchip { font-size: 11px !important; padding: 5px 12px !important; white-space: nowrap; }
+
+  /* ── COACH SEARCH BAR ── */
+  #region-chips {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    gap: 6px !important;
+  }
+  #region-chips::-webkit-scrollbar { display: none; }
+
+  /* ── COACH PROFILE PAGE ── */
+  .profile-layout {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  .profile-side-card { position: static !important; }
+  .profile-hero-img { height: 200px !important; }
+  .profile-name { font-size: 20px !important; }
+  .profile-price { font-size: 22px !important; }
+  .pcard { padding: 16px !important; }
+  .pcard-title { font-size: 14px !important; margin-bottom: 12px !important; }
+  .ach-item { padding: 8px 10px !important; }
+  .ach-txt { font-size: 11px !important; }
+  .spec-tags { gap: 6px !important; }
+  .spec-tag { font-size: 10px !important; padding: 4px 10px !important; }
+  .avail-row { gap: 6px !important; }
+  .avail-dot { width: 28px !important; height: 28px !important; font-size: 10px !important; }
+  .profile-cta-btns { gap: 8px !important; }
+  .btn-book-primary { font-size: 13px !important; padding: 12px !important; }
+  .btn-msg-secondary { font-size: 13px !important; padding: 12px !important; }
+  .breadcrumb { font-size: 13px !important; margin-bottom: 12px !important; }
+
+  /* ── MY BOOKINGS ── */
+  .bk-record-card {
+    padding: 12px !important;
+    gap: 10px !important;
+  }
+  .bk-date-blk { padding: 8px 10px !important; min-width: 48px !important; }
+  .bk-day { font-size: 22px !important; }
+  .bk-status-badge { font-size: 11px !important; padding: 4px 10px !important; }
+
+  /* ── CONTENT CARDS ── */
+  .content-card { padding: 16px !important; border-radius: 12px !important; }
+  .cc-title { font-size: 14px !important; }
+
+  /* ── BOOKING MODAL — full screen ── */
+  .bk-overlay { align-items: flex-end !important; }
+  .bk-modal {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 94dvh !important;
+    max-height: 94dvh !important;
+    border-radius: 20px 20px 0 0 !important;
+    padding: 18px 16px 24px !important;
+    display: flex;
+    flex-direction: column;
+  }
+  #bm-form { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  #bm-form::-webkit-scrollbar { display: none; }
+  .bk-layout { grid-template-columns: 1fr !important; gap: 12px !important; }
+  .bk-modal-title { font-size: 17px !important; }
+
+  /* Order panel on mobile: appears after steps */
+  .bk-order-panel {
+    position: static !important;
+    order: 10;
+    border-radius: 14px !important;
+    padding: 16px !important;
+  }
+  .total-price { font-size: 22px !important; }
+  .bk-confirm-btn { padding: 13px !important; font-size: 14px !important; }
+
+  /* Type cards: 2 column on mobile */
+  .type-grid { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+  .type-card { padding: 12px !important; }
+  .type-icon { font-size: 20px !important; }
+  .type-name { font-size: 12px !important; }
+  .type-desc { font-size: 10px !important; }
+  .type-price { font-size: 14px !important; }
+
+  /* Calendar: compact */
+  .cal-day { font-size: 12px !important; }
+  .m-label { font-size: 14px !important; }
+
+  /* Time slots: 3 cols */
+  .time-slots-bk { grid-template-columns: repeat(3, 1fr) !important; gap: 6px !important; }
+  .t-slot-bk { padding: 8px 4px !important; }
+  .t-slot-bk span:first-child { font-size: 12px !important; }
+  .t-slot-bk span:last-child { font-size: 9px !important; }
+
+  /* Court cards */
+  .court-card { padding: 10px 12px !important; margin-bottom: 8px !important; }
+  .cc-name { font-size: 13px !important; }
+  .cc-addr { font-size: 10px !important; }
+
+  /* ── LOGIN GATE MODAL ── */
+  #login-gate > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 20px 20px 0 0 !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    padding-bottom: env(safe-area-inset-bottom, 20px) !important;
+  }
+  #login-gate {
+    align-items: flex-end !important;
+  }
+
+  /* ── AUTH SCREEN ── */
+  .auth-card {
+    padding: 32px 24px !important;
+    border-radius: 20px !important;
+    width: 92vw !important;
+  }
+
+  /* ── MISC ── */
+  .step-lbl { font-size: 14px !important; }
+  .notice-band { font-size: 11px !important; padding: 7px 12px !important; }
+  .bk-step-card { padding: 14px !important; border-radius: 12px !important; }
+  .coach-mini { padding: 10px !important; }
+  .coach-mini-name { font-size: 13px !important; }
+}
+
+
+/* ── MY BOOKINGS CARDS ── */
+.bk-record-card {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px; background: white;
+  border-radius: 14px; margin-bottom: 10px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  border-left: 4px solid var(--green-light);
+  transition: box-shadow 0.15s;
+}
+.bk-record-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+.bk-record-card:last-child { margin-bottom: 0; }
+
+.bk-date-blk {
+  background: var(--green-light); border-radius: 12px;
+  padding: 10px 12px; text-align: center; flex-shrink: 0; min-width: 54px;
+}
+.bk-month { font-size: 10px; font-weight: 800; color: var(--green); letter-spacing: 1px; }
+.bk-day   { font-size: 26px; font-weight: 900; line-height: 1.1; }
+.bk-wd    { font-size: 10px; color: var(--mute); margin-top: 1px; }
+
+.bk-status-badge {
+  display: inline-block; padding: 5px 12px;
+  border-radius: 20px; font-size: 12px; font-weight: 700;
+  white-space: nowrap;
+}
+.status-pending   { background: #fff3cd; color: #856404; }
+.status-confirmed { background: var(--green-light); color: var(--green); }
+.status-cancelled { background: #fdecea; color: var(--red); }
+
+
+/* ══════════════════════════════════════════
+   MOBILE — 竖屏手机完整适配
+   ══════════════════════════════════════════ */
+
+/* ── BOTTOM NAV BAR ── */
+.mobile-nav {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: 64px;
+  background: white;
+  border-top: 1px solid var(--border);
+  z-index: 500;
+  justify-content: space-around;
+  align-items: center;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+}
+.mob-nav-item {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 3px; cursor: pointer; padding: 6px 8px;
+  border-radius: 12px; color: var(--mute);
+  font-size: 10px; font-weight: 500; flex: 1;
+  transition: color 0.15s;
+}
+.mob-nav-item.active { color: var(--green); }
+.mob-nav-icon { font-size: 20px; line-height: 1; }
+
+@media (max-width: 768px) {
+
+  /* ── CORE LAYOUT ── */
+  .sidebar { display: none !important; }
+  .main { width: 100% !important; height: 100dvh !important; }
+  .mobile-nav { display: flex !important; }
+
+  /* ── TOPBAR ── */
+  .topbar { height: 54px; padding: 0 16px; }
+  .topbar-title { font-size: 17px !important; }
+  .topbar-search, .topbar-btn { display: none !important; }
+
+  /* ── PAGE BODY ── */
+  .page-body {
+    padding: 14px 14px 80px !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ── HOME HERO ── */
+  .home-hero {
+    padding: 20px 18px !important;
+    border-radius: 16px !important;
+    margin-bottom: 14px !important;
+  }
+  .hero-title { font-size: 22px !important; line-height: 1.3 !important; }
+  .hero-ball { display: none !important; }
+  .hero-greeting { font-size: 13px !important; }
+
+  /* ── STATS STRIP ── */
+  .stats-strip {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+    margin-bottom: 16px !important;
+  }
+  .stat-card { padding: 12px !important; }
+  .stat-icon { width: 36px !important; height: 36px !important; font-size: 18px !important; }
+  .stat-val { font-size: 18px !important; }
+  .stat-lbl { font-size: 10px !important; }
+
+  /* ── SECTION HEADERS ── */
+  .sec-hd { margin-bottom: 10px !important; }
+  .sec-title { font-size: 14px !important; }
+
+  /* ── COACH GRID ── */
+  .coach-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+  .coach-card { border-radius: 12px !important; }
+  .coach-img { height: 115px !important; }
+  .coach-name { font-size: 13px !important; }
+  .coach-sub-txt { font-size: 10px !important; }
+  .coach-tags { gap: 3px !important; margin-bottom: 6px !important; }
+  .ctag, .lang-tag { font-size: 9px !important; padding: 2px 5px !important; }
+  .coach-book-btn { font-size: 11px !important; padding: 7px !important; }
+  .coach-body { padding: 8px 10px 10px !important; }
+  .coach-badge-tag { font-size: 9px !important; }
+  .coach-price-tag { font-size: 10px !important; }
+
+  /* ── FILTER CHIPS ── */
+  .filter-chips {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    margin-bottom: 12px !important;
+  }
+  .filter-chips::-webkit-scrollbar { display: none; }
+  .fchip { font-size: 11px !important; padding: 5px 12px !important; white-space: nowrap; }
+
+  /* ── COACH SEARCH BAR ── */
+  #region-chips {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    gap: 6px !important;
+  }
+  #region-chips::-webkit-scrollbar { display: none; }
+
+  /* ── COACH PROFILE PAGE ── */
+  .profile-layout {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  .profile-side-card { position: static !important; }
+  .profile-hero-img { height: 200px !important; }
+  .profile-name { font-size: 20px !important; }
+  .profile-price { font-size: 22px !important; }
+  .pcard { padding: 16px !important; }
+  .pcard-title { font-size: 14px !important; margin-bottom: 12px !important; }
+  .ach-item { padding: 8px 10px !important; }
+  .ach-txt { font-size: 11px !important; }
+  .spec-tags { gap: 6px !important; }
+  .spec-tag { font-size: 10px !important; padding: 4px 10px !important; }
+  .avail-row { gap: 6px !important; }
+  .avail-dot { width: 28px !important; height: 28px !important; font-size: 10px !important; }
+  .profile-cta-btns { gap: 8px !important; }
+  .btn-book-primary { font-size: 13px !important; padding: 12px !important; }
+  .btn-msg-secondary { font-size: 13px !important; padding: 12px !important; }
+  .breadcrumb { font-size: 13px !important; margin-bottom: 12px !important; }
+
+  /* ── MY BOOKINGS ── */
+  .bk-record-card {
+    padding: 12px !important;
+    gap: 10px !important;
+  }
+  .bk-date-blk { padding: 8px 10px !important; min-width: 48px !important; }
+  .bk-day { font-size: 22px !important; }
+  .bk-status-badge { font-size: 11px !important; padding: 4px 10px !important; }
+
+  /* ── CONTENT CARDS ── */
+  .content-card { padding: 16px !important; border-radius: 12px !important; }
+  .cc-title { font-size: 14px !important; }
+
+  /* ── BOOKING MODAL — full screen ── */
+  .bk-overlay { align-items: flex-end !important; }
+  .bk-modal {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 94dvh !important;
+    max-height: 94dvh !important;
+    border-radius: 20px 20px 0 0 !important;
+    padding: 18px 16px 24px !important;
+    display: flex;
+    flex-direction: column;
+  }
+  #bm-form { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  #bm-form::-webkit-scrollbar { display: none; }
+  .bk-layout { grid-template-columns: 1fr !important; gap: 12px !important; }
+  .bk-modal-title { font-size: 17px !important; }
+
+  /* Order panel on mobile: appears after steps */
+  .bk-order-panel {
+    position: static !important;
+    order: 10;
+    border-radius: 14px !important;
+    padding: 16px !important;
+  }
+  .total-price { font-size: 22px !important; }
+  .bk-confirm-btn { padding: 13px !important; font-size: 14px !important; }
+
+  /* Type cards: 2 column on mobile */
+  .type-grid { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+  .type-card { padding: 12px !important; }
+  .type-icon { font-size: 20px !important; }
+  .type-name { font-size: 12px !important; }
+  .type-desc { font-size: 10px !important; }
+  .type-price { font-size: 14px !important; }
+
+  /* Calendar: compact */
+  .cal-day { font-size: 12px !important; }
+  .m-label { font-size: 14px !important; }
+
+  /* Time slots: 3 cols */
+  .time-slots-bk { grid-template-columns: repeat(3, 1fr) !important; gap: 6px !important; }
+  .t-slot-bk { padding: 8px 4px !important; }
+  .t-slot-bk span:first-child { font-size: 12px !important; }
+  .t-slot-bk span:last-child { font-size: 9px !important; }
+
+  /* Court cards */
+  .court-card { padding: 10px 12px !important; margin-bottom: 8px !important; }
+  .cc-name { font-size: 13px !important; }
+  .cc-addr { font-size: 10px !important; }
+
+  /* ── LOGIN GATE MODAL ── */
+  #login-gate > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 20px 20px 0 0 !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    padding-bottom: env(safe-area-inset-bottom, 20px) !important;
+  }
+  #login-gate {
+    align-items: flex-end !important;
+  }
+
+  /* ── AUTH SCREEN ── */
+  .auth-card {
+    padding: 32px 24px !important;
+    border-radius: 20px !important;
+    width: 92vw !important;
+  }
+
+  /* ── MISC ── */
+  .step-lbl { font-size: 14px !important; }
+  .notice-band { font-size: 11px !important; padding: 7px 12px !important; }
+  .bk-step-card { padding: 14px !important; border-radius: 12px !important; }
+  .coach-mini { padding: 10px !important; }
+  .coach-mini-name { font-size: 13px !important; }
+}
+
+
+/* 
 
 </style>
 </head>
@@ -1206,96 +2864,16 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
       </div>
     </div>
 
-    <!-- Payment Step -->
-    <div class="pay-step" id="bm-payment">
-      <div class="pay-header">
-        <button class="pay-back-btn" onclick="payGoBack()">‹</button>
-        <div class="pay-title">💳 支付订金</div>
-      </div>
-
-      <!-- Amount card -->
-      <div class="pay-amount-card">
-        <div class="pay-amount-label">订金金额（课费 70%）</div>
-        <div class="pay-amount-usd" id="pay-usd">$—</div>
-        <div class="pay-amount-cny" id="pay-cny">≈ ¥— 人民币</div>
-        <div class="pay-rate-row">
-          <div class="pay-rate-loading" id="pay-rate-spin"></div>
-          <span id="pay-rate-text">正在获取实时汇率…</span>
-        </div>
-      </div>
-
-      <!-- Payment method selector -->
-      <div>
-        <div style="font-size:12px;font-weight:700;color:var(--sub);margin-bottom:10px;">选择支付方式</div>
-        <div class="pay-methods">
-          <div class="pay-method-btn selected" id="pay-btn-wechat" onclick="selectPayMethod('wechat')">
-            <span class="pay-method-icon">💚</span>
-            <span class="pay-method-name">微信支付</span>
-          </div>
-          <div class="pay-method-btn" id="pay-btn-alipay" onclick="selectPayMethod('alipay')">
-            <span class="pay-method-icon">💙</span>
-            <span class="pay-method-name">支付宝</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- QR code area -->
-      <div class="pay-qr-area">
-        <div class="pay-qr-title" id="pay-qr-title">扫码支付微信订金</div>
-        <div class="pay-qr-amount-badge" id="pay-qr-badge">¥—</div>
-        <div class="pay-qr-img" id="pay-qr-img">
-          <!-- QR code image goes here -->
-          <span style="padding:10px;text-align:center;font-size:11px;color:#bbb;">请在下方填入收款码图片链接<br>或联系管理员配置</span>
-        </div>
-        <div class="pay-qr-hint">
-          打开微信/支付宝 → 扫一扫<br>
-          备注：<strong id="pay-qr-memo">—</strong>
-        </div>
-      </div>
-
-      <!-- Contact info -->
-      <div class="pay-contact-section">
-        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;">📱 留下联系方式</div>
-        <div style="font-size:11px;color:var(--mute);margin-bottom:10px;">客服将在 8 小时内通过微信联系您，敲定具体场地安排</div>
-        <div>
-          <label class="pay-contact-label">微信号 *</label>
-          <input class="pay-contact-inp" id="pay-wechat-id" placeholder="请输入您的微信号" type="text">
-        </div>
-        <div>
-          <label class="pay-contact-label">手机号 *</label>
-          <input class="pay-contact-inp" id="pay-phone" placeholder="请输入手机号（含国家区号，如 +1）" type="tel">
-        </div>
-      </div>
-
-      <div class="pay-err" id="pay-err"></div>
-
-      <button class="pay-confirm-btn" id="pay-confirm-btn" onclick="submitWithPayment()">
-        ✅ 我已完成支付，完成预约
-      </button>
-      <div class="pay-confirm-hint">
-        点击后即确认已完成扫码付款<br>
-        客服将在 <strong>8小时内</strong> 通过微信联系您
-      </div>
-    </div>
-
     <!-- Success state -->
     <div class="bk-success-body" id="bm-success">
       <div class="bk-suc-icon">🎉</div>
-      <div class="bk-suc-title">预约 & 订金已确认！</div>
-      <div class="bk-suc-sub">感谢您的预约</div>
+      <div class="bk-suc-title">预约成功！</div>
+      <div class="bk-suc-sub">请等待教练确认，确认后将收到通知</div>
       <div class="bk-suc-detail">
         <div class="bk-suc-row"><span class="bk-suc-lbl">教练</span><span class="bk-suc-val" id="suc-coach">—</span></div>
         <div class="bk-suc-row"><span class="bk-suc-lbl">日期</span><span class="bk-suc-val" id="suc-date">—</span></div>
         <div class="bk-suc-row"><span class="bk-suc-lbl">时间</span><span class="bk-suc-val" id="suc-time">—</span></div>
-        <div class="bk-suc-row"><span class="bk-suc-lbl">订金</span><span class="bk-suc-val" id="suc-deposit" style="color:var(--green);">—</span></div>
-      </div>
-      <div class="bk-suc-service-note">
-        <div class="bk-suc-service-note-title">📞 客服即将联系您</div>
-        <div class="bk-suc-service-note-text">
-          我们的客服将在 <strong>8小时内</strong> 通过微信联系您，<br>
-          与您敲定具体上课场地及安排。<br>
-          微信号：<strong id="suc-wechat-display">—</strong>
-        </div>
+        <div class="bk-suc-row"><span class="bk-suc-lbl">球场</span><span class="bk-suc-val" id="suc-court">—</span></div>
       </div>
       <button style="width:100%;padding:13px;background:var(--green-light);color:var(--green);border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;" onclick="closeBM()">好的，返回首页</button>
     </div>
@@ -1905,169 +3483,70 @@ function bkUpdateSummary() {
 }
 
 // ── Submit booking ──
-// ─── Payment state ───
-var payState = { method: 'wechat', rate: 7.2, usdAmount: 0, cnyAmount: 0 };
-
-// Step 1: "确认预约" → go to payment step
+// ═══════════════════════════════════════
+// SUBMIT BOOKING
+// ═══════════════════════════════════════
 async function submitBM() {
   if(!bmState.date || !bmState.time || !bmState.court) return;
   var btn = document.getElementById('bk-confirm-btn');
   if(btn.classList.contains('disabled')) return;
-
-  // Go to payment step
-  document.getElementById('bm-form').style.display = 'none';
-  document.getElementById('bm-payment').classList.add('active');
-  document.querySelector('.bk-modal-hd').style.display = 'none';
-
-  // Set amounts
-  var price = bmState.price || 75;
-  var deposit = Math.round(price * 0.7 * 100) / 100;
-  payState.usdAmount = deposit;
-  document.getElementById('pay-usd').textContent = '$' + deposit.toFixed(2);
-  document.getElementById('pay-qr-memo').textContent =
-    currentUser.name + ' ' + bmState.dateLabel;
-
-  // Fetch live exchange rate
-  fetchExchangeRate();
-  // Set initial QR
-  updatePayQR();
-}
-
-// Fetch USD→CNY rate from free API
-async function fetchExchangeRate() {
-  var spin = document.getElementById('pay-rate-spin');
-  var rateText = document.getElementById('pay-rate-text');
-  spin.style.display = 'inline-block';
-  rateText.textContent = '正在获取实时汇率…';
-  try {
-    // Use exchangerate-api free endpoint
-    var r = await fetch('https://open.er-api.com/v6/latest/USD');
-    if(!r.ok) throw new Error('API error');
-    var data = await r.json();
-    var rate = data.rates && data.rates.CNY ? data.rates.CNY : 7.2;
-    payState.rate = Math.round(rate * 1000) / 1000;
-    var cny = Math.ceil(payState.usdAmount * payState.rate);
-    payState.cnyAmount = cny;
-    document.getElementById('pay-cny').textContent = '≈ ¥' + cny + ' 人民币';
-    document.getElementById('pay-qr-badge').textContent = '¥' + cny;
-    spin.style.display = 'none';
-    rateText.textContent = '1 USD = ' + payState.rate + ' CNY（实时汇率）';
-    updatePayQR();
-  } catch(e) {
-    // Fallback rate
-    payState.rate = 7.25;
-    var cny = Math.ceil(payState.usdAmount * payState.rate);
-    payState.cnyAmount = cny;
-    document.getElementById('pay-cny').textContent = '≈ ¥' + cny + ' 人民币';
-    document.getElementById('pay-qr-badge').textContent = '¥' + cny;
-    spin.style.display = 'none';
-    rateText.textContent = '1 USD ≈ ' + payState.rate + ' CNY（参考汇率）';
-    updatePayQR();
-  }
-}
-
-function selectPayMethod(method) {
-  payState.method = method;
-  document.getElementById('pay-btn-wechat').classList.toggle('selected', method==='wechat');
-  document.getElementById('pay-btn-alipay').classList.toggle('selected', method==='alipay');
-  updatePayQR();
-}
-
-// ⚠️ 在这里替换成你的真实收款码图片URL
-var WECHAT_QR_URL  = 'YOUR_WECHAT_QR_IMAGE_URL';   // 替换成你的微信收款码图片URL
-var ALIPAY_QR_URL  = 'YOUR_ALIPAY_QR_IMAGE_URL';   // 替换成你的支付宝收款码图片URL
-
-function updatePayQR() {
-  var isWechat = payState.method === 'wechat';
-  document.getElementById('pay-qr-title').textContent =
-    isWechat ? '扫码支付微信订金' : '扫码支付支付宝订金';
-  var qrUrl = isWechat ? WECHAT_QR_URL : ALIPAY_QR_URL;
-  var qrEl = document.getElementById('pay-qr-img');
-  if(qrUrl && !qrUrl.startsWith('YOUR_')) {
-    qrEl.innerHTML = '<img src="'+qrUrl+'" alt="收款码">';
-  } else {
-    qrEl.innerHTML = '<div style="padding:16px;text-align:center;">'
-      +'<div style="font-size:24px;margin-bottom:8px;">'+(isWechat?'💚':'💙')+'</div>'
-      +'<div style="font-size:11px;color:#999;line-height:1.6;">'
-      +(isWechat?'微信收款码':'支付宝收款码')+'<br>请联系管理员配置</div></div>';
-  }
-}
-
-function payGoBack() {
-  document.getElementById('bm-payment').classList.remove('active');
-  document.getElementById('bm-form').style.display = 'block';
-  document.querySelector('.bk-modal-hd').style.display = 'flex';
-}
-
-// Step 2: "我已完成支付" → submit booking with contact info
-async function submitWithPayment() {
-  var wechatId = document.getElementById('pay-wechat-id').value.trim();
-  var phone    = document.getElementById('pay-phone').value.trim();
-  var errEl    = document.getElementById('pay-err');
+  var errEl = document.getElementById('bm-err');
   errEl.style.display = 'none';
 
-  if(!wechatId) { errEl.textContent = '⚠️ 请填写您的微信号'; errEl.style.display='block'; return; }
-  if(!phone)    { errEl.textContent = '⚠️ 请填写您的手机号'; errEl.style.display='block'; return; }
-
-  var btn = document.getElementById('pay-confirm-btn');
   btn.disabled = true;
   btn.innerHTML = '<span class="spin"></span>提交中…';
 
   var typeName = document.getElementById('bk-os-type').textContent || '网球入门 & 提升';
 
   var row = {
-    student_name:    currentUser.name,
-    student_email:   currentUser.email,
-    student_wechat:  wechatId,
-    student_phone:   phone,
-    booking_date:    bmState.date,
-    booking_time:    bmState.time,
-    lesson_type:     typeName,
-    court:           bmState.court || null,
-    notes:           null,
-    status:          'pending',
-    deposit_amount:  payState.usdAmount,
-    deposit_cny:     payState.cnyAmount,
-    exchange_rate:   payState.rate,
-    payment_method:  payState.method
+    student_name:   currentUser.name,
+    student_email:  currentUser.email,
+    booking_date:   bmState.date,
+    booking_time:   bmState.time,
+    lesson_type:    typeName,
+    court:          bmState.court || null,
+    notes:          null,
+    status:         'pending'
   };
 
   try {
-    var r = await fetch(SB_URL+'/rest/v1/bookings', {
+    var r = await fetch(SB_URL + '/rest/v1/bookings', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'apikey': SB_KEY,
-        'Authorization': 'Bearer '+(currentUser.token||SB_KEY),
+        'Authorization': 'Bearer ' + (currentUser.token || SB_KEY),
         'Prefer': 'return=minimal'
       },
       body: JSON.stringify(row)
     });
-    btn.disabled = false; btn.innerHTML = '✅ 我已完成支付，完成预约';
+    btn.disabled = false;
+    btn.textContent = '确认预约';
 
     if(!r.ok) {
-      var e = await r.json().catch(function(){return{};});
-      errEl.textContent = '❌ 提交失败：'+(e.message||r.status);
+      var e = await r.json().catch(function(){ return {}; });
+      errEl.textContent = '❌ 提交失败：' + (e.message || r.status);
       errEl.style.display = 'block';
       return;
     }
   } catch(e) {
-    btn.disabled = false; btn.innerHTML = '✅ 我已完成支付，完成预约';
-    errEl.textContent = '❌ '+e.message;
+    btn.disabled = false;
+    btn.textContent = '确认预约';
+    errEl.textContent = '❌ ' + e.message;
     errEl.style.display = 'block';
     return;
   }
 
   // Show success
   document.getElementById('suc-coach').textContent = bmState.coachName;
-  document.getElementById('suc-date').textContent = bmState.dateLabel || bmState.date;
-  document.getElementById('suc-time').textContent = bmState.time;
-  document.getElementById('suc-deposit').textContent =
-    '$'+payState.usdAmount.toFixed(2)+' / ¥'+payState.cnyAmount+' 已付';
-  document.getElementById('suc-wechat-display').textContent = wechatId;
-  document.getElementById('bm-payment').classList.remove('active');
+  document.getElementById('suc-date').textContent  = bmState.dateLabel || bmState.date;
+  document.getElementById('suc-time').textContent  = bmState.time;
+  document.getElementById('suc-court').textContent = bmState.court || '待定';
+  document.querySelector('.bk-modal-hd').style.display = 'none';
+  document.getElementById('bm-form').style.display    = 'none';
   document.getElementById('bm-success').style.display = 'block';
 }
+
 
 // Legacy aliases (referenced in profile page)
 function loadSlots() {}
