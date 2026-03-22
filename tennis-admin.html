@@ -582,10 +582,9 @@ async function sbGet(table, filters, order) {
 }
 
 async function sbPatch(table, id, updates) {
-  var key = SB_SERVICE_KEY !== 'PASTE_YOUR_SERVICE_ROLE_KEY_HERE' ? SB_SERVICE_KEY : SB_KEY;
   var r = await fetch(SB_URL+'/rest/v1/'+table+'?id=eq.'+id, {
     method:'PATCH',
-    headers:{ 'Content-Type':'application/json','apikey':key,'Authorization':'Bearer '+key,'Prefer':'return=minimal' },
+    headers:{ 'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=minimal' },
     body: JSON.stringify(updates)
   });
   if(!r.ok){ var e=await r.json().catch(function(){return{};}); console.error('PATCH error',e); return {error:e}; }
@@ -949,9 +948,12 @@ async function saveCoach() {
 
   var availDays = dayNames.filter(function(_,i){ return cfAvail[i]===1; });
 
+  // Parse achievements (one per line)
   var NL = String.fromCharCode(10);
   var achRaw = document.getElementById("cf-achievements").value.trim();
   var achievements = achRaw ? achRaw.split(NL).map(function(s){return s.trim();}).filter(Boolean) : [];
+
+  // Parse courts (name | addr per line) → jsonb array
   var courtsRaw = document.getElementById("cf-courts").value.trim();
   var courts = courtsRaw ? courtsRaw.split(NL).map(function(line){
     var parts = line.split("|");
@@ -959,27 +961,32 @@ async function saveCoach() {
   }).filter(function(ct){ return ct.name; }) : [];
 
   // Build gradient from color pickers
-  var c1 = document.getElementById('cf-color1').value||'#0d3b23';
-  var c2 = document.getElementById('cf-color2').value||'#2d9a57';
+  var c1 = document.getElementById('cf-color1').value || '#0d3b23';
+  var c2 = document.getElementById('cf-color2').value || '#2d9a57';
   var gradient = 'linear-gradient(135deg,' + c1 + ',' + c2 + ')';
 
+  // avail array from toggles [0,0,0,0,0,1,0] (Sun-Sat)
+  var availArr = cfAvail.slice();
+
+  // Build data object — keys must match coaches table columns exactly
   var data = {
-    name: name,
-    badge: badge,
-    sub: sub,
-    lang: document.getElementById('cf-lang').value,
-    region: document.getElementById('cf-region').value,
-    location: document.getElementById('cf-location').value.trim()||null,
-    price: price,
-    bio: document.getElementById('cf-bio').value.trim()||null,
-    tags: cfTags,
+    name:           name,
+    badge:          badge,
+    sub:            sub,
+    lang:           document.getElementById('cf-lang').value,
+    region:         document.getElementById('cf-region').value,
+    location:       document.getElementById('cf-location').value.trim() || null,
+    price:          price,
+    bio:            document.getElementById('cf-bio').value.trim() || null,
+    tags:           cfTags,
+    specs:          cfTags,
     available_days: availDays,
-    utr: document.getElementById('cf-utr').value.trim()||null,
-    ranking: document.getElementById('cf-ranking').value.trim()||null,
-    achievements: achievements,
-    courts: courts,
-    gradient: gradient,
-    specs: cfTags
+    avail:          availArr,
+    utr:            document.getElementById('cf-utr').value.trim() || null,
+    ranking:        document.getElementById('cf-ranking').value.trim() || null,
+    achievements:   achievements,
+    courts:         courts,
+    gradient:       gradient
   };
 
   var btn = document.querySelector('.cf-save');
@@ -1036,10 +1043,9 @@ async function deleteCoach() {
 
 // ── SUPABASE INSERT for coaches ──
 async function sbInsert(table, data) {
-  var key = SB_SERVICE_KEY !== 'PASTE_YOUR_SERVICE_ROLE_KEY_HERE' ? SB_SERVICE_KEY : SB_KEY;
   var r = await fetch(SB_URL+'/rest/v1/'+table, {
     method:'POST',
-    headers:{ 'Content-Type':'application/json','apikey':key,'Authorization':'Bearer '+key,'Prefer':'return=minimal' },
+    headers:{ 'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=minimal' },
     body: JSON.stringify(data)
   });
   if(!r.ok){ var e=await r.json().catch(function(){return{};}); return {error:e}; }
@@ -1048,10 +1054,9 @@ async function sbInsert(table, data) {
 
 // ── SUPABASE DELETE ──
 async function sbDelete(table, id) {
-  var key = SB_SERVICE_KEY !== 'PASTE_YOUR_SERVICE_ROLE_KEY_HERE' ? SB_SERVICE_KEY : SB_KEY;
   var r = await fetch(SB_URL+'/rest/v1/'+table+'?id=eq.'+id, {
     method:'DELETE',
-    headers:{ 'Content-Type':'application/json','apikey':key,'Authorization':'Bearer '+key }
+    headers:{ 'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY }
   });
   if(!r.ok){ var e=await r.json().catch(function(){return{};}); return {error:e}; }
   return {error:null};
