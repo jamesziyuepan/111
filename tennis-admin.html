@@ -1202,13 +1202,15 @@ async function saveCoach() {
     ranking:        document.getElementById('cf-ranking').value.trim() || null,
     achievements:   achievements,
     courts:         courts,
-    gradient:       gradient,
-    photo_url:      photoUrl
+    gradient:         gradient,
+    photo_url:        photoUrl,
+    available_hours:  cfHours.length > 0 ? cfHours : null
   };
 
   var btn = document.querySelector('.cf-save');
   btn.disabled = true; btn.textContent = '保存中…';
 
+  console.log('Saving coach data:', JSON.stringify({available_hours: data.available_hours, cfHours: cfHours}));
   var res;
   try {
     if(editingCoachId) {
