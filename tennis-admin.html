@@ -306,8 +306,8 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);height:100vh;ove
             <table class="tbl">
               <thead>
                 <tr>
-                  <th>学员</th><th>联系方式</th><th>日期</th><th>时间</th>
-                  <th>课程类型</th><th>球场</th><th>提交时间</th><th>状态</th><th>操作</th>
+                  <th>学员</th><th>微信号</th><th>手机号</th><th>日期</th><th>时间</th>
+                  <th>订金</th><th>课程</th><th>状态</th><th>操作</th>
                 </tr>
               </thead>
               <tbody id="bookings-tbody">
@@ -444,8 +444,16 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);height:100vh;ove
           </div>
 
           <!-- 可约时间 -->
-          <div class="cf-sec">可约时间（点击切换，显示在详情页"可约时间"）</div>
+          <div class="cf-sec">可约天（点击切换）</div>
           <div class="avail-grid" id="cf-avail-grid"></div>
+
+          <div class="cf-sec" style="margin-top:16px;">可约时间段（9:00 - 21:00，点击选择/取消）</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+            <button class="hour-all-btn" onclick="hoursSelectAll()">全选</button>
+            <button class="hour-all-btn" onclick="hoursSelectNone()">清空</button>
+            <span style="font-size:11px;color:var(--mute);">选中的时段将对学员开放</span>
+          </div>
+          <div class="hour-grid" id="cf-hour-grid"></div>
 
           <!-- 常用球场 -->
           <div class="cf-sec">常用球场（每行格式：球场名称 | 地址，显示在详情页"常用球场"）</div>
@@ -685,25 +693,32 @@ function bookingRowHTML(b, full) {
     ? '<button class="act-btn confirm-btn" onclick="confirmBk(\''+b.id+'\')">✅ 确认</button> <button class="act-btn cancel-btn" onclick="cancelBk(\''+b.id+'\')">取消</button>'
     : (b.status==='confirmed' ? '<button class="act-btn cancel-btn" onclick="cancelBk(\''+b.id+'\')">取消</button>' : '—');
 
+  var depositStr = b.deposit_amount
+    ? '$'+parseFloat(b.deposit_amount).toFixed(2)+(b.deposit_cny?' / ¥'+b.deposit_cny:'')
+    : '—';
+  var payIcon = {wechat:'💚',alipay:'💙'}[b.payment_method]||'';
+
   if(full) {
     return '<tr>'
-      +'<td><div style="font-weight:600;">'+b.student_name+'</div></td>'
-      +'<td><div style="font-size:12px;">'+b.student_email+'</div>'+(b.student_phone?'<div style="font-size:11px;color:var(--mute);">'+b.student_phone+'</div>':'')+'</td>'
+      +'<td><div style="font-weight:600;">'+b.student_name+'</div>'
+      +'<div style="font-size:11px;color:var(--mute);">'+b.student_email+'</div></td>'
+      +'<td>'+(b.student_wechat?'<div style="font-size:13px;font-weight:600;">'+b.student_wechat+'</div>':'<span style="color:#ccc;">—</span>')+'</td>'
+      +'<td>'+(b.student_phone?'<div style="font-size:12px;">'+b.student_phone+'</div>':'<span style="color:#ccc;">—</span>')+'</td>'
       +'<td style="font-weight:600;white-space:nowrap;">'+dateStr+'</td>'
       +'<td style="white-space:nowrap;">'+b.booking_time+'</td>'
+      +'<td style="white-space:nowrap;font-size:12px;">'+payIcon+' '+depositStr+'</td>'
       +'<td><div style="font-size:12px;">'+b.lesson_type+'</div></td>'
-      +'<td><div style="font-size:12px;">'+(b.court||'—')+'</div></td>'
-      +'<td style="font-size:11px;color:var(--mute);">'+created+'</td>'
       +'<td><span class="sbadge '+sc+'">'+sl+'</span></td>'
       +'<td style="white-space:nowrap;">'+acts+'</td>'
       +'</tr>';
   } else {
     return '<tr>'
-      +'<td><div style="font-weight:600;">'+b.student_name+'</div><div style="font-size:11px;color:var(--mute);">'+b.student_email+'</div></td>'
+      +'<td><div style="font-weight:600;">'+b.student_name+'</div>'
+      +(b.student_wechat?'<div style="font-size:11px;color:var(--green);">💚 '+b.student_wechat+'</div>':'')
+      +(b.student_phone?'<div style="font-size:11px;color:var(--mute);">📱 '+b.student_phone+'</div>':'')+'</td>'
       +'<td style="white-space:nowrap;font-weight:600;">'+dateStr+' '+b.booking_time+'</td>'
       +'<td>'+b.lesson_type+'</td>'
-      +'<td style="font-size:12px;">'+(b.court||'—')+'</td>'
-      +(full ? '' : '<td><span class="sbadge '+sc+'">'+sl+'</span></td>')
+      +(b.deposit_amount?'<td style="font-size:12px;color:var(--green);font-weight:600;">'+(b.payment_method==='wechat'?'💚':'💙')+' $'+parseFloat(b.deposit_amount).toFixed(2)+'</td>':'<td style="color:#ccc;">—</td>')
       +'<td style="white-space:nowrap;">'+acts+'</td>'
       +'</tr>';
   }
@@ -835,13 +850,56 @@ async function uploadCoachPhoto(input) {
     input.value = ''; // reset input
   }
 }
+
+// ═══════════════════════════
+// HOUR SELECTOR
+// ═══════════════════════════
+var ALL_HOURS = ['9:00','10:00','11:00','12:00','13:00','14:00',
+                 '15:00','16:00','17:00','18:00','19:00','20:00','21:00'];
+
+function buildHourGrid() {
+  var grid = document.getElementById('cf-hour-grid');
+  if(!grid) return;
+  grid.innerHTML = ALL_HOURS.map(function(h) {
+    var isOn = cfHours.indexOf(h) > -1;
+    return '<button class="hour-btn'+(isOn?' on':'')+'" data-hour="'+h+'" onclick="toggleHour(this)">'+h+'</button>';
+  }).join('');
+}
+
+function toggleHour(btn) {
+  var h = btn.getAttribute('data-hour');
+  var idx = cfHours.indexOf(h);
+  if(idx > -1) {
+    cfHours.splice(idx, 1);
+    btn.classList.remove('on');
+  } else {
+    cfHours.push(h);
+    // Keep sorted
+    cfHours.sort(function(a,b){
+      return parseInt(a.split(':')[0]) - parseInt(b.split(':')[0]);
+    });
+    btn.classList.add('on');
+  }
+}
+
+function hoursSelectAll() {
+  cfHours = ALL_HOURS.slice();
+  buildHourGrid();
+}
+
+function hoursSelectNone() {
+  cfHours = [];
+  buildHourGrid();
+}
+
 // ═══════════════════════════
 // COACHES CRUD
 // ═══════════════════════════
 var allCoaches = [];
 var editingCoachId = null;
 var cfTags = [];
-var cfAvail = [0,0,0,0,0,0,0]; // Sun-Sat
+var cfAvail = [0,0,0,0,0,0,0];
+var cfHours = []; // selected hour strings e.g. ['9:00','10:00',...] // Sun-Sat
 
 async function loadCoaches() {
   var res = await sbGet('coaches', [], 'created_at.asc');
@@ -930,6 +988,9 @@ function openCoachForm(coachId) {
     document.getElementById('cf-photo-url').value = c.photo_url||'';
     if(c.photo_url) setPhotoPreview(c.photo_url);
     else resetPhotoPreview();
+    // Available hours
+    cfHours = c.available_hours || [];
+    buildHourGrid();
     // Achievements: array → textarea (one per line)
     document.getElementById("cf-achievements").value = (c.achievements||[]).join("\n");
     // Courts: array of {name,addr} → textarea (name | addr)
@@ -966,6 +1027,7 @@ function openCoachForm(coachId) {
     document.getElementById('cf-color1').value = '#0d3b23';
     document.getElementById('cf-color2').value = '#2d9a57';
     cfTags = [];
+    cfHours = [];
     renderTagChips();
   }
 

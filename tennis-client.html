@@ -3151,27 +3151,28 @@ function dbCoachToLocal(row) {
   // 解析 avail: integer array [0,0,0,0,0,1,0] 或 null
   var avail = row.avail || [0,0,0,0,0,1,0];
   return {
-    id:           row.id,
-    lang:         row.lang         || '中文 · English',
-    name:         row.name         || '',
-    badge:        row.badge        || '',
-    sub:          row.sub          || '',
-    price:        '$' + (row.price || 75) + '/时',
-    priceNum:     row.price        || 75,
-    location:     row.location     || '',
-    region:       row.region       || 'dc',
-    tags:         row.tags         || [],
-    gradient:     row.gradient     || 'linear-gradient(135deg,#0d3b23,#2d9a57)',
-    photo:        false,
-    photo_url:    row.photo_url    || null,
-    utr:          row.utr          || '—',
-    ranking:      row.ranking      || '—',
-    cert:         row.badge        || '—',
-    bio:          row.bio          || '',
-    achievements: row.achievements || [],
-    specs:        row.specs        || row.tags || [],
-    courts:       courts,
-    avail:        avail
+    id:              row.id,
+    lang:            row.lang            || '中文 · English',
+    name:            row.name            || '',
+    badge:           row.badge           || '',
+    sub:             row.sub             || '',
+    price:           '$' + (row.price || 75) + '/时',
+    priceNum:        row.price           || 75,
+    location:        row.location        || '',
+    region:          row.region          || 'dc',
+    tags:            row.tags            || [],
+    gradient:        row.gradient        || 'linear-gradient(135deg,#0d3b23,#2d9a57)',
+    photo:           false,
+    photo_url:       row.photo_url       || null,
+    utr:             row.utr             || '—',
+    ranking:         row.ranking         || '—',
+    cert:            row.badge           || '—',
+    bio:             row.bio             || '',
+    achievements:    row.achievements    || [],
+    specs:           row.specs           || row.tags || [],
+    courts:          courts,
+    avail:           avail,
+    available_hours: row.available_hours || []
   };
 }
 
@@ -3414,16 +3415,37 @@ async function bkRenderTimeSlots(dateStr) {
     slotsEl.innerHTML = '';
     return;
   }
-  var slots = ['9:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00'];
+
+  // Get available hours from coach data (default 9:00-21:00 if not set)
+  var coach = COACHES.find(function(c){ return String(c.id)===String(bmState.coachId); });
+  var allSlots = ['9:00','10:00','11:00','12:00','13:00','14:00',
+                  '15:00','16:00','17:00','18:00','19:00','20:00','21:00'];
+  // If coach has available_hours array, use that; else use all slots
+  var slots = (coach && coach.available_hours && coach.available_hours.length > 0)
+    ? coach.available_hours
+    : allSlots;
+
   notice.textContent = '⏰ 请选择上课时间';
   slotsEl.innerHTML = slots.map(function(s){
-    return '<div class="t-slot-bk" data-slot="'+s+'" onclick="bkSlotClick(this)"><span>'+s+'</span><span>空闲</span></div>';
+    return '<div class="t-slot-bk" data-slot="'+s+'" onclick="bkSlotClick(this)">'
+      +'<span>'+s+'</span><span>空闲</span></div>';
   }).join('');
 
-  // Load booked slots
+  // Load booked slots — filter by THIS coach only
   try {
-    var res = await sbSelect('bookings',['booking_date=eq.'+dateStr,'status=neq.cancelled'],'',currentUser&&currentUser.token);
-    var booked = (res.data||[]).map(function(b){ return b.booking_time; });
+    var filters = ['booking_date=eq.'+dateStr, 'status=neq.cancelled'];
+    // If coach has a DB id (UUID), filter by coach_id
+    if(coach && coach.id && String(coach.id).includes('-')) {
+      filters.push('coach_id=eq.'+coach.id);
+    }
+    var url = SB_URL + '/rest/v1/bookings?' + filters.join('&') + '&limit=100';
+    var r = await fetch(url, {
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+    });
+    if(!r.ok) throw new Error('HTTP ' + r.status);
+    var data = await r.json();
+    var booked = data.map(function(b){ return b.booking_time; });
+
     slotsEl.querySelectorAll('.t-slot-bk').forEach(function(el){
       var t = el.querySelector('span').textContent;
       if(booked.indexOf(t) > -1){
@@ -3432,7 +3454,7 @@ async function bkRenderTimeSlots(dateStr) {
         el.querySelector('span:last-child').textContent = '已约';
       }
     });
-  } catch(e){}
+  } catch(e){ console.warn('Slots load error:', e.message); }
 }
 
 function bkSlotClick(el) {
