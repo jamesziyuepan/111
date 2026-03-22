@@ -706,6 +706,7 @@ const SB_URL = 'https://kbllubfoxwbcmcgrklgh.supabase.co';
 const SB_KEY = 'sb_publishable_xDL0OkqVVBhRFuYm2GrqZg_o6wBlKCM';
 let currentUser = null;
 let authMode = 'login';
+var currentPanel = 'home';
 let currentRegion = 'all';
 let currentLang = 'all';
 let bmState = { coachId:null, coachName:'', price:75, date:null, time:null, court:null };
@@ -993,8 +994,8 @@ function coachCardHTML(c) {
   var img = c.photo
     ? '<img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgFBgcGBQgHBgcJCAgJDBMMDAsLDBgREg4THBgdHRsYGxofIywlHyEqIRobJjQnKi4vMTIxHiU2OjYwOiwwMTD/wAARCAAoACgDASIAAhEBAxEB/8QAGwAAAgMBAQEAAAAAAAAAAAAAAAUDBAYCAQf/xAAsEAACAQQBBAECBgMAAAAAAAABAgMABAUREiExBhNBUWEUIjJCUnGhsf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8A8Z0jSLrWbxLSzjLyEZYnhVHuT4FR7V5ZW3UPc3pjWHllcRIgXzHjgDoT+Ky7yjh4q7/tMsgJRHuUeVY+R7j5qr6dqlzpN2t1aSFJAMEHlWHsw8GgLPaW7afcLbXkayRBuSV4zjzz71c0PW7jRb5LiB2MecTRA8JB4P8Ax5pvLdLqMM4VVy4VlDkgjB4qv0+6hbUYJxEjFpF7lWxzxQLSdSbT9VhvYJnjkjOUbPI+PB8GvQ9G1GPUrSO7giIRxgiQFSPbHivOs2URTF3a3C7VyCM8GvX9P1e20OyW1u4j8wfZ4yDj7vHFAYNB0W30C0Gn21wJYWUyABt8ZOT47j/AHVi6s7W5B2yshByzjnHiujdQ0jtcMuXZY2jGxV/c4yN3J/96rXkCW7SJAhaONyqM6bSwBxk+fBoA/8ASmkra6bLJJPILiMmVFJAOcduKy10/Tdtg01x8LHBO1kGeKsT3rR2VqLcQpJJHvYhSS2TnPP+fWjGnO4YC1QkqIxlm4xzQbV22t2sNvLGtxFBcTKo2g4yQgPiuqtHxOPNULvTuoJtVjZkIkZFEiDaFOBg4GB0r0z4Q/EWkzX1r08kVraFnPYR7gVUAhiM9/kV5bPqN5czGaS5kLk5JDH+qA//9k=" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 10%;">'
     : '<div class="coach-img-ph">🎾</div>';
-  var tags = c.tags.slice(0,2).map(t=>'<span class="ctag">'+t+'</span>').join('');
-  return '<div class="coach-card" data-id="'+c.id+'" onclick="openBM('+c.id+')">'
+  var tags = c.tags.slice(0,2).map(function(t){ return '<span class="ctag">'+t+'</span>'; }).join('');
+  return '<div class="coach-card" onclick="openCoachProfile('+c.id+')" style="cursor:pointer;">'
     +'<div class="coach-img" style="background:'+c.gradient+';">'+img
     +'<div class="coach-badge-tag">'+c.badge+'</div>'
     +'<div class="coach-price-tag">'+c.price+'</div></div>'
@@ -1299,6 +1300,7 @@ function goBackFromProfile() {
 }
 
 function showPanel(id, navEl) {
+  currentPanel = id;
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   var el = document.getElementById('panel-'+id);
   if(el) el.classList.add('active');
@@ -1313,6 +1315,7 @@ function mobileNav(id, el) {
   document.querySelectorAll('.mob-nav-item').forEach(i=>i.classList.remove('active'));
   el.classList.add('active');
   showPanel(id, null);
+  currentPanel = id;
 }
 
 // ═══════════════════════════
