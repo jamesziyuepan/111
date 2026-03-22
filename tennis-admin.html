@@ -744,6 +744,80 @@ function renderCalendar() {
 function calPrev() { calDate.setMonth(calDate.getMonth()-1); renderCalendar(); }
 function calNext() { calDate.setMonth(calDate.getMonth()+1); renderCalendar(); }
 
+
+// ═══════════════════════════
+// PHOTO UPLOAD
+// ═══════════════════════════
+function resetPhotoPreview() {
+  document.getElementById('cf-photo-placeholder').style.display = 'block';
+  document.getElementById('cf-photo-preview').style.display = 'none';
+  document.getElementById('cf-photo-area').classList.remove('has-photo');
+  document.getElementById('cf-photo-url').value = '';
+}
+
+function setPhotoPreview(url) {
+  var img = document.getElementById('cf-photo-preview');
+  img.src = url;
+  img.style.display = 'block';
+  document.getElementById('cf-photo-placeholder').style.display = 'none';
+  document.getElementById('cf-photo-area').classList.add('has-photo');
+}
+
+async function uploadCoachPhoto(input) {
+  var file = input.files[0];
+  if(!file) return;
+
+  // Validate
+  if(!file.type.startsWith('image/')) { showToast('请选择图片文件', 'error'); return; }
+  if(file.size > 5 * 1024 * 1024) { showToast('图片不能超过 5MB', 'error'); return; }
+
+  // Show uploading state
+  var area = document.getElementById('cf-photo-area');
+  var uploading = document.getElementById('cf-photo-uploading');
+  area.style.display = 'none';
+  uploading.classList.add('active');
+
+  try {
+    // Generate unique filename
+    var ext = file.name.split('.').pop().toLowerCase() || 'jpg';
+    var filename = 'coach-' + Date.now() + '-' + Math.random().toString(36).substr(2,6) + '.' + ext;
+    var path = 'coaches/' + filename;
+
+    // Upload to Supabase Storage
+    var r = await fetch(SB_URL + '/storage/v1/object/coach-photos/' + path, {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + SB_KEY,
+        'apikey': SB_KEY,
+        'Content-Type': file.type,
+        'x-upsert': 'true'
+      },
+      body: file
+    });
+
+    if(!r.ok) {
+      var e = await r.json().catch(function(){ return {}; });
+      throw new Error(e.message || e.error || 'Upload failed: ' + r.status);
+    }
+
+    // Get public URL
+    var publicUrl = SB_URL + '/storage/v1/object/public/coach-photos/' + path;
+
+    // Update form
+    document.getElementById('cf-photo-url').value = publicUrl;
+    setPhotoPreview(publicUrl);
+    showToast('✅ 头像上传成功', 'success');
+
+  } catch(e) {
+    console.error('Photo upload error:', e);
+    showToast('上传失败：' + e.message, 'error');
+    resetPhotoPreview();
+  } finally {
+    uploading.classList.remove('active');
+    area.style.display = 'block';
+    input.value = ''; // reset input
+  }
+}
 // ═══════════════════════════
 // COACHES CRUD
 // ═══════════════════════════
@@ -835,6 +909,10 @@ function openCoachForm(coachId) {
     document.getElementById('cf-bio').value = c.bio||'';
     document.getElementById('cf-utr').value = c.utr||'';
     document.getElementById('cf-ranking').value = c.ranking||'';
+    // Photo
+    document.getElementById('cf-photo-url').value = c.photo_url||'';
+    if(c.photo_url) setPhotoPreview(c.photo_url);
+    else resetPhotoPreview();
     // Achievements: array → textarea (one per line)
     document.getElementById("cf-achievements").value = (c.achievements||[]).join("\n");
     // Courts: array of {name,addr} → textarea (name | addr)
@@ -965,6 +1043,8 @@ async function saveCoach() {
   var availArr = cfAvail.slice();
 
   // Build data object — keys must match coaches table columns exactly
+  var photoUrl = document.getElementById('cf-photo-url').value.trim() || null;
+
   var data = {
     name:           name,
     badge:          badge,
@@ -982,7 +1062,8 @@ async function saveCoach() {
     ranking:        document.getElementById('cf-ranking').value.trim() || null,
     achievements:   achievements,
     courts:         courts,
-    gradient:       gradient
+    gradient:       gradient,
+    photo_url:      photoUrl
   };
 
   var btn = document.querySelector('.cf-save');
