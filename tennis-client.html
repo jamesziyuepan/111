@@ -266,6 +266,125 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 .mob-nav-item { display:flex; flex-direction:column; align-items:center; gap:2px; cursor:pointer; padding:6px 12px; border-radius:10px; color:var(--mute); font-size:10px; font-weight:500; flex:1; }
 .mob-nav-item.active { color:var(--green); }
 .mob-nav-icon { font-size:22px; }
+
+/* ── COACH PROFILE PAGE ── */
+.profile-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+.profile-side-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  position: sticky;
+  top: 0;
+}
+.profile-hero-img {
+  height: 220px;
+  position: relative;
+  overflow: hidden;
+}
+.profile-hero-img img {
+  width:100%;height:100%;object-fit:cover;object-position:center 10%;
+}
+.profile-hero-ph {
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:60px;opacity:0.4;
+}
+.profile-stats-row {
+  display:flex;
+  border-top:1px solid var(--border);
+}
+.profile-stat {
+  flex:1;text-align:center;padding:14px 0;
+}
+.profile-stat-val { font-size:20px;font-weight:900; }
+.profile-stat-lbl { font-size:10px;color:var(--mute);margin-top:2px; }
+.profile-stat-div { width:1px;background:var(--border);margin:8px 0; }
+.profile-info { padding:18px 20px 20px; }
+.profile-name { font-size:22px;font-weight:900;margin-bottom:4px; }
+.profile-sub-txt { font-size:12px;color:var(--mute);margin-bottom:12px; }
+.profile-price { color:var(--green);font-size:24px;font-weight:900;margin-bottom:14px; }
+.profile-meta { display:flex;flex-direction:column;gap:5px;margin-bottom:18px; }
+.profile-meta-row { font-size:12px;color:var(--sub);display:flex;align-items:center;gap:6px; }
+.profile-cta-btns { display:flex;gap:8px; }
+.btn-book-primary {
+  flex:2;padding:13px;
+  background:linear-gradient(135deg,var(--green),var(--green2));
+  color:white;border:none;border-radius:12px;
+  font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;
+  box-shadow:0 4px 14px rgba(26,107,58,0.3);
+}
+.btn-msg-secondary {
+  flex:1;padding:13px;
+  background:var(--green-light);color:var(--green);
+  border:none;border-radius:12px;
+  font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;
+}
+.btn-book-primary:hover,.btn-msg-secondary:hover { opacity:0.88; }
+
+/* Profile main content */
+.profile-main { display:flex;flex-direction:column;gap:14px; }
+.pcard { background:white;border-radius:var(--radius);padding:22px;box-shadow:0 1px 8px rgba(0,0,0,0.06); }
+.pcard-title { font-size:15px;font-weight:700;margin-bottom:14px; }
+.ach-item {
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 12px;background:#f9fafb;
+  border-radius:10px;border-left:3px solid var(--green);
+  margin-bottom:8px;
+}
+.ach-item:last-child { margin-bottom:0; }
+.ach-ck { font-size:13px;color:var(--green);flex-shrink:0;margin-top:1px; }
+.ach-txt { font-size:12px;color:#333;line-height:1.5; }
+.spec-tags { display:flex;flex-wrap:wrap;gap:8px; }
+.spec-tag {
+  background:var(--green-light);color:var(--green);
+  font-size:11px;font-weight:600;padding:5px 12px;border-radius:8px;
+}
+.avail-row { display:flex;gap:8px; }
+.avail-day { display:flex;flex-direction:column;align-items:center;gap:5px; }
+.avail-lbl { font-size:10px;color:var(--mute); }
+.avail-dot {
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;
+}
+.avail-on { background:var(--green);color:white; }
+.avail-off { background:#f0f0f0;color:#ccc; }
+.court-item {
+  display:flex;align-items:center;gap:10px;
+  padding:10px 0;border-bottom:1px solid var(--bg);
+}
+.court-item:last-child { border-bottom:none; }
+.court-name { font-size:13px;font-weight:600; }
+.court-addr { font-size:11px;color:var(--mute); }
+.price-row {
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 0;border-bottom:1px solid var(--bg);
+}
+.price-row:last-child { border-bottom:none; }
+.price-name { font-size:14px;font-weight:600; }
+.price-desc { font-size:11px;color:var(--mute);margin-top:2px; }
+.price-val { font-size:18px;font-weight:900;color:var(--green); }
+
+/* Breadcrumb */
+.breadcrumb {
+  font-size:13px;color:var(--green);
+  font-weight:600;cursor:pointer;
+  margin-bottom:16px;display:inline-block;
+}
+.breadcrumb:hover { text-decoration:underline; }
+
+@media(max-width:768px) {
+  .profile-layout { grid-template-columns:1fr !important; }
+  .profile-side-card { position:static !important; }
+  .profile-main { margin-top:0; }
+}
+
 </style>
 </head>
 <body>
@@ -429,6 +548,17 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
         </div>
         <div style="font-size:13px;color:var(--mute);margin-bottom:12px;" id="coach-count">共 11 位教练</div>
         <div class="coach-grid" id="coaches-grid"></div>
+      </div>
+
+      <!-- COACH PROFILE PANEL -->
+      <div id="panel-coach-profile" class="panel">
+        <div class="breadcrumb" onclick="goBackFromProfile()">‹ 返回教练列表</div>
+        <div class="profile-layout">
+          <!-- Left sidebar card -->
+          <div class="profile-side-card" id="profile-side-card"></div>
+          <!-- Right main content -->
+          <div class="profile-main" id="profile-main-content"></div>
+        </div>
       </div>
 
       <!-- MY BOOKINGS PANEL -->
@@ -791,17 +921,72 @@ function launchApp() {
 // COACHES DATA
 // ═══════════════════════════
 var COACHES = [
-  { id:1, lang:'中文 · English', name:'James 教练', badge:'NCAA D1', sub:'NCAA D1 助理教练 · 运动科学在读', price:'$75/时', location:'McLean, VA', region:'mclean', tags:['网球提升','体能训练','S&C'], gradient:'linear-gradient(135deg,#0d3b23,#2d9a57)', photo:true },
-  { id:2, lang:'中文 · English', name:'Kevin 教练', badge:'ITA 认证', sub:'ITA认证 · 乔治华盛顿大学助理教练', price:'$70/时', location:'Georgetown, DC', region:'dc', tags:['网球入门','大学备考','技术提升'], gradient:'linear-gradient(135deg,#1a5c2a,#3ab85e)', photo:false },
-  { id:3, lang:'English', name:'Alex 教练', badge:'PTR 高级', sub:'PTR高级认证 · DC联赛冠军', price:'$75/时', location:'Capitol Hill, DC', region:'dc', tags:['成人','休闲','小组课'], gradient:'linear-gradient(135deg,#2a1a6b,#6a4ab8)', photo:false },
-  { id:4, lang:'English', name:'Ryan 教练', badge:'USTA 高性能', sub:'USTA高性能认证 · 前ATP挑战赛选手', price:'$95/时', location:'Dupont Circle, DC', region:'dc', tags:['高水平','竞技','赛前备战'], gradient:'linear-gradient(135deg,#4a1a1a,#b83a3a)', photo:false },
-  { id:5, lang:'中文 · English', name:'Michael 教练', badge:'USPTA 职业', sub:'USPTA职业教练 · 前大学队主力', price:'$80/时', location:'Arlington, VA', region:'arlington', tags:['初学者','技术提升','青少年'], gradient:'linear-gradient(135deg,#1a3a6b,#4a7bc8)', photo:false },
-  { id:6, lang:'中文 · English', name:'David 教练', badge:'USTA 认证', sub:'USTA认证 · 国家青少年培训中心', price:'$75/时', location:'Alexandria, VA', region:'arlington', tags:['青少年','初学者','基础训练'], gradient:'linear-gradient(135deg,#1a4a6b,#3a8bb8)', photo:false },
-  { id:7, lang:'中文', name:'Wei 教练', badge:'国家二级', sub:'国家二级教练 · 前北京青年队教练', price:'$70/时', location:'Fairfax, VA', region:'fairfax', tags:['中文授课','青少年','入门提升'], gradient:'linear-gradient(135deg,#1a6b1a,#4ab83a)', photo:false },
-  { id:8, lang:'English', name:'Sarah 教练', badge:'PTR 认证', sub:'PTR国际认证 · 前WTA巡回赛选手', price:'$90/时', location:'Bethesda, MD', region:'md', tags:['女性友好','竞技提升','成人'], gradient:'linear-gradient(135deg,#6b1a6b,#c84ab7)', photo:false },
-  { id:9, lang:'English', name:'Lisa 教练', badge:'USPTA 精英', sub:'USPTA精英级 · 前ACC大学联赛冠军', price:'$85/时', location:'Silver Spring, MD', region:'md', tags:['竞技','战术','发球特训'], gradient:'linear-gradient(135deg,#7a4a1a,#d4873a)', photo:false },
-  { id:10, lang:'中文 · English', name:'Chen 教练', badge:'ITF 认证', sub:'ITF认证 · 中国网球协会高级教练', price:'$80/时', location:'Rockville, MD', region:'md', tags:['中文授课','专业提升','双打'], gradient:'linear-gradient(135deg,#6b1a1a,#c84a4a)', photo:false },
-  { id:11, lang:'English', name:'Jennifer 教练', badge:'USPTA 精英', sub:'USPTA精英级 · 马里兰大学网球队', price:'$85/时', location:'College Park, MD', region:'md', tags:['竞技','体能','女性友好'], gradient:'linear-gradient(135deg,#1a6b5a,#3ab8a0)', photo:false }
+  { id:1, lang:'中文 · English', name:'James 教练', badge:'NCAA D1', sub:'NCAA D1 助理教练 · 运动科学在读', price:'$75/时', priceNum:75, location:'McLean, VA', region:'mclean', tags:['网球提升','体能训练','S&C'], gradient:'linear-gradient(135deg,#0d3b23,#2d9a57)', photo:true, utr:'8.3', ranking:'151', cert:'D1',
+    bio:'你好！我是 James，现任 NCAA Division I 运动表现与体能助理教练，同时在读运动科学与运动医学专业。我曾是 NCAA D3 大学网球校队成员，职业生涯最高 UTR 8.3，中国网球巡回赛最高排名 151，现已退役。无论你是想从零开始学网球，还是希望在力量、速度、耐力上突破瓶颈，我都能结合专业运动科学为你制定个性化方案。',
+    achievements:['NCAA D1 运动表现与体能助理教练（现任）','运动科学 & 运动医学在读','NCAA D3 大学网球校队 · 最高 UTR 8.3','中国网球巡回赛最高排名 151，退役运动员','张家港站 男单十六强 · 男双八强','天津市锦标赛 U18/U16/U14 单双打前五','国家二级运动员'],
+    specs:['网球入门','技术提升','运动表现','体能训练','力量 & 速度','S&C 专项'],
+    courts:[{name:'VA Highlands Park',addr:'Arlington, Virginia'},{name:'OneLife Fitness – McLean',addr:'McLean, Virginia'}],
+    avail:[0,0,0,0,0,1,0] },
+  { id:2, lang:'中文 · English', name:'Kevin 教练', badge:'ITA 认证', sub:'ITA认证 · 乔治华盛顿大学助理教练', price:'$70/时', priceNum:70, location:'Georgetown, DC', region:'dc', tags:['网球入门','大学备考','技术提升'], gradient:'linear-gradient(135deg,#1a5c2a,#3ab85e)', photo:false, utr:'8.5', ranking:'—', cert:'ITA',
+    bio:'Hi！我是Kevin，目前担任乔治华盛顿大学网球队助理教练，拥有ITA国际认证资质。专注于帮助学生提升网球技术，尤其擅长服务备战大学校队选拔的学生。',
+    achievements:['ITA 国际教练认证','GWU 网球队助理教练（现任）','NCAA Division I 执教经验','专注大学备考训练'],
+    specs:['网球入门','大学备考','技术提升','单打战术'],
+    courts:[{name:'GWU 网球中心',addr:'Washington, DC'},{name:'East Potomac Park',addr:'Washington, DC'}],
+    avail:[0,1,0,1,0,1,0] },
+  { id:3, lang:'English', name:'Alex 教练', badge:'PTR 高级', sub:'PTR高级认证 · DC联赛冠军', price:'$75/时', priceNum:75, location:'Capitol Hill, DC', region:'dc', tags:['成人','休闲','小组课'], gradient:'linear-gradient(135deg,#2a1a6b,#6a4ab8)', photo:false, utr:'8.3', ranking:'—', cert:'PTR',
+    bio:'Alex is a PTR Senior certified coach and former DC league champion. Specializing in adult recreational players and group lessons with 10+ years of experience.',
+    achievements:['PTR Senior Certification','DC Amateur League Champion','10+ years coaching experience','Group & Private Lessons specialist'],
+    specs:['Adult Beginner','Recreational','Group Lessons','Match Play'],
+    courts:[{name:'East Potomac Tennis Center',addr:'Washington, DC'}],
+    avail:[0,0,1,0,1,1,0] },
+  { id:4, lang:'English', name:'Ryan 教练', badge:'USTA 高性能', sub:'USTA高性能认证 · 前ATP挑战赛选手', price:'$95/时', priceNum:95, location:'Dupont Circle, DC', region:'dc', tags:['高水平','竞技','赛前备战'], gradient:'linear-gradient(135deg,#4a1a1a,#b83a3a)', photo:false, utr:'9.5', ranking:'—', cert:'USTA HP',
+    bio:'Ryan is a former ATP Challenger player with USTA High Performance certification. Ideal for competitive players serious about leveling up their game.',
+    achievements:['USTA High Performance Certified','Former ATP Challenger Player','Peak UTR 9.5','Tournament Preparation Specialist'],
+    specs:['Advanced Competitive','Tournament Prep','Serve & Volley','Strategy'],
+    courts:[{name:'Rock Creek Tennis Center',addr:'Washington, DC'}],
+    avail:[1,0,1,0,0,1,1] },
+  { id:5, lang:'中文 · English', name:'Michael 教练', badge:'USPTA 职业', sub:'USPTA职业教练 · 前大学队主力', price:'$80/时', priceNum:80, location:'Arlington, VA', region:'arlington', tags:['初学者','技术提升','青少年'], gradient:'linear-gradient(135deg,#1a3a6b,#4a7bc8)', photo:false, utr:'9.2', ranking:'—', cert:'USPTA',
+    bio:'Michael是USPTA职业级教练，拥有10年教学经验，擅长青少年和成人技术培训，教学系统全面。',
+    achievements:['USPTA 职业级认证','10年教学经验','前大学网球队主力','青少年训练专家'],
+    specs:['初学者入门','技术系统提升','青少年发展','双打战术'],
+    courts:[{name:'Arlington Tennis Center',addr:'Arlington, VA'}],
+    avail:[0,1,1,0,1,1,0] },
+  { id:6, lang:'中文 · English', name:'David 教练', badge:'USTA 认证', sub:'USTA认证 · 国家青少年培训中心', price:'$75/时', priceNum:75, location:'Alexandria, VA', region:'arlington', tags:['青少年','初学者','基础训练'], gradient:'linear-gradient(135deg,#1a4a6b,#3a8bb8)', photo:false, utr:'8.1', ranking:'—', cert:'USTA',
+    bio:'David专注青少年网球培训，曾任职于国家青少年培训中心，教学耐心细致，帮助多名学生参加本地比赛。',
+    achievements:['USTA 认证教练','国家青少年培训中心（前任）','青少年比赛经验丰富','基础技术扎实'],
+    specs:['青少年发展','零基础入门','基础技术','比赛心理'],
+    courts:[{name:'Alexandria Tennis Club',addr:'Alexandria, VA'}],
+    avail:[0,0,1,1,0,1,0] },
+  { id:7, lang:'中文', name:'Wei 教练', badge:'国家二级', sub:'国家二级教练 · 前北京青年队教练', price:'$70/时', priceNum:70, location:'Fairfax, VA', region:'fairfax', tags:['中文授课','青少年','入门提升'], gradient:'linear-gradient(135deg,#1a6b1a,#4ab83a)', photo:false, utr:'8.0', ranking:'—', cert:'国家二级',
+    bio:'Wei教练拥有中国国家二级教练证书，曾执教北京市青年网球队，全程中文授课，适合中文环境学习的学员。',
+    achievements:['中国国家二级教练证书','前北京市青年网球队教练','全中文教学环境','帮助多名学生参加本地比赛'],
+    specs:['中文授课','青少年训练','成人入门','技术纠正'],
+    courts:[{name:'Fairfax Tennis Club',addr:'Fairfax, VA'}],
+    avail:[0,1,0,1,1,1,0] },
+  { id:8, lang:'English', name:'Sarah 教练', badge:'PTR 认证', sub:'PTR国际认证 · 前WTA巡回赛选手', price:'$90/时', priceNum:90, location:'Bethesda, MD', region:'md', tags:['女性友好','竞技提升','成人'], gradient:'linear-gradient(135deg,#6b1a6b,#c84ab7)', photo:false, utr:'8.8', ranking:'—', cert:'PTR Intl',
+    bio:'Sarah is a former WTA circuit player with PTR International certification. Women-friendly environment, specializing in competitive adult players.',
+    achievements:['PTR International Certified','Former WTA Circuit Player','Women League Specialist','Empowerment-focused coaching'],
+    specs:['Women Clinics','Competitive Adults','Match Strategy','Mental Game'],
+    courts:[{name:'Bethesda Tennis Center',addr:'Bethesda, MD'}],
+    avail:[1,0,0,1,0,1,1] },
+  { id:9, lang:'English', name:'Lisa 教练', badge:'USPTA 精英', sub:'USPTA精英级 · 前ACC大学联赛冠军', price:'$85/时', priceNum:85, location:'Silver Spring, MD', region:'md', tags:['竞技','战术','发球特训'], gradient:'linear-gradient(135deg,#7a4a1a,#d4873a)', photo:false, utr:'9.0', ranking:'—', cert:'USPTA Elite',
+    bio:'Lisa is a USPTA Elite-certified coach and former ACC college champion. 8 years of high-level coaching with specialty in serve development.',
+    achievements:['USPTA Elite Professional','Former ACC College Champion','Serve Specialist','8 Years Coaching'],
+    specs:['Advanced Technique','Serve Training','Tactical Play','College Prep'],
+    courts:[{name:'Silver Spring Recreation Center',addr:'Silver Spring, MD'}],
+    avail:[0,1,0,0,1,1,0] },
+  { id:10, lang:'中文 · English', name:'Chen 教练', badge:'ITF 认证', sub:'ITF认证 · 中国网球协会高级教练', price:'$80/时', priceNum:80, location:'Rockville, MD', region:'md', tags:['中文授课','专业提升','双打'], gradient:'linear-gradient(135deg,#6b1a1a,#c84a4a)', photo:false, utr:'8.6', ranking:'—', cert:'ITF',
+    bio:'Chen教练拥有ITF国际认证和中国网球协会高级教练资质，专注双打技术训练和竞技水平提升。',
+    achievements:['ITF 国际认证','中国网球协会高级教练','双打战术专家','竞技水平提升'],
+    specs:['双打战术','技术精进','中文授课','竞技备战'],
+    courts:[{name:'Rockville Civic Center Tennis',addr:'Rockville, MD'}],
+    avail:[1,0,1,0,0,1,0] },
+  { id:11, lang:'English', name:'Jennifer 教练', badge:'USPTA 精英', sub:'USPTA精英级 · 马里兰大学网球队', price:'$85/时', priceNum:85, location:'College Park, MD', region:'md', tags:['竞技','体能','女性友好'], gradient:'linear-gradient(135deg,#1a6b5a,#3ab8a0)', photo:false, utr:'9.1', ranking:'—', cert:'USPTA Elite',
+    bio:'Jennifer is a USPTA Elite coach and current assistant coach at University of Maryland. Well-rounded with focus on fitness-integrated tennis.',
+    achievements:['USPTA Elite Professional','UMD Tennis Assistant Coach','Fitness-Integrated Training','Women Empowerment'],
+    specs:['Fitness Tennis','Competitive Training','Women Program','Athletic Development'],
+    courts:[{name:'UMD Tennis Courts',addr:'College Park, MD'}],
+    avail:[0,1,0,1,0,1,0] }
 ];
 
 function coachCardHTML(c) {
@@ -817,7 +1002,7 @@ function coachCardHTML(c) {
     +'<div class="coach-name">'+c.name+'</div>'
     +'<div class="coach-sub-txt">'+c.sub+'</div>'
     +'<div class="coach-tags"><span class="lang-tag">🗣 '+c.lang+'</span>'+tags+'</div>'
-    +'<button class="coach-book-btn" onclick="event.stopPropagation();openBM('+c.id+')">📅 立即预约</button>'
+    +'<button class="coach-book-btn" onclick="event.stopPropagation();openCoachProfile('+c.id+')">查看详情 →</button>'
     +'</div></div>';
 }
 
@@ -1019,7 +1204,99 @@ async function submitBM() {
 // ═══════════════════════════
 // NAV
 // ═══════════════════════════
-var panelTitles = { home:'首页', coaches:'找教练', 'my-bookings':'我的预约', packages:'课程套餐' };
+var panelTitles = { home:'首页', coaches:'找教练', 'coach-profile':'教练详情', 'my-bookings':'我的预约', packages:'课程套餐' };
+
+// ── COACH PROFILE PAGE ──
+var profileFromPanel = 'coaches';
+
+function openCoachProfile(coachId) {
+  var c = COACHES.find(function(x){ return x.id===coachId; });
+  if(!c) return;
+  profileFromPanel = currentPanel || 'coaches';
+
+  // Build sidebar card
+  var imgHtml = c.photo
+    ? '<img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgFBgcGBQgHBgcJCAgJDBMMDAsLDBgREg4THBgdHRsYGxofIywlHyEqIRobJjQnKi4vMTIxHiU2OjYwOiwwMTD/wAARCAAoACgDASIAAhEBAxEB/8QAGwAAAgMBAQEAAAAAAAAAAAAAAAUDBAYCAQf/xAAsEAACAQQBBAECBgMAAAAAAAABAgMABAUREiExBhNBUWEUIjJCUnGhsf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8A8Z0jSLrWbxLSzjLyEZYnhVHuT4FR7V5ZW3UPc3pjWHllcRIgXzHjgDoT+Ky7yjh4q7/tMsgJRHuUeVY+R7j5qr6dqlzpN2t1aSFJAMEHlWHsw8GgLPaW7afcLbXkayRBuSV4zjzz71c0PW7jRb5LiB2MecTRA8JB4P8Ax5pvLdLqMM4VVy4VlDkgjB4qv0+6hbUYJxEjFpF7lWxzxQLSdSbT9VhvYJnjkjOUbPI+PB8GvQ9G1GPUrSO7giIRxgiQFSPbHivOs2URTF3a3C7VyCM8GvX9P1e20OyW1u4j8wfZ4yDj7vHFAYNB0W30C0Gn21wJYWUyABt8ZOT47j/AHVi6s7W5B2yshByzjnHiujdQ0jtcMuXZY2jGxV/c4yN3J/96rXkCW7SJAhaONyqM6bSwBxk+fBoA/8ASmkra6bLJJPILiMmVFJAOcduKy10/Tdtg01x8LHBO1kGeKsT3rR2VqLcQpJJHvYhSS2TnPP+fWjGnO4YC1QkqIxlm4xzQbV22t2sNvLGtxFBcTKo2g4yQgPiuqtHxOPNULvTuoJtVjZkIkZFEiDaFOBg4GB0r0z4Q/EWkzX1r08kVraFnPYR7gVUAhiM9/kV5bPqN5czGaS5kLk5JDH+qA//9k=" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 10%;">'
+    : '<div class="profile-hero-ph" style="background:'+c.gradient+';">🎾</div>';
+
+  var dayNames = ['一','二','三','四','五','六','日'];
+  var availHtml = dayNames.map(function(d,i){
+    var on = c.avail && c.avail[i];
+    return '<div class="avail-day"><span class="avail-lbl">'+d+'</span>'
+      +'<div class="avail-dot '+(on?'avail-on':'avail-off')+'">'+(on?'✓':'✕')+'</div></div>';
+  }).join('');
+
+  document.getElementById('profile-side-card').innerHTML =
+    '<div class="profile-hero-img" style="background:'+c.gradient+';">'+imgHtml+'</div>'
+    +'<div class="profile-stats-row">'
+    +'<div class="profile-stat"><div class="profile-stat-val">'+c.utr+'</div><div class="profile-stat-lbl">最高 UTR</div></div>'
+    +'<div class="profile-stat-div"></div>'
+    +'<div class="profile-stat"><div class="profile-stat-val">'+(c.ranking||'—')+'</div><div class="profile-stat-lbl">🇨🇳 排名</div></div>'
+    +'<div class="profile-stat-div"></div>'
+    +'<div class="profile-stat"><div class="profile-stat-val">'+c.cert+'</div><div class="profile-stat-lbl">认证</div></div>'
+    +'</div>'
+    +'<div class="profile-info">'
+    +'<div class="profile-name">'+c.name+'</div>'
+    +'<div class="profile-sub-txt">'+c.sub+'</div>'
+    +'<div class="profile-price">'+c.price+'</div>'
+    +'<div class="profile-meta">'
+    +'<div class="profile-meta-row">📍 '+c.location+'</div>'
+    +'<div class="profile-meta-row">🗣 '+c.lang+'</div>'
+    +'</div>'
+    +'<div class="profile-cta-btns">'
+    +'<button class="btn-book-primary" onclick="openBM('+c.id+')">📅 立即预约</button>'
+    +'<button class="btn-msg-secondary">💬 消息</button>'
+    +'</div></div>';
+
+  // Build main content
+  var achHtml = (c.achievements||[]).map(function(a){
+    return '<div class="ach-item"><span class="ach-ck">✅</span><span class="ach-txt">'+a+'</span></div>';
+  }).join('');
+
+  var specHtml = (c.specs||[]).map(function(s){
+    return '<span class="spec-tag">'+s+'</span>';
+  }).join('');
+
+  var courtHtml = (c.courts||[]).map(function(ct){
+    return '<div class="court-item"><span style="font-size:18px;">📍</span><div><div class="court-name">'+ct.name+'</div><div class="court-addr">'+ct.addr+'</div></div></div>';
+  }).join('');
+
+  document.getElementById('profile-main-content').innerHTML =
+    '<div class="pcard"><div class="pcard-title">👋 关于我</div>'
+    +'<div style="font-size:13px;color:var(--sub);line-height:1.8;">'+(c.bio||'')+'</div></div>'
+
+    +'<div class="pcard"><div class="pcard-title">🏆 运动履历</div>'+achHtml+'</div>'
+
+    +'<div class="pcard"><div class="pcard-title">🎯 课程类型</div>'
+    +'<div class="spec-tags">'+specHtml+'</div></div>'
+
+    +'<div class="pcard"><div class="pcard-title">💰 课程价格</div>'
+    +'<div class="price-row"><div><div class="price-name">单次课程</div><div class="price-desc">1对1私教，60分钟</div></div>'
+    +'<div class="price-val">'+c.price+'</div></div></div>'
+
+    +'<div class="pcard"><div class="pcard-title">📅 可约时间</div>'
+    +'<div class="avail-row">'+availHtml+'</div></div>'
+
+    +'<div class="pcard"><div class="pcard-title">🎾 常用球场</div>'+courtHtml+'</div>';
+
+  // Show profile panel
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+  document.getElementById('panel-coach-profile').classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
+  document.getElementById('topbar-title').textContent = '教练详情';
+  // Scroll to top
+  var pb = document.querySelector('.page-body');
+  if(pb) pb.scrollTop = 0;
+  currentPanel = 'coach-profile';
+}
+
+function goBackFromProfile() {
+  showPanel(profileFromPanel, null);
+  // Re-highlight correct nav item
+  var navMap = { home:0, coaches:1, 'my-bookings':2, packages:3 };
+  var items = document.querySelectorAll('.nav-item');
+  if(items[navMap[profileFromPanel]]) items[navMap[profileFromPanel]].classList.add('active');
+}
 
 function showPanel(id, navEl) {
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
