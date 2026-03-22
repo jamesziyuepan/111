@@ -3782,9 +3782,22 @@ async function loadMyBookings() {
     var bookings = await r.json();
 
     // Update stats on home page
-    var now = new Date(); now.setHours(0,0,0,0);
-    var upcoming = bookings.filter(function(b){ return new Date(b.booking_date) >= now && b.status !== 'cancelled'; });
-    var done = bookings.filter(function(b){ return new Date(b.booking_date) < now && b.status === 'confirmed'; });
+    var now = new Date();
+    var upcoming = bookings.filter(function(b){
+      // Combine booking_date + booking_time for accurate comparison
+      var timeStr = b.booking_time || '23:59';
+      var parts = timeStr.split(':');
+      var bdt = new Date(b.booking_date + 'T00:00:00');
+      bdt.setHours(parseInt(parts[0])||0, parseInt(parts[1])||0, 0, 0);
+      return bdt >= now && b.status !== 'cancelled';
+    });
+    var done = bookings.filter(function(b){
+      var timeStr = b.booking_time || '00:00';
+      var parts = timeStr.split(':');
+      var bdt = new Date(b.booking_date + 'T00:00:00');
+      bdt.setHours(parseInt(parts[0])||0, parseInt(parts[1])||0, 0, 0);
+      return bdt < now && b.status === 'confirmed';
+    });
     var stUp = document.getElementById('st-upcoming');
     var stDone = document.getElementById('st-done');
     if(stUp) stUp.textContent = upcoming.length;
@@ -3833,9 +3846,12 @@ function bookingCardHTML(b) {
   };
   var st = statusMap[b.status] || statusMap.pending;
 
-  // Past or upcoming
-  var now = new Date(); now.setHours(0,0,0,0);
-  var isPast = d < now;
+  // Past check: combine date + time for accurate comparison
+  var now = new Date();
+  var timeParts = (b.booking_time||'23:59').split(':');
+  var bookingDT = new Date(b.booking_date + 'T00:00:00');
+  bookingDT.setHours(parseInt(timeParts[0])||0, parseInt(timeParts[1])||0, 0, 0);
+  var isPast = bookingDT < now;
 
   return '<div class="bk-record-card" style="opacity:'+(isPast?'0.65':'1')+'">'
     // Date block
