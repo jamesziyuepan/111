@@ -1646,7 +1646,7 @@ function openCoachProfile(coachId) {
     +'<div class="profile-meta-row">🗣 '+c.lang+'</div>'
     +'</div>'
     +'<div class="profile-cta-btns">'
-    +'<button class="btn-book-primary" onclick="openBM('+c.id+')">📅 立即预约</button>'
+    +'<button class="btn-book-primary" data-cid="'+c.id+'" onclick="openBM(this.getAttribute(\'data-cid\'))">📅 立即预约</button>'
     +'<button class="btn-msg-secondary">💬 消息</button>'
     +'</div></div>';
 
