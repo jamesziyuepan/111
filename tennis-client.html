@@ -3263,7 +3263,8 @@ function openBM(coachId) {
   }
 
   bmState = { coachId:c.id, coachName:c.name, price:c.priceNum||75,
-    date:null, dateLabel:null, time:null, court:null, availDays:availDays };
+    date:null, dateLabel:null, time:null, court:null, availDays:availDays,
+    coachRef:c };  // store full coach for available_hours lookup
 
   // Coach info in summary panel
   document.getElementById('bk-coach-name').textContent = c.name;
@@ -3416,14 +3417,21 @@ async function bkRenderTimeSlots(dateStr) {
     return;
   }
 
-  // Get available hours from coach data (default 9:00-21:00 if not set)
-  var coach = COACHES.find(function(c){ return String(c.id)===String(bmState.coachId); });
+  // Get coach directly from bmState (no searching needed)
+  var coach = bmState.coachRef || COACHES.find(function(c){ return String(c.id)===String(bmState.coachId); });
   var allSlots = ['9:00','10:00','11:00','12:00','13:00','14:00',
                   '15:00','16:00','17:00','18:00','19:00','20:00','21:00'];
-  // If coach has available_hours array, use that; else use all slots
-  var slots = (coach && coach.available_hours && coach.available_hours.length > 0)
-    ? coach.available_hours
-    : allSlots;
+
+  // Use coach's available_hours if set in DB, otherwise show all slots
+  var slots;
+  if(coach && coach.available_hours && Array.isArray(coach.available_hours) && coach.available_hours.length > 0) {
+    slots = coach.available_hours;
+  } else {
+    slots = allSlots;
+  }
+
+  // Debug log
+  console.log('Coach:', coach && coach.name, '| available_hours:', coach && coach.available_hours, '| showing slots:', slots.length);
 
   notice.textContent = '⏰ 请选择上课时间';
   slotsEl.innerHTML = slots.map(function(s){
