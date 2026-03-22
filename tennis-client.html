@@ -550,6 +550,36 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
   .type-grid { grid-template-columns: 1fr !important; }
   .time-slots-bk { grid-template-columns: repeat(3, 1fr) !important; }
 }
+
+/* ── MY BOOKINGS CARDS ── */
+.bk-record-card {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px; background: white;
+  border-radius: 14px; margin-bottom: 10px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  border-left: 4px solid var(--green-light);
+  transition: box-shadow 0.15s;
+}
+.bk-record-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+.bk-record-card:last-child { margin-bottom: 0; }
+
+.bk-date-blk {
+  background: var(--green-light); border-radius: 12px;
+  padding: 10px 12px; text-align: center; flex-shrink: 0; min-width: 54px;
+}
+.bk-month { font-size: 10px; font-weight: 800; color: var(--green); letter-spacing: 1px; }
+.bk-day   { font-size: 26px; font-weight: 900; line-height: 1.1; }
+.bk-wd    { font-size: 10px; color: var(--mute); margin-top: 1px; }
+
+.bk-status-badge {
+  display: inline-block; padding: 5px 12px;
+  border-radius: 20px; font-size: 12px; font-weight: 700;
+  white-space: nowrap;
+}
+.status-pending   { background: #fff3cd; color: #856404; }
+.status-confirmed { background: var(--green-light); color: var(--green); }
+.status-cancelled { background: #fdecea; color: var(--red); }
+
 </style>
 </head>
 <body>
@@ -728,11 +758,12 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 
       <!-- MY BOOKINGS PANEL -->
       <div id="panel-my-bookings" class="panel">
-        <div class="content-card">
-          <div class="cc-title">📅 我的预约记录</div>
-          <div id="my-bookings-list">
-            <div class="empty-st"><div class="empty-st-icon">📋</div><div>暂无预约记录</div></div>
-          </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div style="font-size:18px;font-weight:900;">📅 我的预约</div>
+          <button onclick="loadMyBookings()" style="padding:7px 14px;background:var(--green-light);color:var(--green);border:none;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;">🔄 刷新</button>
+        </div>
+        <div id="my-bookings-list">
+          <div class="empty-st"><div class="empty-st-icon">📋</div><div>暂无预约记录</div></div>
         </div>
       </div>
 
@@ -1699,6 +1730,106 @@ function goBackFromProfile() {
   var items = document.querySelectorAll('.nav-item');
   if(items[navMap[profileFromPanel]]) items[navMap[profileFromPanel]].classList.add('active');
 }
+
+// ═══════════════════════════════════════
+// MY BOOKINGS — 我的预约
+// ═══════════════════════════════════════
+var bookingsRefreshTimer = null;
+
+async function loadMyBookings() {
+  if(!currentUser) return;
+
+  var listEl = document.getElementById('my-bookings-list');
+  var homeUpEl = document.getElementById('home-upcoming');
+  if(listEl) listEl.innerHTML = '<div class="empty-st"><div class="empty-st-icon" style="font-size:24px;">⏳</div><div>加载中…</div></div>';
+
+  try {
+    var r = await fetch(
+      SB_URL + '/rest/v1/bookings?student_email=eq.' + encodeURIComponent(currentUser.email)
+        + '&order=booking_date.desc&limit=50',
+      { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + (currentUser.token || SB_KEY) } }
+    );
+    if(!r.ok) throw new Error('HTTP ' + r.status);
+    var bookings = await r.json();
+
+    // Update stats on home page
+    var now = new Date(); now.setHours(0,0,0,0);
+    var upcoming = bookings.filter(function(b){ return new Date(b.booking_date) >= now && b.status !== 'cancelled'; });
+    var done = bookings.filter(function(b){ return new Date(b.booking_date) < now && b.status === 'confirmed'; });
+    var stUp = document.getElementById('st-upcoming');
+    var stDone = document.getElementById('st-done');
+    if(stUp) stUp.textContent = upcoming.length;
+    if(stDone) stDone.textContent = done.length;
+
+    // Home page upcoming (top 3)
+    if(homeUpEl) {
+      if(upcoming.length === 0) {
+        homeUpEl.innerHTML = '<div class="empty-st"><div class="empty-st-icon">📅</div><div>暂无即将到来的课程</div></div>';
+      } else {
+        homeUpEl.innerHTML = upcoming.slice(0,3).map(bookingCardHTML).join('');
+      }
+    }
+
+    // My bookings full list
+    if(listEl) {
+      if(bookings.length === 0) {
+        listEl.innerHTML = '<div class="empty-st"><div class="empty-st-icon">📋</div><div style="font-weight:600;margin-bottom:6px;">暂无预约记录</div><div style="font-size:12px;">去找一位教练，开始你的第一节课！</div></div>';
+      } else {
+        listEl.innerHTML = bookings.map(bookingCardHTML).join('');
+      }
+    }
+
+    // Auto-refresh every 15 seconds to catch status changes from admin
+    clearTimeout(bookingsRefreshTimer);
+    bookingsRefreshTimer = setTimeout(function(){
+      if(currentPanel === 'my-bookings' || currentPanel === 'home') loadMyBookings();
+    }, 15000);
+
+  } catch(e) {
+    console.warn('loadMyBookings error:', e.message);
+    if(listEl) listEl.innerHTML = '<div class="empty-st"><div class="empty-st-icon">⚠️</div><div>加载失败，请刷新重试</div></div>';
+  }
+}
+
+function bookingCardHTML(b) {
+  var d = new Date(b.booking_date + 'T00:00:00');
+  var months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  var weekdays = ['周日','周一','周二','周三','周四','周五','周六'];
+
+  // Status badge
+  var statusMap = {
+    pending:   { cls:'status-pending',   icon:'⏳', text:'待确认' },
+    confirmed: { cls:'status-confirmed', icon:'✅', text:'已确认' },
+    cancelled: { cls:'status-cancelled', icon:'❌', text:'已取消' }
+  };
+  var st = statusMap[b.status] || statusMap.pending;
+
+  // Past or upcoming
+  var now = new Date(); now.setHours(0,0,0,0);
+  var isPast = d < now;
+
+  return '<div class="bk-record-card" style="opacity:'+(isPast?'0.65':'1')+'">'
+    // Date block
+    + '<div class="bk-date-blk">'
+    +   '<div class="bk-month">' + months[d.getMonth()] + '</div>'
+    +   '<div class="bk-day">' + d.getDate() + '</div>'
+    +   '<div class="bk-wd">' + weekdays[d.getDay()] + '</div>'
+    + '</div>'
+    // Info
+    + '<div style="flex:1;min-width:0;">'
+    +   '<div style="font-size:15px;font-weight:800;margin-bottom:3px;">' + b.booking_time + '</div>'
+    +   '<div style="font-size:12px;color:var(--sub);margin-bottom:4px;">🎾 James 教练</div>'
+    +   '<div style="font-size:11px;color:var(--mute);margin-bottom:6px;">📍 ' + (b.court||'—') + '</div>'
+    +   '<span style="display:inline-block;font-size:11px;font-weight:600;background:var(--green-light);color:var(--green);padding:2px 8px;border-radius:6px;">' + (b.lesson_type||'—') + '</span>'
+    + '</div>'
+    // Status
+    + '<div style="text-align:right;flex-shrink:0;">'
+    +   '<div class="bk-status-badge ' + st.cls + '">' + st.icon + ' ' + st.text + '</div>'
+    +   (isPast ? '<div style="font-size:10px;color:var(--mute);margin-top:4px;">已结束</div>' : '')
+    + '</div>'
+    + '</div>';
+}
+
 
 function showPanel(id, navEl) {
   currentPanel = id;
