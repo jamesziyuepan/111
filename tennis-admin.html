@@ -517,10 +517,7 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);height:100vh;ove
 // ═══════════════════════════
 const SB_URL = 'https://kbllubfoxwbcmcgrklgh.supabase.co';
 const SB_KEY = 'sb_publishable_xDL0OkqVVBhRFuYm2GrqZg_o6wBlKCM';
-// 管理端用 service_role key 才能读取所有用户数据（绕过 RLS）
-// 去 Supabase → Settings → API → Legacy anon keys → 复制 service_role
-// 如果暂时没有，先用 SB_KEY，但可能看不到数据
-const SB_SERVICE_KEY = 'sb_secret_5pMugVnoi9YpqiUbaGNRfw_Pgi6-7xp';
+// 使用 publishable key + RLS 策略，无需 secret key
 
 // ⚠️ 修改这里设置你的管理员账号密码
 const ADMIN_USERNAME = 'admin';
@@ -567,9 +564,8 @@ if(sessionStorage.getItem('admin_logged_in')==='1') {
 // SUPABASE
 // ═══════════════════════════
 function sbHeaders() {
-  // Use service role key for admin (bypasses Row Level Security)
-  var key = SB_SERVICE_KEY !== 'PASTE_YOUR_SERVICE_ROLE_KEY_HERE' ? SB_SERVICE_KEY : SB_KEY;
-  return { 'Content-Type':'application/json', 'apikey':key, 'Authorization':'Bearer '+key };
+  // Use publishable key — RLS policies handle access control
+  return { 'Content-Type':'application/json', 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY };
 }
 
 async function sbGet(table, filters, order) {
