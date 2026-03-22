@@ -200,6 +200,11 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);height:100vh;ove
      MAIN APP
 ════════════════════════════ -->
 <div id="app">
+  <!-- Service key warning -->
+  <div id="service-key-warning" style="display:none;position:fixed;top:0;left:0;right:0;z-index:9999;background:#f59e0b;color:#451a03;padding:10px 20px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:10px;">
+    ⚠️ 未设置 service_role key — 可能看不到预约数据。请在代码中填入 SB_SERVICE_KEY。
+    <span style="margin-left:auto;cursor:pointer;" onclick="this.parentElement.style.display='none'">✕</span>
+  </div>
   <!-- Sidebar -->
   <div class="sidebar">
     <div class="sb-logo">
@@ -339,11 +344,112 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);height:100vh;ove
 
       <!-- ── COACHES PANEL ── -->
       <div id="panel-coaches" class="panel">
+        <button class="add-coach-btn" onclick="openCoachForm(null)">
+          ＋ 添加新教练
+        </button>
         <div class="card">
           <div class="card-hd">
-            <div class="card-title">🎾 教练列表（11位）</div>
+            <div class="card-title">🎾 教练列表</div>
+            <div class="card-action" id="coaches-count">共 0 位</div>
           </div>
-          <div id="coaches-mgmt-list"></div>
+          <div id="coaches-mgmt-list">
+            <div class="empty-st"><div class="empty-st-icon">🎾</div><div>点击右上角刷新加载教练数据</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── COACH FORM MODAL ── -->
+      <div class="coach-form-overlay" id="coach-form-overlay" style="display:none;" onclick="if(event.target===this)closeCoachForm()">
+        <div class="coach-form-box">
+          <div class="cf-hd">
+            <div class="cf-title" id="cf-title">添加教练</div>
+            <div class="cf-x" onclick="closeCoachForm()">✕</div>
+          </div>
+
+          <div class="cf-sec">基本信息</div>
+          <div class="cf-row">
+            <div class="cf-grp">
+              <label class="cf-lbl">教练姓名 *</label>
+              <input class="cf-inp" id="cf-name" placeholder="例：James 教练">
+            </div>
+            <div class="cf-grp">
+              <label class="cf-lbl">认证标签 *</label>
+              <input class="cf-inp" id="cf-badge" placeholder="例：NCAA D1 教练">
+            </div>
+          </div>
+          <div class="cf-row full">
+            <div class="cf-grp">
+              <label class="cf-lbl">副标题 *</label>
+              <input class="cf-inp" id="cf-sub" placeholder="例：NCAA D1 助理教练 · 运动科学在读">
+            </div>
+          </div>
+          <div class="cf-row">
+            <div class="cf-grp">
+              <label class="cf-lbl">授课语言</label>
+              <select class="cf-sel" id="cf-lang">
+                <option value="中文 · English">🗣 中文 · English</option>
+                <option value="English">🗣 English</option>
+                <option value="中文">🗣 中文</option>
+              </select>
+            </div>
+            <div class="cf-grp">
+              <label class="cf-lbl">地区</label>
+              <select class="cf-sel" id="cf-region">
+                <option value="dc">Washington DC</option>
+                <option value="md">Maryland</option>
+                <option value="arlington">Arlington / Alexandria</option>
+                <option value="mclean">McLean</option>
+                <option value="fairfax">Fairfax</option>
+              </select>
+            </div>
+          </div>
+          <div class="cf-row">
+            <div class="cf-grp">
+              <label class="cf-lbl">具体位置</label>
+              <input class="cf-inp" id="cf-location" placeholder="例：McLean, VA">
+            </div>
+            <div class="cf-grp">
+              <label class="cf-lbl">课时费用 *</label>
+              <input class="cf-inp" id="cf-price" type="number" placeholder="75" min="0" max="999">
+            </div>
+          </div>
+
+          <div class="cf-sec">个人简介</div>
+          <div class="cf-row full">
+            <div class="cf-grp">
+              <textarea class="cf-ta" id="cf-bio" rows="3" placeholder="教练背景介绍…"></textarea>
+            </div>
+          </div>
+
+          <div class="cf-sec">课程标签（输入后按回车添加）</div>
+          <div class="tags-input" id="cf-tags-input" onclick="document.getElementById('cf-tag-inp').focus()">
+            <input id="cf-tag-inp" placeholder="添加标签…" onkeydown="handleTagInput(event)">
+          </div>
+
+          <div class="cf-sec">可约时间（点击切换）</div>
+          <div class="avail-grid" id="cf-avail-grid">
+            <!-- filled by JS -->
+          </div>
+
+          <div class="cf-sec">UTR 评级 / 认证信息（可选）</div>
+          <div class="cf-row">
+            <div class="cf-grp">
+              <label class="cf-lbl">最高 UTR</label>
+              <input class="cf-inp" id="cf-utr" placeholder="例：8.3">
+            </div>
+            <div class="cf-grp">
+              <label class="cf-lbl">中国排名</label>
+              <input class="cf-inp" id="cf-ranking" placeholder="例：151 或 —">
+            </div>
+          </div>
+
+          <div class="cf-err" id="cf-err"></div>
+
+          <div class="cf-btns">
+            <button class="cf-delete" id="cf-delete-btn" style="display:none;" onclick="deleteCoach()">🗑 删除</button>
+            <button class="cf-cancel" onclick="closeCoachForm()">取消</button>
+            <button class="cf-save" onclick="saveCoach()">保存教练</button>
+          </div>
         </div>
       </div>
 
@@ -388,6 +494,10 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);height:100vh;ove
 // ═══════════════════════════
 const SB_URL = 'https://kbllubfoxwbcmcgrklgh.supabase.co';
 const SB_KEY = 'sb_publishable_xDL0OkqVVBhRFuYm2GrqZg_o6wBlKCM';
+// 管理端用 service_role key 才能读取所有用户数据（绕过 RLS）
+// 去 Supabase → Settings → API → Legacy anon keys → 复制 service_role
+// 如果暂时没有，先用 SB_KEY，但可能看不到数据
+const SB_SERVICE_KEY = 'sb_secret_5pMugVnoi9YpqiUbaGNRfw_Pgi6-7xp';
 
 // ⚠️ 修改这里设置你的管理员账号密码
 const ADMIN_USERNAME = 'admin';
@@ -409,6 +519,9 @@ function doLogin() {
     sessionStorage.setItem('admin_logged_in','1');
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').style.display = 'flex';
+    if(SB_SERVICE_KEY === 'PASTE_YOUR_SERVICE_ROLE_KEY_HERE') {
+      document.getElementById('service-key-warning').style.display = 'flex';
+    }
     refreshAll();
   } else {
     err.textContent = '⚠️ 账号或密码错误';
@@ -427,6 +540,9 @@ function adminLogout() {
 if(sessionStorage.getItem('admin_logged_in')==='1') {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app').style.display = 'flex';
+  if(SB_SERVICE_KEY === 'PASTE_YOUR_SERVICE_ROLE_KEY_HERE') {
+    document.getElementById('service-key-warning').style.display = 'flex';
+  }
   setTimeout(refreshAll, 100);
 }
 
@@ -434,7 +550,9 @@ if(sessionStorage.getItem('admin_logged_in')==='1') {
 // SUPABASE
 // ═══════════════════════════
 function sbHeaders() {
-  return { 'Content-Type':'application/json', 'apikey':SB_KEY, 'Authorization':'Bearer '+SB_KEY };
+  // Use service role key for admin (bypasses Row Level Security)
+  var key = SB_SERVICE_KEY !== 'PASTE_YOUR_SERVICE_ROLE_KEY_HERE' ? SB_SERVICE_KEY : SB_KEY;
+  return { 'Content-Type':'application/json', 'apikey':key, 'Authorization':'Bearer '+key };
 }
 
 async function sbGet(table, filters, order) {
@@ -447,11 +565,13 @@ async function sbGet(table, filters, order) {
 }
 
 async function sbPatch(table, id, updates) {
+  var key = SB_SERVICE_KEY !== 'PASTE_YOUR_SERVICE_ROLE_KEY_HERE' ? SB_SERVICE_KEY : SB_KEY;
   var r = await fetch(SB_URL+'/rest/v1/'+table+'?id=eq.'+id, {
-    method:'PATCH', headers: Object.assign({},sbHeaders(),{'Prefer':'return=minimal'}),
+    method:'PATCH',
+    headers:{ 'Content-Type':'application/json','apikey':key,'Authorization':'Bearer '+key,'Prefer':'return=minimal' },
     body: JSON.stringify(updates)
   });
-  if(!r.ok){ var e=await r.json().catch(()=>{}); return {error:e}; }
+  if(!r.ok){ var e=await r.json().catch(function(){return{};}); console.error('PATCH error',e); return {error:e}; }
   return {error:null};
 }
 
@@ -461,7 +581,7 @@ async function sbPatch(table, id, updates) {
 async function refreshAll() {
   await loadBookings();
   await loadUsers();
-  renderCoachesMgmt();
+  await loadCoaches();
   renderCalendar();
   updateRevenuePanel();
 }
@@ -613,37 +733,278 @@ function calPrev() { calDate.setMonth(calDate.getMonth()-1); renderCalendar(); }
 function calNext() { calDate.setMonth(calDate.getMonth()+1); renderCalendar(); }
 
 // ═══════════════════════════
-// COACHES
+// COACHES CRUD
 // ═══════════════════════════
-var COACHES = [
-  {id:1,name:'James 教练',badge:'NCAA D1',sub:'NCAA D1 助理教练 · McLean VA',price:75},
-  {id:2,name:'Kevin 教练',badge:'ITA 认证',sub:'乔治华盛顿大学助理教练',price:70},
-  {id:3,name:'Alex 教练',badge:'PTR 高级',sub:'PTR高级认证 · DC联赛冠军',price:75},
-  {id:4,name:'Ryan 教练',badge:'USTA 高性能',sub:'前ATP挑战赛选手',price:95},
-  {id:5,name:'Michael 教练',badge:'USPTA 职业',sub:'USPTA职业 · Arlington VA',price:80},
-  {id:6,name:'David 教练',badge:'USTA 认证',sub:'国家青少年培训中心',price:75},
-  {id:7,name:'Wei 教练',badge:'国家二级',sub:'前北京青年队教练 · Fairfax',price:70},
-  {id:8,name:'Sarah 教练',badge:'PTR 认证',sub:'前WTA巡回赛选手',price:90},
-  {id:9,name:'Lisa 教练',badge:'USPTA 精英',sub:'前ACC大学联赛冠军',price:85},
-  {id:10,name:'Chen 教练',badge:'ITF 认证',sub:'中国网球协会高级教练',price:80},
-  {id:11,name:'Jennifer 教练',badge:'USPTA 精英',sub:'马里兰大学网球队',price:85},
-];
+var allCoaches = [];
+var editingCoachId = null;
+var cfTags = [];
+var cfAvail = [0,0,0,0,0,0,0]; // Sun-Sat
+
+async function loadCoaches() {
+  var res = await sbGet('coaches', [], 'created_at.asc');
+  allCoaches = res.data || [];
+  renderCoachesMgmt();
+  var ct = document.getElementById('coaches-count');
+  if(ct) ct.textContent = '共 '+allCoaches.length+' 位';
+}
 
 function renderCoachesMgmt() {
   var el = document.getElementById('coaches-mgmt-list');
-  el.innerHTML = COACHES.map(c => {
-    var bks = allBookings.filter(b=>b.status==='confirmed');
-    var count = Math.floor(Math.random()*8); // placeholder until coach_id is linked
-    var rev = count * c.price;
-    return '<div class="coach-row">'
-      +'<div class="coach-ava" style="background:var(--green-light);">🎾</div>'
-      +'<div style="flex:1;">'
-      +'<div class="coach-nm">'+c.name+' <span style="font-size:10px;background:var(--green-light);color:var(--green);padding:2px 7px;border-radius:6px;font-weight:700;">'+c.badge+'</span></div>'
-      +'<div class="coach-info">'+c.sub+' · $'+c.price+'/时</div>'
+  if(!el) return;
+  if(allCoaches.length === 0) {
+    el.innerHTML = '<div class="empty-st"><div class="empty-st-icon">🎾</div><div style="font-weight:600;margin-bottom:4px;">还没有教练</div><div style="font-size:12px;">点击上方「添加新教练」开始</div></div>';
+    return;
+  }
+  el.innerHTML = allCoaches.map(function(c) {
+    var tags = (c.tags||[]).slice(0,3).map(function(t){
+      return '<span class="coach-mgmt-tag">'+t+'</span>';
+    }).join('');
+    var avDays = ['日','一','二','三','四','五','六'];
+    var avail = (c.available_days||[]).map(function(d){ return '<span style="font-size:10px;background:#e8f5e9;color:#1a6b3a;padding:1px 5px;border-radius:4px;font-weight:600;">'+d+'</span>'; }).join(' ');
+    return '<div class="coach-mgmt-card">'
+      +'<div class="coach-mgmt-ava" style="background:linear-gradient(135deg,#0d3b23,#2d9a57);">'
+      +(c.photo_url ? '<img src="'+c.photo_url+'" alt="">' : '🎾')
       +'</div>'
-      +'<div class="coach-stats"><div class="coach-stat-val">$'+rev+'</div><div class="coach-stat-lbl">预计收入</div></div>'
+      +'<div style="flex:1;min-width:0;">'
+      +'<div class="coach-mgmt-name">'+c.name
+      +' <span style="font-size:10px;background:#e8f5e9;color:#1a6b3a;padding:2px 8px;border-radius:6px;font-weight:700;">'+c.badge+'</span></div>'
+      +'<div class="coach-mgmt-sub">'+c.sub+'</div>'
+      +'<div class="coach-mgmt-meta">'+tags
+      +(c.location?'<span style="font-size:10px;color:#999;">📍'+c.location+'</span>':'')
+      +(c.lang?'<span style="font-size:10px;color:#999;">🗣 '+c.lang+'</span>':'')
+      +'</div>'
+      +(avail ? '<div style="margin-top:5px;display:flex;gap:3px;">'+avail+'</div>' : '')
+      +'</div>'
+      +'<div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">'
+      +'<div style="text-align:right;">'
+      +'<div class="coach-mgmt-price">$'+c.price+'<span style="font-size:11px;font-weight:400;color:#999;">/时</span></div>'
+      +'</div>'
+      +'<button class="coach-edit-btn" data-cid="'+c.id+'" onclick="openCoachForm(this.dataset.cid)">✏️ 编辑</button>'
+      +'</div>'
       +'</div>';
   }).join('');
+}
+
+// ── FORM OPEN/CLOSE ──
+var dayNames = ['周日','周一','周二','周三','周四','周五','周六'];
+
+function openCoachForm(coachId) {
+  editingCoachId = coachId;
+  cfTags = [];
+  cfAvail = [0,0,0,0,0,0,0];
+
+  // Build availability grid
+  var grid = document.getElementById('cf-avail-grid');
+  grid.innerHTML = dayNames.map(function(d,i){
+    return '<div class="avail-day">'
+      +'<span class="avail-day-lbl">'+d+'</span>'
+      +'<button class="avail-toggle" id="avail-'+i+'" onclick="toggleAvail('+i+')">'
+      +(i===6?'✓':'✕')+'</button>'
+      +'</div>';
+  }).join('');
+  // Default Saturday on
+  cfAvail[6] = 1;
+  document.getElementById('avail-6').classList.add('on');
+
+  if(coachId) {
+    // Edit mode
+    var c = allCoaches.find(function(x){ return x.id===coachId; });
+    if(!c) return;
+    document.getElementById('cf-title').textContent = '编辑教练';
+    document.getElementById('cf-delete-btn').style.display = 'block';
+    document.getElementById('cf-name').value = c.name||'';
+    document.getElementById('cf-badge').value = c.badge||'';
+    document.getElementById('cf-sub').value = c.sub||'';
+    document.getElementById('cf-lang').value = c.lang||'中文 · English';
+    document.getElementById('cf-region').value = c.region||'dc';
+    document.getElementById('cf-location').value = c.location||'';
+    document.getElementById('cf-price').value = c.price||75;
+    document.getElementById('cf-bio').value = c.bio||'';
+    document.getElementById('cf-utr').value = c.utr||'';
+    document.getElementById('cf-ranking').value = c.ranking||'';
+    // Tags
+    cfTags = c.tags||[];
+    renderTagChips();
+    // Availability
+    if(c.available_days && c.available_days.length) {
+      cfAvail = [0,0,0,0,0,0,0];
+      c.available_days.forEach(function(d){
+        var idx = dayNames.indexOf(d);
+        if(idx>=0){ cfAvail[idx]=1; document.getElementById('avail-'+idx).classList.add('on'); document.getElementById('avail-'+idx).textContent='✓'; }
+      });
+    }
+  } else {
+    // Add mode
+    document.getElementById('cf-title').textContent = '添加新教练';
+    document.getElementById('cf-delete-btn').style.display = 'none';
+    ['cf-name','cf-badge','cf-sub','cf-location','cf-bio','cf-utr','cf-ranking'].forEach(function(id){
+      document.getElementById(id).value='';
+    });
+    document.getElementById('cf-price').value = 75;
+    document.getElementById('cf-lang').value = '中文 · English';
+    document.getElementById('cf-region').value = 'dc';
+    cfTags = [];
+    renderTagChips();
+  }
+
+  document.getElementById('cf-err').style.display = 'none';
+  document.getElementById('coach-form-overlay').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCoachForm() {
+  document.getElementById('coach-form-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function toggleAvail(idx) {
+  cfAvail[idx] = cfAvail[idx] ? 0 : 1;
+  var btn = document.getElementById('avail-'+idx);
+  btn.classList.toggle('on', cfAvail[idx]===1);
+  btn.textContent = cfAvail[idx] ? '✓' : '✕';
+}
+
+// ── TAGS ──
+function handleTagInput(e) {
+  if(e.key==='Enter' || e.key===',') {
+    e.preventDefault();
+    var val = e.target.value.trim().replace(',','');
+    if(val && !cfTags.includes(val)) {
+      cfTags.push(val);
+      renderTagChips();
+    }
+    e.target.value = '';
+  } else if(e.key==='Backspace' && e.target.value==='' && cfTags.length>0) {
+    cfTags.pop();
+    renderTagChips();
+  }
+}
+
+function removeTag(idx) {
+  cfTags.splice(idx,1);
+  renderTagChips();
+}
+
+function renderTagChips() {
+  var container = document.getElementById('cf-tags-input');
+  var existingInput = document.getElementById('cf-tag-inp');
+  container.innerHTML = '';
+  cfTags.forEach(function(t,i){
+    var chip = document.createElement('div');
+    chip.className = 'tag-chip';
+    chip.innerHTML = t+'<span class="tag-chip-x" onclick="removeTag('+i+')">×</span>';
+    container.appendChild(chip);
+  });
+  var inp = document.createElement('input');
+  inp.id = 'cf-tag-inp';
+  inp.placeholder = cfTags.length===0 ? '添加标签… (回车确认)' : '';
+  inp.onkeydown = handleTagInput;
+  container.appendChild(inp);
+}
+
+// ── SAVE ──
+async function saveCoach() {
+  var name = document.getElementById('cf-name').value.trim();
+  var badge = document.getElementById('cf-badge').value.trim();
+  var sub = document.getElementById('cf-sub').value.trim();
+  var price = parseInt(document.getElementById('cf-price').value)||75;
+  var errEl = document.getElementById('cf-err');
+  errEl.style.display = 'none';
+
+  if(!name){ errEl.textContent='⚠️ 请填写教练姓名'; errEl.style.display='block'; return; }
+  if(!badge){ errEl.textContent='⚠️ 请填写认证标签'; errEl.style.display='block'; return; }
+  if(!sub){ errEl.textContent='⚠️ 请填写副标题'; errEl.style.display='block'; return; }
+
+  var availDays = dayNames.filter(function(_,i){ return cfAvail[i]===1; });
+
+  var data = {
+    name: name,
+    badge: badge,
+    sub: sub,
+    lang: document.getElementById('cf-lang').value,
+    region: document.getElementById('cf-region').value,
+    location: document.getElementById('cf-location').value.trim()||null,
+    price: price,
+    bio: document.getElementById('cf-bio').value.trim()||null,
+    tags: cfTags,
+    available_days: availDays,
+    utr: document.getElementById('cf-utr').value.trim()||null,
+    ranking: document.getElementById('cf-ranking').value.trim()||null
+  };
+
+  var btn = document.querySelector('.cf-save');
+  btn.disabled = true; btn.textContent = '保存中…';
+
+  var res;
+  try {
+    if(editingCoachId) {
+      res = await sbPatch('coaches', editingCoachId, data);
+    } else {
+      res = await sbInsert('coaches', data);
+    }
+  } catch(e) {
+    res = { error: { message: e.message } };
+  }
+
+  btn.disabled = false; btn.textContent = '保存教练';
+
+  if(res && res.error) {
+    var msg = res.error.message || res.error.hint || JSON.stringify(res.error);
+    errEl.textContent = '❌ 保存失败：' + msg;
+    errEl.style.display = 'block';
+    console.error('Save coach error:', res.error);
+    return;
+  }
+
+  showToast(editingCoachId ? '✅ 教练信息已更新' : '✅ 教练已添加', 'success');
+  closeCoachForm();
+  await loadCoaches();
+}
+
+// ── DELETE ──
+async function deleteCoach() {
+  if(!editingCoachId) return;
+  var c = allCoaches.find(function(x){ return x.id===editingCoachId; });
+  if(!confirm("确定要删除此教练吗？\n\n此操作不可撤销。")) return;
+
+  var res;
+  try {
+    res = await sbDelete('coaches', editingCoachId);
+  } catch(e) {
+    res = { error: { message: e.message } };
+  }
+  if(res && res.error) {
+    var msg = res.error.message || JSON.stringify(res.error);
+    showToast('删除失败：' + msg, 'error');
+    console.error('Delete coach error:', res.error);
+    return;
+  }
+  showToast('教练已删除', 'success');
+  closeCoachForm();
+  await loadCoaches();
+}
+
+// ── SUPABASE INSERT for coaches ──
+async function sbInsert(table, data) {
+  var key = SB_SERVICE_KEY !== 'PASTE_YOUR_SERVICE_ROLE_KEY_HERE' ? SB_SERVICE_KEY : SB_KEY;
+  var r = await fetch(SB_URL+'/rest/v1/'+table, {
+    method:'POST',
+    headers:{ 'Content-Type':'application/json','apikey':key,'Authorization':'Bearer '+key,'Prefer':'return=minimal' },
+    body: JSON.stringify(data)
+  });
+  if(!r.ok){ var e=await r.json().catch(function(){return{};}); return {error:e}; }
+  return {error:null};
+}
+
+// ── SUPABASE DELETE ──
+async function sbDelete(table, id) {
+  var key = SB_SERVICE_KEY !== 'PASTE_YOUR_SERVICE_ROLE_KEY_HERE' ? SB_SERVICE_KEY : SB_KEY;
+  var r = await fetch(SB_URL+'/rest/v1/'+table+'?id=eq.'+id, {
+    method:'DELETE',
+    headers:{ 'Content-Type':'application/json','apikey':key,'Authorization':'Bearer '+key }
+  });
+  if(!r.ok){ var e=await r.json().catch(function(){return{};}); return {error:e}; }
+  return {error:null};
 }
 
 // ═══════════════════════════
@@ -707,7 +1068,7 @@ function showPanel(id, navEl) {
   document.getElementById('topbar-sub').textContent = titles[1];
   if(id==='bookings') renderBookingsTable();
   if(id==='calendar') renderCalendar();
-  if(id==='coaches') renderCoachesMgmt();
+  if(id==='coaches') loadCoaches();
   if(id==='users') loadUsers();
 }
 

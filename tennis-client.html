@@ -20,7 +20,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 #auth-screen {
   position: fixed; inset: 0; z-index: 9000;
   background: linear-gradient(135deg, #0a2e1a 0%, #0d3b23 50%, #1a5c38 100%);
-  display: flex; align-items: center; justify-content: center;
+  display: none; align-items: center; justify-content: center;
 }
 .auth-card {
   background: white; border-radius: 24px;
@@ -78,8 +78,8 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 .auth-confirm-title { font-size: 18px; font-weight: 900; margin-bottom: 8px; }
 .auth-confirm-sub { font-size: 13px; color: var(--mute); line-height: 1.6; }
 
-/* ── MAIN APP (hidden until logged in) ── */
-#app { display: none; width: 100%; height: 100vh; }
+/* ── MAIN APP ── */
+#app { display: flex; width: 100%; height: 100vh; }
 
 /* ── SIDEBAR ── */
 .sidebar {
@@ -530,6 +530,44 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
   </div>
 </div>
 
+<!-- LOGIN GATE MODAL -->
+<div id="login-gate" style="display:none;position:fixed;inset:0;z-index:5000;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;" onclick="if(event.target===this)closeLoginGate()">
+  <div style="background:white;border-radius:20px;padding:36px 32px;width:400px;max-width:95vw;animation:popIn 0.25s cubic-bezier(0.16,1,0.3,1);">
+    <div style="text-align:center;margin-bottom:22px;">
+      <div style="font-size:40px;margin-bottom:10px;">🔐</div>
+      <div style="font-size:20px;font-weight:900;margin-bottom:6px;">登录后才能预约</div>
+      <div style="font-size:13px;color:#999;line-height:1.5;">请先登录或注册账号<br>预约记录将保存到你的账户</div>
+    </div>
+
+    <div style="display:flex;background:#f0f2f5;border-radius:12px;padding:4px;margin-bottom:20px;">
+      <div id="gate-tab-login" style="flex:1;padding:9px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;border-radius:9px;background:white;color:#1a6b3a;box-shadow:0 2px 8px rgba(0,0,0,0.1);" onclick="switchGateTab('login')">登录</div>
+      <div id="gate-tab-register" style="flex:1;padding:9px;text-align:center;font-size:13px;font-weight:500;cursor:pointer;border-radius:9px;color:#999;" onclick="switchGateTab('register')">注册</div>
+    </div>
+
+    <div id="gate-name-field" style="display:none;margin-bottom:12px;">
+      <div style="font-size:12px;font-weight:600;color:#555;margin-bottom:5px;">姓名</div>
+      <input id="gate-name" type="text" placeholder="你的姓名" style="width:100%;height:42px;border:1.5px solid #e8e8e8;border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;">
+    </div>
+    <div style="margin-bottom:12px;">
+      <div style="font-size:12px;font-weight:600;color:#555;margin-bottom:5px;">邮箱</div>
+      <input id="gate-email" type="email" placeholder="your@email.com" style="width:100%;height:42px;border:1.5px solid #e8e8e8;border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;" onkeydown="if(event.key==='Enter')submitGate()">
+    </div>
+    <div style="margin-bottom:6px;">
+      <div style="font-size:12px;font-weight:600;color:#555;margin-bottom:5px;">密码</div>
+      <input id="gate-password" type="password" placeholder="至少 6 位" style="width:100%;height:42px;border:1.5px solid #e8e8e8;border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;" onkeydown="if(event.key==='Enter')submitGate()">
+    </div>
+
+    <div id="gate-err" style="display:none;background:#fdecea;border-radius:8px;padding:10px 14px;font-size:12px;color:#e53935;margin-top:10px;"></div>
+
+    <button id="gate-submit-btn" onclick="submitGate()" style="width:100%;height:48px;margin-top:16px;background:linear-gradient(135deg,#1a6b3a,#2d9a57);color:white;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 16px rgba(26,107,58,0.3);">
+      登录账号
+    </button>
+    <div style="text-align:center;margin-top:12px;">
+      <span style="font-size:12px;color:#999;cursor:pointer;" onclick="closeLoginGate()">稍后再说，先浏览教练</span>
+    </div>
+  </div>
+</div>
+
 <script>
 // ═══════════════════════════
 // CONFIG
@@ -688,7 +726,7 @@ function logout() {
   document.getElementById('auth-screen').style.display = 'flex';
 }
 
-// Check for existing session on load
+// ── GUEST MODE: app loads without login ──
 function checkSession() {
   // Check URL for OAuth callback token
   var hash = window.location.hash;
@@ -697,37 +735,56 @@ function checkSession() {
     var token = params.get('access_token');
     if(token) {
       fetch(SB_URL+'/auth/v1/user', { headers: sbHeaders(token) })
-        .then(r=>r.json()).then(user=>{
+        .then(function(r){return r.json();}).then(function(user){
           if(user.id) {
-            currentUser = { id:user.id, email:user.email, name:user.user_metadata?.full_name||user.email.split('@')[0], token };
+            currentUser = { id:user.id, email:user.email, name:(user.user_metadata&&user.user_metadata.full_name)||user.email.split('@')[0], token:token };
             localStorage.setItem('sb_session', JSON.stringify(currentUser));
             window.history.replaceState(null,'',window.location.pathname);
-            launchApp();
+            onUserLoggedIn();
           }
-        }).catch(()=>{});
+        }).catch(function(){});
       return;
     }
   }
-  // Check localStorage
+  // Check localStorage for saved session
   var saved = localStorage.getItem('sb_session');
   if(saved) {
     try {
       currentUser = JSON.parse(saved);
-      launchApp();
+      onUserLoggedIn();
     } catch(e) { localStorage.removeItem('sb_session'); }
+  }
+  // Either way, show app in guest mode
+  initApp();
+}
+
+function onUserLoggedIn() {
+  // Update UI with user info
+  document.getElementById('sb-name').textContent = currentUser.name;
+  document.getElementById('sb-email').textContent = currentUser.email;
+  document.getElementById('hero-greeting').textContent = '👋 你好，' + currentUser.name + '！';
+  // Show logout, hide login prompt
+  document.getElementById('sb-login-btn') && (document.getElementById('sb-login-btn').style.display='none');
+  document.getElementById('sb-user-info') && (document.getElementById('sb-user-info').style.display='flex');
+  loadMyBookings();
+}
+
+function initApp() {
+  // Initialize app for all users (guest or logged in)
+  renderCoaches();
+  renderHomeCoaches('all');
+  // Update sidebar for guest
+  if(!currentUser) {
+    document.getElementById('sb-name').textContent = '游客';
+    document.getElementById('sb-email').textContent = '登录后可预约课程';
   }
 }
 
 function launchApp() {
+  // Called after successful login from auth screen
   document.getElementById('auth-screen').style.display = 'none';
-  document.getElementById('app').style.display = 'flex';
-  // Set user info in sidebar
-  document.getElementById('sb-name').textContent = currentUser.name;
-  document.getElementById('sb-email').textContent = currentUser.email;
-  document.getElementById('hero-greeting').textContent = '👋 你好，' + currentUser.name + '！';
-  renderCoaches();
-  renderHomeCoaches('all');
-  loadMyBookings();
+  onUserLoggedIn();
+  initApp();
 }
 
 // ═══════════════════════════
@@ -853,6 +910,12 @@ function bkCardHTML(b) {
 // BOOKING MODAL
 // ═══════════════════════════
 function openBM(coachId) {
+  // Check if user is logged in - if not, show login gate
+  if(!currentUser) {
+    pendingBookingCoachId = coachId; // remember which coach they wanted
+    showLoginGate();
+    return;
+  }
   var c = COACHES.find(x=>x.id===coachId)||COACHES[0];
   bmState = { coachId:c.id, coachName:c.name, price:parseInt(c.price)||75, date:null, time:null, court:null };
   document.getElementById('bm-nm').textContent = c.name;
@@ -973,6 +1036,138 @@ function mobileNav(id, el) {
   document.querySelectorAll('.mob-nav-item').forEach(i=>i.classList.remove('active'));
   el.classList.add('active');
   showPanel(id, null);
+}
+
+// ═══════════════════════════
+// LOGIN GATE
+// ═══════════════════════════
+var pendingBookingCoachId = null;
+var gateMode = 'login';
+
+function showLoginGate() {
+  gateMode = 'login';
+  switchGateTab('login');
+  document.getElementById('gate-email').value = '';
+  document.getElementById('gate-password').value = '';
+  document.getElementById('gate-name').value = '';
+  document.getElementById('gate-err').style.display = 'none';
+  document.getElementById('login-gate').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLoginGate() {
+  document.getElementById('login-gate').style.display = 'none';
+  document.body.style.overflow = '';
+  pendingBookingCoachId = null;
+}
+
+function switchGateTab(mode) {
+  gateMode = mode;
+  var isLogin = mode === 'login';
+  document.getElementById('gate-tab-login').style.cssText =
+    'flex:1;padding:9px;text-align:center;font-size:13px;cursor:pointer;border-radius:9px;' +
+    (isLogin ? 'background:white;font-weight:700;color:#1a6b3a;box-shadow:0 2px 8px rgba(0,0,0,0.1);' : 'font-weight:500;color:#999;');
+  document.getElementById('gate-tab-register').style.cssText =
+    'flex:1;padding:9px;text-align:center;font-size:13px;cursor:pointer;border-radius:9px;' +
+    (!isLogin ? 'background:white;font-weight:700;color:#1a6b3a;box-shadow:0 2px 8px rgba(0,0,0,0.1);' : 'font-weight:500;color:#999;');
+  document.getElementById('gate-name-field').style.display = isLogin ? 'none' : 'block';
+  document.getElementById('gate-submit-btn').textContent = isLogin ? '登录账号' : '免费注册';
+  document.getElementById('gate-err').style.display = 'none';
+}
+
+async function submitGate() {
+  var email = document.getElementById('gate-email').value.trim();
+  var password = document.getElementById('gate-password').value;
+  var name = document.getElementById('gate-name').value.trim();
+  var errEl = document.getElementById('gate-err');
+  errEl.style.display = 'none';
+
+  if(!email||!email.includes('@')){ errEl.textContent='⚠️ 请输入有效邮箱'; errEl.style.display='block'; return; }
+  if(!password||password.length<6){ errEl.textContent='⚠️ 密码至少 6 位'; errEl.style.display='block'; return; }
+  if(gateMode==='register'&&!name){ errEl.textContent='⚠️ 请填写姓名'; errEl.style.display='block'; return; }
+
+  var btn = document.getElementById('gate-submit-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span>处理中…';
+
+  var endpoint = gateMode==='login' ? '/auth/v1/token?grant_type=password' : '/auth/v1/signup';
+  var body = { email, password };
+  if(gateMode==='register') body.data = { full_name: name };
+
+  var r = await fetch(SB_URL+endpoint, {
+    method:'POST',
+    headers:{ 'Content-Type':'application/json', 'apikey':SB_KEY },
+    body: JSON.stringify(body)
+  });
+  var data = await r.json();
+
+  btn.disabled = false;
+  btn.textContent = gateMode==='login' ? '登录账号' : '免费注册';
+
+  if(!r.ok || data.error) {
+    var msg = data.error_description || data.msg || data.message || '操作失败';
+    if(msg.includes('Invalid login')) msg = '邮箱或密码错误';
+    if(msg.includes('already registered')) msg = '该邮箱已注册，请直接登录';
+    errEl.textContent = '⚠️ ' + msg;
+    errEl.style.display = 'block';
+    return;
+  }
+
+  // Handle register without access_token
+  if(gateMode==='register' && !data.access_token) {
+    var loginRes = await fetch(SB_URL+'/auth/v1/token?grant_type=password', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'apikey':SB_KEY },
+      body: JSON.stringify({ email, password })
+    });
+    var loginData = await loginRes.json();
+    if(loginData.access_token) data = loginData;
+    else {
+      errEl.textContent = '注册成功！请用邮箱和密码登录';
+      switchGateTab('login');
+      document.getElementById('gate-email').value = email;
+      return;
+    }
+  }
+
+  // Success - set current user
+  currentUser = {
+    id: data.user.id,
+    email: data.user.email,
+    name: (data.user.user_metadata&&data.user.user_metadata.full_name)||data.user.email.split('@')[0],
+    token: data.access_token
+  };
+  localStorage.setItem('sb_session', JSON.stringify(currentUser));
+
+  // Close gate and update UI
+  document.getElementById('login-gate').style.display = 'none';
+  document.body.style.overflow = '';
+  onUserLoggedIn();
+
+  // Continue to booking if they were trying to book
+  if(pendingBookingCoachId) {
+    var cid = pendingBookingCoachId;
+    pendingBookingCoachId = null;
+    setTimeout(function(){ openBM(cid); }, 200);
+  }
+}
+
+// ─── Update logout to go back to guest mode ───
+var origLogout = typeof logout === 'function' ? logout : null;
+function logout() {
+  localStorage.removeItem('sb_session');
+  currentUser = null;
+  document.getElementById('sb-name').textContent = '游客';
+  document.getElementById('sb-email').textContent = '登录后可预约课程';
+  showToastClient('已退出登录');
+}
+
+function showToastClient(msg) {
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:white;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;z-index:9999;';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(function(){ t.remove(); }, 2000);
 }
 
 // ═══════════════════════════
