@@ -200,11 +200,7 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);height:100vh;ove
      MAIN APP
 ════════════════════════════ -->
 <div id="app">
-  <!-- Service key warning -->
-  <div id="service-key-warning" style="display:none;position:fixed;top:0;left:0;right:0;z-index:9999;background:#f59e0b;color:#451a03;padding:10px 20px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:10px;">
-    ⚠️ 未设置 service_role key — 可能看不到预约数据。请在代码中填入 SB_SERVICE_KEY。
-    <span style="margin-left:auto;cursor:pointer;" onclick="this.parentElement.style.display='none'">✕</span>
-  </div>
+
   <!-- Sidebar -->
   <div class="sidebar">
     <div class="sb-logo">
@@ -519,9 +515,6 @@ function doLogin() {
     sessionStorage.setItem('admin_logged_in','1');
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').style.display = 'flex';
-    if(SB_SERVICE_KEY === 'PASTE_YOUR_SERVICE_ROLE_KEY_HERE') {
-      document.getElementById('service-key-warning').style.display = 'flex';
-    }
     refreshAll();
   } else {
     err.textContent = '⚠️ 账号或密码错误';
@@ -540,9 +533,6 @@ function adminLogout() {
 if(sessionStorage.getItem('admin_logged_in')==='1') {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app').style.display = 'flex';
-  if(SB_SERVICE_KEY === 'PASTE_YOUR_SERVICE_ROLE_KEY_HERE') {
-    document.getElementById('service-key-warning').style.display = 'flex';
-  }
   setTimeout(refreshAll, 100);
 }
 
