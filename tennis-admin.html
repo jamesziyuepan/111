@@ -449,8 +449,8 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);height:100vh;ove
 
           <div class="cf-sec" style="margin-top:16px;">可约时间段（9:00 - 21:00，点击选择/取消）</div>
           <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
-            <button class="hour-all-btn" onclick="hoursSelectAll()">全选</button>
-            <button class="hour-all-btn" onclick="hoursSelectNone()">清空</button>
+            <button class="hour-all-btn" onclick="hoursSelectAll()" type="button">全选</button>
+            <button class="hour-all-btn" onclick="hoursSelectNone()" type="button">清空</button>
             <span style="font-size:11px;color:var(--mute);">选中的时段将对学员开放</span>
           </div>
           <div class="hour-grid" id="cf-hour-grid"></div>
@@ -862,7 +862,7 @@ function buildHourGrid() {
   if(!grid) return;
   grid.innerHTML = ALL_HOURS.map(function(h) {
     var isOn = cfHours.indexOf(h) > -1;
-    return '<button class="hour-btn'+(isOn?' on':'')+'" data-hour="'+h+'" onclick="toggleHour(this)">'+h+'</button>';
+    return '<button class="hour-btn'+(isOn?' on':'')+'" data-hour="'+h+'" onclick="toggleHour(this)" type="button">'+h+'</button>';
   }).join('');
 }
 
@@ -959,7 +959,7 @@ function openCoachForm(coachId) {
   grid.innerHTML = dayNames.map(function(d,i){
     return '<div class="avail-day">'
       +'<span class="avail-day-lbl">'+d+'</span>'
-      +'<button class="avail-toggle" id="avail-'+i+'" onclick="toggleAvail('+i+')">'
+      +'<button class="avail-toggle" id="avail-'+i+'" onclick="toggleAvail('+i+')" type="button">'
       +(i===5?'✓':'✕')+'</button>'
       +'</div>';
   }).join('');
@@ -967,7 +967,11 @@ function openCoachForm(coachId) {
   cfAvail[5] = 1;
   document.getElementById('avail-5').classList.add('on');
 
-  var fields = ['cf-name','cf-badge','cf-sub','cf-location','cf-bio','cf-utr','cf-ranking','cf-achievements','cf-courts'];
+  // Build hour grid (reset to empty for new, filled for edit)
+  cfHours = [];
+  buildHourGrid();
+
+  var fields = ['cf-name','cf-badge','cf-sub','cf-location','cf-bio','cf-utr','cf-ranking','cf-achievements','cf-courts','cf-photo-url'];
 
   if(coachId) {
     var c = allCoaches.find(function(x){ return x.id===coachId; });
