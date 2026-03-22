@@ -385,6 +385,171 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
   .profile-main { margin-top:0; }
 }
 
+
+/* ── BOOKING MODAL (旧版样式) ── */
+.bk-overlay {
+  position: fixed; inset: 0; z-index: 2000;
+  background: rgba(0,0,0,0.55);
+  display: flex; align-items: center; justify-content: center;
+}
+.bk-modal {
+  background: var(--bg); border-radius: 20px;
+  width: 900px; max-width: 97vw; max-height: 93vh;
+  overflow-y: auto; padding: 28px;
+  animation: popIn 0.25s cubic-bezier(0.16,1,0.3,1);
+}
+.bk-modal::-webkit-scrollbar { width: 5px; }
+.bk-modal::-webkit-scrollbar-thumb { background: #ddd; border-radius: 3px; }
+.bk-modal-hd {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px;
+}
+.bk-modal-title { font-size: 20px; font-weight: 900; }
+.bk-modal-x { font-size: 24px; cursor: pointer; color: var(--mute); }
+.bk-modal-x:hover { color: var(--text); }
+
+.bk-layout { display: grid; grid-template-columns: 1fr 300px; gap: 20px; align-items: start; }
+.bk-steps { display: flex; flex-direction: column; gap: 16px; }
+.bk-step-card { background: white; border-radius: 14px; padding: 20px; box-shadow: 0 1px 8px rgba(0,0,0,0.06); }
+.bk-step-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.step-num {
+  width: 28px; height: 28px; background: var(--green); color: white;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800; flex-shrink: 0;
+}
+.step-lbl { font-size: 15px; font-weight: 700; }
+
+.type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.type-card {
+  border: 2px solid var(--border); border-radius: 12px;
+  padding: 16px; cursor: pointer; transition: all 0.15s;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.type-card:hover { border-color: var(--green-mid); }
+.type-card.selected { border-color: var(--green); background: var(--green-light); }
+.type-icon { font-size: 24px; margin-bottom: 4px; }
+.type-name { font-size: 13px; font-weight: 700; }
+.type-desc { font-size: 11px; color: var(--mute); }
+.type-price { font-size: 16px; font-weight: 900; color: var(--green); margin-top: 4px; }
+
+/* Calendar */
+.calendar-wrap { user-select: none; }
+.month-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.m-label { font-size: 15px; font-weight: 700; }
+.m-arrow {
+  width: 32px; height: 32px; border-radius: 8px; background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; cursor: pointer; transition: background 0.15s; border: none;
+}
+.m-arrow:hover { background: var(--green-light); }
+.week-head { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; margin-bottom: 6px; }
+.w-lbl { font-size: 11px; color: var(--mute); padding: 4px 0; font-weight: 700; }
+.w-lbl.avail-header { color: var(--green); }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+.cal-day {
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+  border-radius: 8px; font-size: 13px; cursor: pointer; transition: all 0.15s;
+}
+.cal-day.avail-day { font-weight: 700; color: var(--text); }
+.cal-day.avail-day:hover { background: var(--green-light); }
+.cal-day.today { background: var(--green-light); color: var(--green); font-weight: 700; }
+.cal-day.selected { background: var(--green) !important; color: white !important; font-weight: 700; }
+.cal-day.disabled { color: #ccc; cursor: default; }
+.cal-day.other-month { color: #ddd; cursor: default; }
+
+/* Time slots */
+.time-slots-bk { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.t-slot-bk {
+  background: var(--green-light); border: 1.5px solid transparent;
+  border-radius: 10px; padding: 10px; text-align: center;
+  cursor: pointer; transition: all 0.15s;
+}
+.t-slot-bk span:first-child { display: block; font-size: 13px; font-weight: 700; color: var(--green); }
+.t-slot-bk span:last-child { display: block; font-size: 10px; color: var(--green-mid); margin-top: 2px; }
+.t-slot-bk:hover, .t-slot-bk.selected { background: var(--green); border-color: var(--green); }
+.t-slot-bk:hover span, .t-slot-bk.selected span { color: white !important; }
+.t-slot-bk.taken { background: #f0f0f0; cursor: default; border-color: #eee; }
+.t-slot-bk.taken span { color: #ccc !important; }
+.notice-band {
+  background: var(--green-light); color: var(--green);
+  font-size: 12px; font-weight: 600; padding: 8px 14px;
+  border-radius: 8px; margin-bottom: 12px;
+}
+
+/* Court cards */
+.court-card {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px; border: 1.5px solid var(--border); border-radius: 12px;
+  cursor: pointer; transition: all 0.15s; margin-bottom: 10px; background: white;
+}
+.court-card:last-child { margin-bottom: 0; }
+.court-card:hover { border-color: var(--green-mid); }
+.court-card.selected { border-color: var(--green); background: var(--green-light); }
+.cc-name { display: block; font-size: 14px; font-weight: 700; }
+.cc-addr { display: block; font-size: 11px; color: var(--mute); margin-top: 2px; }
+.cc-area { display: inline-block; font-size: 10px; background: var(--green-light); color: var(--green); padding: 2px 8px; border-radius: 6px; margin-top: 5px; font-weight: 600; }
+.cc-check {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 1.5px solid var(--border); display: flex; align-items: center;
+  justify-content: center; font-size: 12px; color: transparent;
+  flex-shrink: 0; transition: all 0.15s;
+}
+.court-card.selected .cc-check { background: var(--green); border-color: var(--green); color: white; }
+
+/* Order panel */
+.bk-order-panel {
+  background: white; border-radius: 16px; padding: 20px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08); position: sticky; top: 0;
+}
+.bk-order-title { font-size: 15px; font-weight: 800; margin-bottom: 16px; }
+.coach-mini {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px; background: var(--bg); border-radius: 12px; margin-bottom: 16px;
+}
+.coach-mini-ava {
+  width: 40px; height: 40px; border-radius: 50%; overflow: hidden;
+  flex-shrink: 0; background: var(--green-light);
+  display: flex; align-items: center; justify-content: center; font-size: 18px;
+}
+.coach-mini-ava img { width: 100%; height: 100%; object-fit: cover; }
+.coach-mini-name { font-size: 13px; font-weight: 700; }
+.coach-mini-sub { font-size: 10px; color: var(--mute); margin-top: 2px; }
+.os-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid var(--bg); }
+.os-lbl { font-size: 12px; color: var(--mute); }
+.os-val { font-size: 12px; font-weight: 600; text-align: right; max-width: 150px; }
+.total-row { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding-top: 14px; border-top: 2px solid var(--border); }
+.total-lbl { font-size: 14px; font-weight: 700; }
+.total-price { font-size: 26px; font-weight: 900; color: var(--green); }
+.bk-confirm-btn {
+  width: 100%; margin-top: 14px; padding: 14px;
+  background: linear-gradient(135deg, var(--green), var(--green2));
+  color: white; border: none; border-radius: 12px;
+  font-size: 14px; font-weight: 800; cursor: pointer; font-family: inherit;
+  box-shadow: 0 4px 14px rgba(26,107,58,0.3); transition: opacity 0.15s;
+}
+.bk-confirm-btn:hover { opacity: 0.9; }
+.bk-confirm-btn.disabled { background: #e0e0e0; color: #aaa; box-shadow: none; cursor: default; }
+.bk-confirm-btn.disabled:hover { opacity: 1; }
+.bk-err-band { background: #fdecea; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: var(--red); margin-top: 10px; display: none; }
+
+/* Success state in modal */
+.bk-success-body { text-align: center; padding: 20px 0; display: none; }
+.bk-suc-icon { font-size: 52px; margin-bottom: 12px; }
+.bk-suc-title { font-size: 22px; font-weight: 900; margin-bottom: 6px; }
+.bk-suc-sub { font-size: 13px; color: var(--mute); margin-bottom: 18px; }
+.bk-suc-detail { background: var(--green-light); border-radius: 12px; padding: 16px; text-align: left; margin-bottom: 16px; }
+.bk-suc-row { display: flex; gap: 10px; font-size: 13px; margin-bottom: 6px; }
+.bk-suc-row:last-child { margin-bottom: 0; }
+.bk-suc-lbl { color: var(--mute); min-width: 50px; }
+.bk-suc-val { font-weight: 600; }
+
+@media (max-width: 768px) {
+  .bk-layout { grid-template-columns: 1fr !important; }
+  .bk-modal { padding: 18px 14px; border-radius: 0 !important; height: 100dvh !important; max-height: 100dvh !important; width: 100% !important; max-width: 100% !important; }
+  .bk-order-panel { position: static !important; }
+  .type-grid { grid-template-columns: 1fr !important; }
+  .time-slots-bk { grid-template-columns: repeat(3, 1fr) !important; }
+}
 </style>
 </head>
 <body>
@@ -591,73 +756,130 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
   </div>
 </div><!-- end app -->
 
-<!-- BOOKING MODAL -->
-<div class="bm-overlay" id="bm-overlay" style="display:none;" onclick="if(event.target===this)closeBM()">
-  <div class="bm-box">
+<!-- BOOKING MODAL (新版完整样式) -->
+<div class="bk-overlay" id="bm-overlay" style="display:none;" onclick="if(event.target===this)closeBM()">
+  <div class="bk-modal" id="bk-modal-inner">
+
+    <!-- Header -->
+    <div class="bk-modal-hd" id="bm-main-content">
+      <div class="bk-modal-title">📅 预约课程</div>
+      <div class="bk-modal-x" onclick="closeBM()">✕</div>
+    </div>
+
+    <!-- Main form -->
     <div id="bm-form">
-      <div class="bm-hd">
-        <div class="bm-title">📅 预约课程</div>
-        <div class="bm-x" onclick="closeBM()">✕</div>
-      </div>
-      <div class="bm-coach-bar">
-        <div class="bm-coach-ava" id="bm-ava">🎾</div>
-        <div>
-          <div class="bm-coach-nm" id="bm-nm">教练</div>
-          <div class="bm-coach-sub" id="bm-sub"></div>
+      <div class="bk-layout">
+        <!-- Left: steps -->
+        <div class="bk-steps">
+
+          <!-- Step 1: Course type -->
+          <div class="bk-step-card">
+            <div class="bk-step-head">
+              <div class="step-num">1</div>
+              <div class="step-lbl">选择课程类型</div>
+            </div>
+            <div class="type-grid" id="bk-type-grid">
+              <div class="type-card selected" onclick="bkSelectType(this,'网球入门 & 提升',75)">
+                <span class="type-icon">🎾</span>
+                <span class="type-name">网球入门 & 提升</span>
+                <span class="type-desc">1对1私教，60分钟</span>
+                <span class="type-price" id="bk-type-price1">$75</span>
+              </div>
+              <div class="type-card" onclick="bkSelectType(this,'运动表现 & 体能',75)">
+                <span class="type-icon">💪</span>
+                <span class="type-name">运动表现 & 体能</span>
+                <span class="type-desc">Strength & Conditioning</span>
+                <span class="type-price" id="bk-type-price2">$75</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Date calendar -->
+          <div class="bk-step-card">
+            <div class="bk-step-head">
+              <div class="step-num">2</div>
+              <div class="step-lbl">选择日期</div>
+            </div>
+            <div class="calendar-wrap">
+              <div class="month-nav">
+                <button class="m-arrow" onclick="bkChangeMonth(-1)">‹</button>
+                <span class="m-label" id="bk-month-label">2026年 三月</span>
+                <button class="m-arrow" onclick="bkChangeMonth(1)">›</button>
+              </div>
+              <div class="week-head" id="bk-week-head">
+                <span class="w-lbl">日</span><span class="w-lbl">一</span>
+                <span class="w-lbl">二</span><span class="w-lbl">三</span>
+                <span class="w-lbl">四</span><span class="w-lbl">五</span>
+                <span class="w-lbl">六</span>
+              </div>
+              <div class="cal-grid" id="bk-cal-grid"></div>
+              <div id="bk-avail-legend" style="margin-top:10px;font-size:11px;color:var(--mute);"></div>
+            </div>
+          </div>
+
+          <!-- Step 3: Time -->
+          <div class="bk-step-card">
+            <div class="bk-step-head">
+              <div class="step-num">3</div>
+              <div class="step-lbl">选择时间段</div>
+            </div>
+            <div class="notice-band" id="bk-avail-notice">请先选择日期</div>
+            <div class="time-slots-bk" id="bk-time-slots">
+              <!-- rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Step 4: Court -->
+          <div class="bk-step-card">
+            <div class="bk-step-head">
+              <div class="step-num">4</div>
+              <div class="step-lbl">选择球场</div>
+            </div>
+            <div id="bk-courts-list">
+              <!-- rendered dynamically from coach data -->
+            </div>
+          </div>
+
         </div>
-        <div class="bm-price" id="bm-pr">$75</div>
-      </div>
 
-      <div class="form-sec">课程类型</div>
-      <select class="form-inp" id="bm-type" style="width:100%;cursor:pointer;">
-        <option value="">请选择</option>
-        <option>网球入门</option>
-        <option>技术提升</option>
-        <option>运动表现 & 体能</option>
-        <option>青少年培训</option>
-      </select>
-
-      <div class="form-sec">选择日期</div>
-      <div id="bm-calendar" style="background:var(--bg);border-radius:12px;padding:14px;"></div>
-      <input type="hidden" id="bm-date">
-
-      <div class="form-sec">选择时间段</div>
-      <div class="slot-grid" id="bm-slots">
-        <div style="grid-column:1/-1;font-size:12px;color:var(--mute);padding:6px 0;">请先选择日期</div>
-      </div>
-
-      <div class="form-sec">选择球场</div>
-      <div class="court-list">
-        <div class="court-opt" onclick="selectCourt(this,'VA Highlands Park','Arlington, VA')">
-          <div><div class="court-nm">VA Highlands Park</div><div class="court-addr">📍 Arlington, VA</div></div>
-          <div class="court-chk">✓</div>
-        </div>
-        <div class="court-opt" onclick="selectCourt(this,'OneLife Fitness – McLean','McLean, VA')">
-          <div><div class="court-nm">OneLife Fitness – McLean</div><div class="court-addr">📍 McLean, VA</div></div>
-          <div class="court-chk">✓</div>
+        <!-- Right: order summary -->
+        <div class="bk-order-panel">
+          <div class="bk-order-title">📋 预约小结</div>
+          <div class="coach-mini" id="bk-coach-mini">
+            <div class="coach-mini-ava" id="bk-coach-ava">🎾</div>
+            <div>
+              <div class="coach-mini-name" id="bk-coach-name">—</div>
+              <div class="coach-mini-sub" id="bk-coach-sub">—</div>
+            </div>
+          </div>
+          <div class="os-row"><span class="os-lbl">课程类型</span><span class="os-val" id="bk-os-type">网球入门 & 提升</span></div>
+          <div class="os-row"><span class="os-lbl">日期时间</span><span class="os-val" id="bk-os-datetime">—</span></div>
+          <div class="os-row"><span class="os-lbl">球场</span><span class="os-val" id="bk-os-court">—</span></div>
+          <div class="total-row">
+            <span class="total-lbl">应付金额</span>
+            <span class="total-price" id="bk-total-price">$75</span>
+          </div>
+          <button class="bk-confirm-btn disabled" id="bk-confirm-btn" onclick="submitBM()">确认预约</button>
+          <div class="bk-err-band" id="bm-err"></div>
+          <div style="font-size:11px;color:var(--mute);text-align:center;margin-top:10px;">预约后24小时内可免费取消</div>
         </div>
       </div>
-
-      <div class="form-sec">备注（可选）</div>
-      <textarea class="form-inp" id="bm-notes" rows="2" style="height:auto;padding:10px 14px;resize:none;width:100%;" placeholder="初学者 / 有伤史 / 希望练发球…"></textarea>
-
-      <div class="bm-err" id="bm-err"></div>
-      <button class="bm-submit" id="bm-btn" onclick="submitBM()">确认预约 →</button>
-      <div style="font-size:11px;color:var(--mute);text-align:center;margin-top:8px;">提交后将收到确认邮件 · 24小时内可取消</div>
     </div>
 
-    <div class="bm-success" id="bm-success">
-      <div class="bm-suc-icon">🎉</div>
-      <div class="bm-suc-title">预约成功！</div>
-      <div class="bm-suc-sub">确认邮件已发送，请注意查收</div>
-      <div class="bm-suc-detail">
-        <div class="bm-suc-row"><span class="bm-suc-lbl">教练</span><span class="bm-suc-val" id="suc-coach">—</span></div>
-        <div class="bm-suc-row"><span class="bm-suc-lbl">日期</span><span class="bm-suc-val" id="suc-date">—</span></div>
-        <div class="bm-suc-row"><span class="bm-suc-lbl">时间</span><span class="bm-suc-val" id="suc-time">—</span></div>
-        <div class="bm-suc-row"><span class="bm-suc-lbl">球场</span><span class="bm-suc-val" id="suc-court">—</span></div>
+    <!-- Success state -->
+    <div class="bk-success-body" id="bm-success">
+      <div class="bk-suc-icon">🎉</div>
+      <div class="bk-suc-title">预约成功！</div>
+      <div class="bk-suc-sub">请等待教练确认，确认后将收到通知</div>
+      <div class="bk-suc-detail">
+        <div class="bk-suc-row"><span class="bk-suc-lbl">教练</span><span class="bk-suc-val" id="suc-coach">—</span></div>
+        <div class="bk-suc-row"><span class="bk-suc-lbl">日期</span><span class="bk-suc-val" id="suc-date">—</span></div>
+        <div class="bk-suc-row"><span class="bk-suc-lbl">时间</span><span class="bk-suc-val" id="suc-time">—</span></div>
+        <div class="bk-suc-row"><span class="bk-suc-lbl">球场</span><span class="bk-suc-val" id="suc-court">—</span></div>
       </div>
-      <button style="width:100%;padding:12px;border-radius:12px;background:var(--green-light);color:var(--green);border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;" onclick="closeBM()">返回首页</button>
+      <button style="width:100%;padding:13px;background:var(--green-light);color:var(--green);border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;" onclick="closeBM()">返回首页</button>
     </div>
+
   </div>
 </div>
 
@@ -1023,6 +1245,11 @@ function coachCardHTML(c) {
 // ═══════════════════════════════════════
 // BOOKING MODAL
 // ═══════════════════════════════════════
+// ═══════════════════════════════════════
+// BOOKING MODAL — Full featured
+// ═══════════════════════════════════════
+var bkCalState = { year: new Date().getFullYear(), month: new Date().getMonth() };
+
 function openBM(coachId) {
   if(!currentUser) {
     pendingBookingCoachId = coachId;
@@ -1032,117 +1259,1400 @@ function openBM(coachId) {
   var c = COACHES.find(function(x){ return String(x.id)===String(coachId); });
   if(!c) return;
 
-  // Build set of available weekday numbers (0=Sun,1=Mon,...,6=Sat)
-  // avail is [0,0,0,0,0,1,0] array OR we derive from available_days text array
+  // Build available weekday set from coach data
   var availDays = new Set();
   if(c.avail && c.avail.length === 7) {
     c.avail.forEach(function(v,i){ if(v) availDays.add(i); });
   } else if(c.available_days && c.available_days.length) {
-    var dayMap = {'周日':0,'周一':1,'周二':2,'周三':3,'周四':4,'周五':5,'周六':6,
-                  'Sunday':0,'Monday':1,'Tuesday':2,'Wednesday':3,'Thursday':4,'Friday':5,'Saturday':6};
+    var dayMap = {'周日':0,'周一':1,'周二':2,'周三':3,'周四':4,'周五':5,'周六':6};
     c.available_days.forEach(function(d){ if(dayMap[d]!==undefined) availDays.add(dayMap[d]); });
   } else {
-    availDays.add(6); // fallback: Saturday
+    availDays.add(6); // fallback Saturday
   }
 
-  bmState = { coachId:c.id, coachName:c.name, price:c.priceNum||75, date:null, time:null, court:null, availDays:availDays };
-  document.getElementById('bm-nm').textContent = c.name;
-  document.getElementById('bm-sub').textContent = c.sub||'';
-  document.getElementById('bm-pr').textContent = '$'+(c.priceNum||75);
-  document.getElementById('bm-type').value = '';
-  if(document.getElementById('bm-notes')) document.getElementById('bm-notes').value = '';
-  document.getElementById('bm-slots').innerHTML = '<div style="grid-column:1/-1;font-size:12px;color:var(--mute);padding:6px 0;">请先选择日期</div>';
-  document.querySelectorAll('.court-opt').forEach(function(el){ el.classList.remove('sel'); });
+  bmState = { coachId:c.id, coachName:c.name, price:c.priceNum||75,
+    date:null, dateLabel:null, time:null, court:null, availDays:availDays };
+
+  // Coach info in summary panel
+  document.getElementById('bk-coach-name').textContent = c.name;
+  document.getElementById('bk-coach-sub').textContent = (c.utr?'UTR '+c.utr+' · ':'')+c.location;
+  document.getElementById('bk-total-price').textContent = '$'+(c.priceNum||75);
+  document.getElementById('bk-os-type').textContent = '网球入门 & 提升';
+  document.getElementById('bk-os-datetime').textContent = '—';
+  document.getElementById('bk-os-court').textContent = '—';
+
+  // Coach avatar
+  var ava = document.getElementById('bk-coach-ava');
+  var isJames = c.name && c.name.indexOf('James') > -1;
+  if(c.photo_url) ava.innerHTML = '<img src="'+c.photo_url+'" alt="">';
+  else if(isJames) ava.innerHTML = '<img src="'+JAMES_PHOTO+'" alt="">';
+  else ava.innerHTML = '🎾';
+
+  // Update type card prices
+  var p = '$'+(c.priceNum||75);
+  var p1 = document.getElementById('bk-type-price1');
+  var p2 = document.getElementById('bk-type-price2');
+  if(p1) p1.textContent = p;
+  if(p2) p2.textContent = p;
+
+  // Reset type selection
+  document.querySelectorAll('.type-card').forEach(function(el){ el.classList.remove('selected'); });
+  var firstType = document.querySelector('.type-card');
+  if(firstType) firstType.classList.add('selected');
+
+  // Build courts from coach data
+  var courtsEl = document.getElementById('bk-courts-list');
+  var courtList = c.courts && c.courts.length ? c.courts : [{name:'VA Highlands Park',addr:'Arlington, Virginia'},{name:'OneLife Fitness – McLean',addr:'McLean, Virginia'}];
+  courtsEl.innerHTML = courtList.map(function(ct, ci){
+    return '<div class="court-card" data-court="'+ci+'" onclick="bkSelectCourt(this,this.dataset.name)" data-name="'+ct.name+'">'
+      +'<div><span class="cc-name">'+ct.name+'</span>'
+      +'<span class="cc-addr">'+ct.addr+'</span>'
+      +'<span class="cc-area">N. Virginia</span></div>'
+      +'<div class="cc-check">✓</div></div>';
+  }).join('');
+html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎾 网球教练平台 · DC/MD/VA</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #1a6b3a; --green2: #2d9a57; --green-light: #e8f5e9;
+  --green-mid: #52b788; --bg: #f0f2f5; --card: #fff;
+  --text: #1a1a1a; --sub: #555; --mute: #999;
+  --border: #e8e8e8; --amber: #f59e0b; --red: #e53935;
+  --sidebar-w: 220px; --radius: 14px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 100vh; overflow: hidden; display: flex; }
+
+/* ── AUTH SCREEN ── */
+#auth-screen {
+  position: fixed; inset: 0; z-index: 9000;
+  background: linear-gradient(135deg, #0a2e1a 0%, #0d3b23 50%, #1a5c38 100%);
+  display: none; align-items: center; justify-content: center;
+}
+.auth-card {
+  background: white; border-radius: 24px;
+  padding: 40px 36px; width: 420px; max-width: 95vw;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+}
+.auth-logo { text-align: center; margin-bottom: 28px; }
+.auth-logo-icon {
+  width: 64px; height: 64px; border-radius: 18px;
+  background: linear-gradient(135deg, #0d3b23, #2d9a57);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px; margin: 0 auto 12px;
+  box-shadow: 0 8px 24px rgba(13,59,35,0.35);
+}
+.auth-logo-title { font-size: 22px; font-weight: 900; color: #111; }
+.auth-logo-sub { font-size: 12px; color: var(--mute); margin-top: 4px; }
+
+.auth-tabs { display: flex; background: var(--bg); border-radius: 12px; padding: 4px; margin-bottom: 24px; }
+.auth-tab {
+  flex: 1; padding: 9px; text-align: center;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  border-radius: 9px; color: var(--mute); transition: all 0.2s;
+}
+.auth-tab.active { background: white; color: var(--green); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+
+/* Google OAuth removed — email only */
+
+.auth-field { margin-bottom: 14px; }
+.auth-label { font-size: 12px; font-weight: 600; color: var(--sub); margin-bottom: 5px; display: block; }
+.auth-input {
+  width: 100%; height: 44px; border: 1.5px solid var(--border);
+  border-radius: 10px; padding: 0 14px; font-size: 14px;
+  font-family: inherit; color: var(--text); outline: none; transition: border-color 0.15s;
+}
+.auth-input:focus { border-color: var(--green); }
+
+.auth-submit-btn {
+  width: 100%; height: 48px; margin-top: 6px;
+  background: linear-gradient(135deg, var(--green), var(--green2));
+  color: white; border: none; border-radius: 12px;
+  font-size: 15px; font-weight: 800; cursor: pointer; font-family: inherit;
+  box-shadow: 0 4px 16px rgba(26,107,58,0.3); transition: opacity 0.15s;
+}
+.auth-submit-btn:hover { opacity: 0.9; }
+.auth-submit-btn:disabled { background: #e0e0e0; color: #aaa; box-shadow: none; cursor: not-allowed; }
+
+.auth-err { background: #fdecea; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: var(--red); margin-top: 10px; display: none; }
+.auth-note { font-size: 11px; color: var(--mute); text-align: center; margin-top: 14px; line-height: 1.6; }
+
+/* Confirm email notice */
+.auth-confirm-notice {
+  text-align: center; padding: 10px 0; display: none;
+}
+.auth-confirm-icon { font-size: 48px; margin-bottom: 10px; }
+.auth-confirm-title { font-size: 18px; font-weight: 900; margin-bottom: 8px; }
+.auth-confirm-sub { font-size: 13px; color: var(--mute); line-height: 1.6; }
+
+/* ── MAIN APP ── */
+#app { display: flex; width: 100%; height: 100vh; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: var(--sidebar-w); background: linear-gradient(180deg, #0a2e1a, #0d3b23 60%, #1a5c38);
+  display: flex; flex-direction: column; flex-shrink: 0; height: 100vh;
+}
+.sidebar-logo { padding: 24px 20px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.logo-icon { width: 42px; height: 42px; background: linear-gradient(135deg,#2d9a57,#52b788); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 8px; }
+.logo-title { color: white; font-size: 15px; font-weight: 900; }
+.logo-sub { color: rgba(255,255,255,0.5); font-size: 11px; margin-top: 2px; }
+
+.sidebar-nav { flex: 1; padding: 14px 12px; display: flex; flex-direction: column; gap: 3px; overflow-y: auto; }
+.nav-section-label { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.3); letter-spacing: 1px; text-transform: uppercase; padding: 10px 8px 5px; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; color: rgba(255,255,255,0.65); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.18s; }
+.nav-item:hover { background: rgba(255,255,255,0.08); color: white; }
+.nav-item.active { background: rgba(255,255,255,0.15); color: white; font-weight: 700; }
+.nav-icon { font-size: 18px; }
+
+.sidebar-footer { padding: 14px 12px 18px; border-top: 1px solid rgba(255,255,255,0.08); }
+.user-card { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 10px; cursor: pointer; transition: background 0.15s; }
+.user-card:hover { background: rgba(255,255,255,0.08); }
+.user-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg,#2d9a57,#52b788); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; overflow: hidden; }
+.user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.user-name { color: white; font-size: 13px; font-weight: 700; }
+.user-email { color: rgba(255,255,255,0.45); font-size: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 140px; }
+.logout-link { color: rgba(255,255,255,0.4); font-size: 10px; margin-top: 2px; cursor: pointer; }
+.logout-link:hover { color: rgba(255,255,255,0.7); }
+
+/* ── MAIN ── */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; height: 100vh; }
+.topbar { background: white; border-bottom: 1px solid var(--border); padding: 0 28px; height: 58px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.topbar-title { font-size: 18px; font-weight: 900; }
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+.topbar-search { display: flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 7px 14px; font-size: 13px; color: var(--mute); min-width: 200px; }
+.topbar-btn { width: 36px; height: 36px; border-radius: 10px; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; }
+
+.page-body { flex: 1; overflow-y: auto; padding: 24px 28px; }
+.page-body::-webkit-scrollbar { width: 6px; }
+.page-body::-webkit-scrollbar-thumb { background: #ddd; border-radius: 3px; }
+
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* ── HOME ── */
+.home-hero {
+  background: linear-gradient(135deg, #0d3b23 0%, #1a6b3a 50%, #2d9a57 100%);
+  border-radius: 20px; padding: 32px 36px; margin-bottom: 24px; position: relative; overflow: hidden;
+}
+.home-hero::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(45deg,rgba(255,255,255,0.02) 0,rgba(255,255,255,0.02) 1px,transparent 0,transparent 28px); }
+.hero-greeting { color: rgba(255,255,255,0.7); font-size: 14px; margin-bottom: 6px; }
+.hero-title { color: white; font-size: 28px; font-weight: 900; line-height: 1.2; margin-bottom: 18px; }
+.hero-ball { position:absolute; right:36px; top:50%; transform:translateY(-50%); font-size:70px; opacity:0.15; }
+
+.stats-strip { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 22px; }
+.stat-card { background:white; border-radius:var(--radius); padding:16px 18px; display:flex; align-items:center; gap:12px; box-shadow:0 1px 8px rgba(0,0,0,0.06); }
+.stat-icon { width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+.si-green { background:var(--green-light); } .si-amber { background:#fef3c7; } .si-blue { background:#dbeafe; } .si-purple { background:#ede9fe; }
+.stat-val { font-size:20px; font-weight:900; } .stat-lbl { font-size:11px; color:var(--mute); margin-top:1px; }
+
+.sec-hd { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+.sec-title { font-size:16px; font-weight:800; }
+.sec-link { font-size:12px; color:var(--green); font-weight:600; cursor:pointer; }
+
+/* ── COACH CARDS ── */
+.coach-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:16px; margin-bottom:24px; }
+.coach-card { background:white; border-radius:var(--radius); overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.08); cursor:pointer; transition:transform 0.15s,box-shadow 0.15s; }
+.coach-card:hover { transform:translateY(-3px); box-shadow:0 8px 24px rgba(0,0,0,0.12); }
+.coach-img { height:140px; position:relative; overflow:hidden; }
+.coach-img img { width:100%; height:100%; object-fit:cover; object-position:center 10%; }
+.coach-img-ph { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:40px; opacity:0.4; }
+.coach-badge-tag { position:absolute; bottom:8px; left:8px; background:white; color:var(--green); font-size:9px; font-weight:800; padding:3px 8px; border-radius:8px; }
+.coach-price-tag { position:absolute; bottom:8px; right:8px; background:rgba(0,0,0,0.55); color:white; font-size:11px; font-weight:800; padding:3px 8px; border-radius:8px; }
+.coach-body { padding:10px 12px 12px; }
+.coach-name { font-size:14px; font-weight:800; margin-bottom:2px; }
+.coach-sub-txt { font-size:10px; color:var(--mute); margin-bottom:6px; }
+.coach-tags { display:flex; gap:4px; flex-wrap:wrap; margin-bottom:8px; }
+.ctag { background:var(--green-light); color:var(--green); font-size:9px; font-weight:600; padding:2px 6px; border-radius:5px; }
+.lang-tag { background:#dbeafe; color:#1d4ed8; font-size:9px; font-weight:600; padding:2px 6px; border-radius:5px; }
+.coach-book-btn { width:100%; padding:8px; background:linear-gradient(135deg,var(--green),var(--green2)); color:white; border:none; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer; font-family:inherit; }
+.coach-book-btn:hover { opacity:0.88; }
+
+/* ── FILTER CHIPS ── */
+.filter-chips { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+.fchip { padding:6px 14px; border-radius:20px; font-size:12px; font-weight:600; cursor:pointer; border:1.5px solid var(--border); color:var(--sub); background:white; transition:all 0.15s; white-space:nowrap; }
+.fchip.active { background:var(--green); color:white; border-color:var(--green); }
+
+/* ── MY BOOKINGS ── */
+.bk-card { display:flex; align-items:center; gap:14px; padding:14px 0; border-bottom:1px solid var(--bg); }
+.bk-card:last-child { border-bottom:none; }
+.bk-date-blk { background:var(--green-light); border-radius:12px; padding:10px 12px; text-align:center; flex-shrink:0; min-width:52px; }
+.bk-month { font-size:10px; font-weight:800; color:var(--green); letter-spacing:1px; }
+.bk-day { font-size:24px; font-weight:900; line-height:1; }
+.bk-wd { font-size:10px; color:var(--mute); }
+.bk-time { font-size:15px; font-weight:800; display:block; }
+.bk-coach-nm { font-size:12px; color:var(--sub); display:block; }
+.bk-loc { font-size:11px; color:var(--mute); display:block; margin-bottom:4px; }
+.bk-type-tag { display:inline-block; font-size:10px; color:var(--green); background:var(--green-light); padding:2px 8px; border-radius:6px; font-weight:600; }
+.sbadge { display:inline-block; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; }
+.s-pending { background:#fff3cd; color:#856404; }
+.s-confirmed { background:var(--green-light); color:var(--green); }
+.s-cancelled { background:#fdecea; color:var(--red); }
+
+/* ── CONTENT CARDS ── */
+.content-card { background:white; border-radius:var(--radius); padding:22px; box-shadow:0 1px 8px rgba(0,0,0,0.06); margin-bottom:16px; }
+.cc-title { font-size:15px; font-weight:700; margin-bottom:16px; }
+.empty-st { text-align:center; padding:40px 20px; color:var(--mute); }
+.empty-st-icon { font-size:36px; margin-bottom:8px; }
+
+/* ── BOOKING MODAL ── */
+.bm-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:2000; display:flex; align-items:center; justify-content:center; }
+.bm-box { background:white; border-radius:20px; width:540px; max-width:95vw; max-height:90vh; overflow-y:auto; padding:32px; animation:popIn 0.25s cubic-bezier(0.16,1,0.3,1); }
+@keyframes popIn { from{transform:scale(0.9);opacity:0;} }
+.bm-box::-webkit-scrollbar { width:4px; }
+.bm-box::-webkit-scrollbar-thumb { background:#ddd; border-radius:2px; }
+.bm-hd { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+.bm-title { font-size:20px; font-weight:900; }
+.bm-x { font-size:24px; cursor:pointer; color:var(--mute); }
+.bm-coach-bar { display:flex; align-items:center; gap:12px; background:var(--bg); border-radius:12px; padding:14px; margin-bottom:20px; }
+.bm-coach-ava { width:46px; height:46px; border-radius:50%; background:var(--green-light); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; overflow:hidden; }
+.bm-coach-ava img { width:100%; height:100%; object-fit:cover; }
+.bm-coach-nm { font-size:15px; font-weight:700; }
+.bm-coach-sub { font-size:11px; color:var(--mute); margin-top:2px; }
+.bm-price { margin-left:auto; font-size:20px; font-weight:900; color:var(--green); }
+.form-sec { font-size:11px; font-weight:700; color:var(--mute); letter-spacing:0.5px; text-transform:uppercase; margin:16px 0 8px; }
+.form-2col { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.form-grp { display:flex; flex-direction:column; gap:5px; }
+.form-lbl { font-size:12px; font-weight:600; color:var(--sub); }
+.form-inp,.form-sel { height:42px; border:1.5px solid var(--border); border-radius:10px; padding:0 14px; font-size:13px; color:var(--text); background:white; font-family:inherit; outline:none; transition:border-color 0.15s; }
+.form-inp:focus,.form-sel:focus { border-color:var(--green); }
+.slot-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+.slot-btn { padding:9px 4px; border:1.5px solid var(--border); border-radius:8px; background:white; font-size:12px; font-weight:600; color:var(--sub); cursor:pointer; text-align:center; transition:all 0.15s; font-family:inherit; }
+.slot-btn:hover { border-color:var(--green-mid); color:var(--green); }
+.slot-btn.sel { background:var(--green); border-color:var(--green); color:white; }
+.slot-btn.taken { background:#f5f5f5; color:#ccc; cursor:default; border-color:#eee; }
+.court-list { display:flex; flex-direction:column; gap:8px; }
+.court-opt { display:flex; align-items:center; gap:10px; padding:11px 14px; border:1.5px solid var(--border); border-radius:10px; background:white; cursor:pointer; transition:all 0.15s; font-family:inherit; }
+.court-opt:hover { border-color:var(--green-mid); }
+.court-opt.sel { border-color:var(--green); background:var(--green-light); }
+.court-nm { font-size:13px; font-weight:600; }
+.court-addr { font-size:11px; color:var(--mute); }
+.court-chk { margin-left:auto; width:20px; height:20px; border-radius:50%; border:1.5px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:10px; color:transparent; transition:all 0.15s; }
+.court-opt.sel .court-chk { background:var(--green); border-color:var(--green); color:white; }
+.bm-err { background:#fdecea; border:1px solid #f5c6c6; border-radius:8px; padding:10px 14px; font-size:12px; color:var(--red); margin-top:10px; display:none; }
+.bm-submit { width:100%; margin-top:20px; padding:14px; background:linear-gradient(135deg,var(--green),var(--green2)); color:white; border:none; border-radius:14px; font-size:15px; font-weight:800; cursor:pointer; font-family:inherit; box-shadow:0 4px 16px rgba(26,107,58,0.3); }
+.bm-submit:disabled { background:#e0e0e0; color:#aaa; box-shadow:none; cursor:not-allowed; }
+.bm-success { text-align:center; padding:16px 0; display:none; }
+.bm-suc-icon { font-size:52px; margin-bottom:10px; }
+.bm-suc-title { font-size:22px; font-weight:900; margin-bottom:8px; }
+.bm-suc-sub { font-size:13px; color:var(--mute); line-height:1.6; }
+.bm-suc-detail { background:var(--green-light); border-radius:12px; padding:14px; margin:14px 0; text-align:left; }
+.bm-suc-row { display:flex; gap:8px; font-size:13px; margin-bottom:5px; }
+.bm-suc-row:last-child { margin-bottom:0; }
+.bm-suc-lbl { color:var(--mute); min-width:60px; }
+.bm-suc-val { font-weight:600; }
+.spin { display:inline-block; width:14px; height:14px; border:2px solid rgba(255,255,255,0.4); border-top-color:white; border-radius:50%; animation:spin 0.7s linear infinite; margin-right:6px; vertical-align:middle; }
+@keyframes spin { to{transform:rotate(360deg);} }
+@keyframes fadeIn { from{opacity:0;} }
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  .sidebar { display:none !important; }
+  .main { width:100% !important; }
+  .topbar-search, .topbar-btn { display:none !important; }
+  .topbar { height:52px; padding:0 16px; }
+  .page-body { padding:14px 14px 80px; }
+  .stats-strip { grid-template-columns:1fr 1fr !important; gap:10px !important; }
+  .coach-grid { grid-template-columns:1fr 1fr !important; gap:10px !important; }
+  .coach-img { height:110px !important; }
+  .bm-box { width:100% !important; max-width:100% !important; height:100dvh !important; max-height:100dvh !important; border-radius:0 !important; padding:20px 16px !important; }
+  .form-2col { grid-template-columns:1fr !important; }
+  .slot-grid { grid-template-columns:repeat(3,1fr) !important; }
+  .mobile-nav { display:flex !important; }
+  .hero-ball { display:none; }
+  .hero-title { font-size:22px !important; }
+}
+
+/* ── MOBILE BOTTOM NAV ── */
+.mobile-nav {
+  display:none; position:fixed; bottom:0; left:0; right:0;
+  height:64px; background:white; border-top:1px solid var(--border);
+  z-index:500; justify-content:space-around; align-items:center;
+  padding-bottom:env(safe-area-inset-bottom,0);
+}
+.mob-nav-item { display:flex; flex-direction:column; align-items:center; gap:2px; cursor:pointer; padding:6px 12px; border-radius:10px; color:var(--mute); font-size:10px; font-weight:500; flex:1; }
+.mob-nav-item.active { color:var(--green); }
+.mob-nav-icon { font-size:22px; }
+
+/* ── COACH PROFILE PAGE ── */
+.profile-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+.profile-side-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  position: sticky;
+  top: 0;
+}
+.profile-hero-img {
+  height: 220px;
+  position: relative;
+  overflow: hidden;
+}
+.profile-hero-img img {
+  width:100%;height:100%;object-fit:cover;object-position:center 10%;
+}
+.profile-hero-ph {
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:60px;opacity:0.4;
+}
+.profile-stats-row {
+  display:flex;
+  border-top:1px solid var(--border);
+}
+.profile-stat {
+  flex:1;text-align:center;padding:14px 0;
+}
+.profile-stat-val { font-size:20px;font-weight:900; }
+.profile-stat-lbl { font-size:10px;color:var(--mute);margin-top:2px; }
+.profile-stat-div { width:1px;background:var(--border);margin:8px 0; }
+.profile-info { padding:18px 20px 20px; }
+.profile-name { font-size:22px;font-weight:900;margin-bottom:4px; }
+.profile-sub-txt { font-size:12px;color:var(--mute);margin-bottom:12px; }
+.profile-price { color:var(--green);font-size:24px;font-weight:900;margin-bottom:14px; }
+.profile-meta { display:flex;flex-direction:column;gap:5px;margin-bottom:18px; }
+.profile-meta-row { font-size:12px;color:var(--sub);display:flex;align-items:center;gap:6px; }
+.profile-cta-btns { display:flex;gap:8px; }
+.btn-book-primary {
+  flex:2;padding:13px;
+  background:linear-gradient(135deg,var(--green),var(--green2));
+  color:white;border:none;border-radius:12px;
+  font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;
+  box-shadow:0 4px 14px rgba(26,107,58,0.3);
+}
+.btn-msg-secondary {
+  flex:1;padding:13px;
+  background:var(--green-light);color:var(--green);
+  border:none;border-radius:12px;
+  font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;
+}
+.btn-book-primary:hover,.btn-msg-secondary:hover { opacity:0.88; }
+
+/* Profile main content */
+.profile-main { display:flex;flex-direction:column;gap:14px; }
+.pcard { background:white;border-radius:var(--radius);padding:22px;box-shadow:0 1px 8px rgba(0,0,0,0.06); }
+.pcard-title { font-size:15px;font-weight:700;margin-bottom:14px; }
+.ach-item {
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 12px;background:#f9fafb;
+  border-radius:10px;border-left:3px solid var(--green);
+  margin-bottom:8px;
+}
+.ach-item:last-child { margin-bottom:0; }
+.ach-ck { font-size:13px;color:var(--green);flex-shrink:0;margin-top:1px; }
+.ach-txt { font-size:12px;color:#333;line-height:1.5; }
+.spec-tags { display:flex;flex-wrap:wrap;gap:8px; }
+.spec-tag {
+  background:var(--green-light);color:var(--green);
+  font-size:11px;font-weight:600;padding:5px 12px;border-radius:8px;
+}
+.avail-row { display:flex;gap:8px; }
+.avail-day { display:flex;flex-direction:column;align-items:center;gap:5px; }
+.avail-lbl { font-size:10px;color:var(--mute); }
+.avail-dot {
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;
+}
+.avail-on { background:var(--green);color:white; }
+.avail-off { background:#f0f0f0;color:#ccc; }
+.court-item {
+  display:flex;align-items:center;gap:10px;
+  padding:10px 0;border-bottom:1px solid var(--bg);
+}
+.court-item:last-child { border-bottom:none; }
+.court-name { font-size:13px;font-weight:600; }
+.court-addr { font-size:11px;color:var(--mute); }
+.price-row {
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 0;border-bottom:1px solid var(--bg);
+}
+.price-row:last-child { border-bottom:none; }
+.price-name { font-size:14px;font-weight:600; }
+.price-desc { font-size:11px;color:var(--mute);margin-top:2px; }
+.price-val { font-size:18px;font-weight:900;color:var(--green); }
+
+/* Breadcrumb */
+.breadcrumb {
+  font-size:13px;color:var(--green);
+  font-weight:600;cursor:pointer;
+  margin-bottom:16px;display:inline-block;
+}
+.breadcrumb:hover { text-decoration:underline; }
+
+@media(max-width:768px) {
+  .profile-layout { grid-template-columns:1fr !important; }
+  .profile-side-card { position:static !important; }
+  .profile-main { margin-top:0; }
+}
+
+
+/* ── BOOKING MODAL (旧版样式) ── */
+.bk-overlay {
+  position: fixed; inset: 0; z-index: 2000;
+  background: rgba(0,0,0,0.55);
+  display: flex; align-items: center; justify-content: center;
+}
+.bk-modal {
+  background: var(--bg); border-radius: 20px;
+  width: 900px; max-width: 97vw; max-height: 93vh;
+  overflow-y: auto; padding: 28px;
+  animation: popIn 0.25s cubic-bezier(0.16,1,0.3,1);
+}
+.bk-modal::-webkit-scrollbar { width: 5px; }
+.bk-modal::-webkit-scrollbar-thumb { background: #ddd; border-radius: 3px; }
+.bk-modal-hd {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px;
+}
+.bk-modal-title { font-size: 20px; font-weight: 900; }
+.bk-modal-x { font-size: 24px; cursor: pointer; color: var(--mute); }
+.bk-modal-x:hover { color: var(--text); }
+
+.bk-layout { display: grid; grid-template-columns: 1fr 300px; gap: 20px; align-items: start; }
+.bk-steps { display: flex; flex-direction: column; gap: 16px; }
+.bk-step-card { background: white; border-radius: 14px; padding: 20px; box-shadow: 0 1px 8px rgba(0,0,0,0.06); }
+.bk-step-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.step-num {
+  width: 28px; height: 28px; background: var(--green); color: white;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800; flex-shrink: 0;
+}
+.step-lbl { font-size: 15px; font-weight: 700; }
+
+.type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.type-card {
+  border: 2px solid var(--border); border-radius: 12px;
+  padding: 16px; cursor: pointer; transition: all 0.15s;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.type-card:hover { border-color: var(--green-mid); }
+.type-card.selected { border-color: var(--green); background: var(--green-light); }
+.type-icon { font-size: 24px; margin-bottom: 4px; }
+.type-name { font-size: 13px; font-weight: 700; }
+.type-desc { font-size: 11px; color: var(--mute); }
+.type-price { font-size: 16px; font-weight: 900; color: var(--green); margin-top: 4px; }
+
+/* Calendar */
+.calendar-wrap { user-select: none; }
+.month-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.m-label { font-size: 15px; font-weight: 700; }
+.m-arrow {
+  width: 32px; height: 32px; border-radius: 8px; background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; cursor: pointer; transition: background 0.15s; border: none;
+}
+.m-arrow:hover { background: var(--green-light); }
+.week-head { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; margin-bottom: 6px; }
+.w-lbl { font-size: 11px; color: var(--mute); padding: 4px 0; font-weight: 700; }
+.w-lbl.avail-header { color: var(--green); }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+.cal-day {
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+  border-radius: 8px; font-size: 13px; cursor: pointer; transition: all 0.15s;
+}
+.cal-day.avail-day { font-weight: 700; color: var(--text); }
+.cal-day.avail-day:hover { background: var(--green-light); }
+.cal-day.today { background: var(--green-light); color: var(--green); font-weight: 700; }
+.cal-day.selected { background: var(--green) !important; color: white !important; font-weight: 700; }
+.cal-day.disabled { color: #ccc; cursor: default; }
+.cal-day.other-month { color: #ddd; cursor: default; }
+
+/* Time slots */
+.time-slots-bk { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.t-slot-bk {
+  background: var(--green-light); border: 1.5px solid transparent;
+  border-radius: 10px; padding: 10px; text-align: center;
+  cursor: pointer; transition: all 0.15s;
+}
+.t-slot-bk span:first-child { display: block; font-size: 13px; font-weight: 700; color: var(--green); }
+.t-slot-bk span:last-child { display: block; font-size: 10px; color: var(--green-mid); margin-top: 2px; }
+.t-slot-bk:hover, .t-slot-bk.selected { background: var(--green); border-color: var(--green); }
+.t-slot-bk:hover span, .t-slot-bk.selected span { color: white !important; }
+.t-slot-bk.taken { background: #f0f0f0; cursor: default; border-color: #eee; }
+.t-slot-bk.taken span { color: #ccc !important; }
+.notice-band {
+  background: var(--green-light); color: var(--green);
+  font-size: 12px; font-weight: 600; padding: 8px 14px;
+  border-radius: 8px; margin-bottom: 12px;
+}
+
+/* Court cards */
+.court-card {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px; border: 1.5px solid var(--border); border-radius: 12px;
+  cursor: pointer; transition: all 0.15s; margin-bottom: 10px; background: white;
+}
+.court-card:last-child { margin-bottom: 0; }
+.court-card:hover { border-color: var(--green-mid); }
+.court-card.selected { border-color: var(--green); background: var(--green-light); }
+.cc-name { display: block; font-size: 14px; font-weight: 700; }
+.cc-addr { display: block; font-size: 11px; color: var(--mute); margin-top: 2px; }
+.cc-area { display: inline-block; font-size: 10px; background: var(--green-light); color: var(--green); padding: 2px 8px; border-radius: 6px; margin-top: 5px; font-weight: 600; }
+.cc-check {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 1.5px solid var(--border); display: flex; align-items: center;
+  justify-content: center; font-size: 12px; color: transparent;
+  flex-shrink: 0; transition: all 0.15s;
+}
+.court-card.selected .cc-check { background: var(--green); border-color: var(--green); color: white; }
+
+/* Order panel */
+.bk-order-panel {
+  background: white; border-radius: 16px; padding: 20px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08); position: sticky; top: 0;
+}
+.bk-order-title { font-size: 15px; font-weight: 800; margin-bottom: 16px; }
+.coach-mini {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px; background: var(--bg); border-radius: 12px; margin-bottom: 16px;
+}
+.coach-mini-ava {
+  width: 40px; height: 40px; border-radius: 50%; overflow: hidden;
+  flex-shrink: 0; background: var(--green-light);
+  display: flex; align-items: center; justify-content: center; font-size: 18px;
+}
+.coach-mini-ava img { width: 100%; height: 100%; object-fit: cover; }
+.coach-mini-name { font-size: 13px; font-weight: 700; }
+.coach-mini-sub { font-size: 10px; color: var(--mute); margin-top: 2px; }
+.os-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid var(--bg); }
+.os-lbl { font-size: 12px; color: var(--mute); }
+.os-val { font-size: 12px; font-weight: 600; text-align: right; max-width: 150px; }
+.total-row { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding-top: 14px; border-top: 2px solid var(--border); }
+.total-lbl { font-size: 14px; font-weight: 700; }
+.total-price { font-size: 26px; font-weight: 900; color: var(--green); }
+.bk-confirm-btn {
+  width: 100%; margin-top: 14px; padding: 14px;
+  background: linear-gradient(135deg, var(--green), var(--green2));
+  color: white; border: none; border-radius: 12px;
+  font-size: 14px; font-weight: 800; cursor: pointer; font-family: inherit;
+  box-shadow: 0 4px 14px rgba(26,107,58,0.3); transition: opacity 0.15s;
+}
+.bk-confirm-btn:hover { opacity: 0.9; }
+.bk-confirm-btn.disabled { background: #e0e0e0; color: #aaa; box-shadow: none; cursor: default; }
+.bk-confirm-btn.disabled:hover { opacity: 1; }
+.bk-err-band { background: #fdecea; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: var(--red); margin-top: 10px; display: none; }
+
+/* Success state in modal */
+.bk-success-body { text-align: center; padding: 20px 0; display: none; }
+.bk-suc-icon { font-size: 52px; margin-bottom: 12px; }
+.bk-suc-title { font-size: 22px; font-weight: 900; margin-bottom: 6px; }
+.bk-suc-sub { font-size: 13px; color: var(--mute); margin-bottom: 18px; }
+.bk-suc-detail { background: var(--green-light); border-radius: 12px; padding: 16px; text-align: left; margin-bottom: 16px; }
+.bk-suc-row { display: flex; gap: 10px; font-size: 13px; margin-bottom: 6px; }
+.bk-suc-row:last-child { margin-bottom: 0; }
+.bk-suc-lbl { color: var(--mute); min-width: 50px; }
+.bk-suc-val { font-weight: 600; }
+
+@media (max-width: 768px) {
+  .bk-layout { grid-template-columns: 1fr !important; }
+  .bk-modal { padding: 18px 14px; border-radius: 0 !important; height: 100dvh !important; max-height: 100dvh !important; width: 100% !important; max-width: 100% !important; }
+  .bk-order-panel { position: static !important; }
+  .type-grid { grid-template-columns: 1fr !important; }
+  .time-slots-bk { grid-template-columns: repeat(3, 1fr) !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════
+     AUTH SCREEN
+══════════════════════════════ -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="auth-logo-icon">🎾</div>
+      <div class="auth-logo-title">网球教练平台</div>
+      <div class="auth-logo-sub">DC · MD · VA 华人网球社区</div>
+    </div>
+
+    <!-- Welcome text -->
+    <div style="text-align:center;margin-bottom:20px;">
+      <div style="font-size:13px;color:var(--mute);line-height:1.6;">
+        DC/MD/VA 华人网球教练预约平台<br>注册后即可在线预约课程
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="auth-tabs">
+      <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">登录账号</div>
+      <div class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">新用户注册</div>
+    </div>
+
+    <!-- Email form -->
+    <div id="register-name-field" style="display:none;">
+      <div class="auth-field">
+        <label class="auth-label">你的姓名</label>
+        <input class="auth-input" id="auth-name" type="text" placeholder="中文或英文名">
+      </div>
+    </div>
+
+    <div class="auth-field">
+      <label class="auth-label">邮箱地址</label>
+      <input class="auth-input" id="auth-email" type="email" placeholder="your@email.com" onkeydown="if(event.key==='Enter')submitAuth()">
+    </div>
+    <div class="auth-field">
+      <label class="auth-label">密码</label>
+      <input class="auth-input" id="auth-password" type="password" placeholder="至少 6 位" onkeydown="if(event.key==='Enter')submitAuth()">
+    </div>
+
+    <div class="auth-err" id="auth-err"></div>
+
+    <button class="auth-submit-btn" id="auth-submit-btn" onclick="submitAuth()">登录账号</button>
+
+    <div class="auth-note" id="auth-note">
+      还没有账号？点上方「新用户注册」免费创建
+    </div>
+
+<!-- Email confirmation not required -->
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     MAIN APP
+══════════════════════════════ -->
+<div id="app">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">🎾</div>
+      <div class="logo-title">网球教练平台</div>
+      <div class="logo-sub">DC · MD · VA</div>
+    </div>
+    <div class="sidebar-nav">
+      <div class="nav-section-label">学员中心</div>
+      <div class="nav-item active" onclick="showPanel('home',this)"><span class="nav-icon">🏠</span> 首页</div>
+      <div class="nav-item" onclick="showPanel('coaches',this)"><span class="nav-icon">🎾</span> 找教练</div>
+      <div class="nav-item" onclick="showPanel('my-bookings',this)"><span class="nav-icon">📅</span> 我的预约</div>
+      <div class="nav-item" onclick="showPanel('packages',this)"><span class="nav-icon">📦</span> 课程套餐</div>
+      <div class="nav-section-label" style="margin-top:10px;">地区筛选</div>
+      <div class="nav-item" onclick="showPanel('coaches',this);setRegion('dc')"><span class="nav-icon">📍</span> Washington DC</div>
+      <div class="nav-item" onclick="showPanel('coaches',this);setRegion('md')"><span class="nav-icon">📍</span> Maryland</div>
+      <div class="nav-item" onclick="showPanel('coaches',this);setRegion('arlington')"><span class="nav-icon">📍</span> Arlington / McLean</div>
+    </div>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar" id="sb-avatar">😊</div>
+        <div style="min-width:0;">
+          <div class="user-name" id="sb-name">加载中…</div>
+          <div class="user-email" id="sb-email"></div>
+          <div class="logout-link" onclick="logout()">退出登录</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="topbar-title">首页</div>
+      <div class="topbar-right">
+        <div class="topbar-search"><span>🔍</span><span>搜索教练…</span></div>
+        <div class="topbar-btn">🔔</div>
+      </div>
+    </div>
+
+    <div class="page-body">
+
+      <!-- HOME PANEL -->
+      <div id="panel-home" class="panel active">
+        <div class="home-hero">
+          <div class="hero-greeting" id="hero-greeting">👋 欢迎！</div>
+          <div class="hero-title">找到最好的<br>DC/MD/VA 网球教练</div>
+          <div class="hero-ball">🎾</div>
+        </div>
+
+        <div class="stats-strip">
+          <div class="stat-card"><div class="stat-icon si-amber">📅</div><div><div class="stat-val" id="st-upcoming">—</div><div class="stat-lbl">即将上课</div></div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div><div class="stat-val" id="st-done">—</div><div class="stat-lbl">已完成课时</div></div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">🎾</div><div><div class="stat-val" id="stat-coaches">—</div><div class="stat-lbl">认证教练</div></div></div>
+          <div class="stat-card"><div class="stat-icon si-purple">📍</div><div><div class="stat-val">6</div><div class="stat-lbl">服务地区</div></div></div>
+        </div>
+
+        <!-- Upcoming bookings -->
+        <div class="sec-hd">
+          <span class="sec-title">📅 即将到来的课程</span>
+          <span class="sec-link" onclick="showPanel('my-bookings',null)">查看全部 ›</span>
+        </div>
+        <div class="content-card" id="home-upcoming">
+          <div class="empty-st"><div class="empty-st-icon">📅</div><div>暂无即将到来的课程</div></div>
+        </div>
+
+        <!-- Recommended coaches -->
+        <div class="sec-hd" style="margin-top:20px;">
+          <span class="sec-title">推荐教练</span>
+          <span class="sec-link" onclick="showPanel('coaches',null)">查看全部 ›</span>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+          <div class="fchip active" onclick="filterHomeRegion(this,'all')">全部</div>
+          <div class="fchip" onclick="filterHomeRegion(this,'dc')">DC</div>
+          <div class="fchip" onclick="filterHomeRegion(this,'md')">Maryland</div>
+          <div class="fchip" onclick="filterHomeRegion(this,'arlington')">Arlington</div>
+          <div class="fchip" onclick="filterHomeRegion(this,'mclean')">McLean</div>
+        </div>
+        <div class="coach-grid" id="home-coaches"></div>
+      </div>
+
+      <!-- COACHES PANEL -->
+      <div id="panel-coaches" class="panel">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;" id="region-chips">
+          <div class="fchip active" onclick="setRegion('all',this)">全部地区</div>
+          <div class="fchip" onclick="setRegion('dc',this)">Washington DC</div>
+          <div class="fchip" onclick="setRegion('md',this)">Maryland</div>
+          <div class="fchip" onclick="setRegion('arlington',this)">Arlington</div>
+          <div class="fchip" onclick="setRegion('mclean',this)">McLean</div>
+          <div class="fchip" onclick="setRegion('fairfax',this)">Fairfax</div>
+          <div style="margin-left:auto;display:flex;align-items:center;gap:6px;background:white;border:1.5px solid var(--border);border-radius:10px;padding:6px 12px;">
+            <span>🔍</span>
+            <input type="text" id="coach-search" placeholder="搜索教练…" oninput="renderCoaches()" style="border:none;outline:none;font-size:13px;min-width:140px;font-family:inherit;">
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:14px;">
+          <div class="fchip active" onclick="setLang('all',this)">全部语言</div>
+          <div class="fchip" onclick="setLang('zh',this)">🗣 中文</div>
+          <div class="fchip" onclick="setLang('en',this)">🗣 English</div>
+        </div>
+        <div style="font-size:13px;color:var(--mute);margin-bottom:12px;" id="coach-count">共 11 位教练</div>
+        <div class="coach-grid" id="coaches-grid"></div>
+      </div>
+
+      <!-- COACH PROFILE PANEL -->
+      <div id="panel-coach-profile" class="panel">
+        <div class="breadcrumb" onclick="goBackFromProfile()">‹ 返回教练列表</div>
+        <div class="profile-layout">
+          <!-- Left sidebar card -->
+          <div class="profile-side-card" id="profile-side-card"></div>
+          <!-- Right main content -->
+          <div class="profile-main" id="profile-main-content"></div>
+        </div>
+      </div>
+
+      <!-- MY BOOKINGS PANEL -->
+      <div id="panel-my-bookings" class="panel">
+        <div class="content-card">
+          <div class="cc-title">📅 我的预约记录</div>
+          <div id="my-bookings-list">
+            <div class="empty-st"><div class="empty-st-icon">📋</div><div>暂无预约记录</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PACKAGES PANEL -->
+      <div id="panel-packages" class="panel">
+        <div class="content-card">
+          <div class="cc-title">📦 课程套餐</div>
+          <div style="text-align:center;padding:30px;color:var(--mute);">套餐详情即将上线，请先通过「找教练」直接预约单次课程</div>
+        </div>
+      </div>
+
+    </div><!-- end page-body -->
+  </div><!-- end main -->
+
+  <!-- Mobile bottom nav -->
+  <div class="mobile-nav">
+    <div class="mob-nav-item active" onclick="mobileNav('home',this)"><div class="mob-nav-icon">🏠</div><span>首页</span></div>
+    <div class="mob-nav-item" onclick="mobileNav('coaches',this)"><div class="mob-nav-icon">🎾</div><span>找教练</span></div>
+    <div class="mob-nav-item" onclick="mobileNav('my-bookings',this)"><div class="mob-nav-icon">📅</div><span>我的预约</span></div>
+    <div class="mob-nav-item" onclick="mobileNav('packages',this)"><div class="mob-nav-icon">📦</div><span>套餐</span></div>
+  </div>
+</div><!-- end app -->
+
+<!-- BOOKING MODAL (新版完整样式) -->
+<div class="bk-overlay" id="bm-overlay" style="display:none;" onclick="if(event.target===this)closeBM()">
+  <div class="bk-modal" id="bk-modal-inner">
+
+    <!-- Header -->
+    <div class="bk-modal-hd" id="bm-main-content">
+      <div class="bk-modal-title">📅 预约课程</div>
+      <div class="bk-modal-x" onclick="closeBM()">✕</div>
+    </div>
+
+    <!-- Main form -->
+    <div id="bm-form">
+      <div class="bk-layout">
+        <!-- Left: steps -->
+        <div class="bk-steps">
+
+          <!-- Step 1: Course type -->
+          <div class="bk-step-card">
+            <div class="bk-step-head">
+              <div class="step-num">1</div>
+              <div class="step-lbl">选择课程类型</div>
+            </div>
+            <div class="type-grid" id="bk-type-grid">
+              <div class="type-card selected" onclick="bkSelectType(this,'网球入门 & 提升',75)">
+                <span class="type-icon">🎾</span>
+                <span class="type-name">网球入门 & 提升</span>
+                <span class="type-desc">1对1私教，60分钟</span>
+                <span class="type-price" id="bk-type-price1">$75</span>
+              </div>
+              <div class="type-card" onclick="bkSelectType(this,'运动表现 & 体能',75)">
+                <span class="type-icon">💪</span>
+                <span class="type-name">运动表现 & 体能</span>
+                <span class="type-desc">Strength & Conditioning</span>
+                <span class="type-price" id="bk-type-price2">$75</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Date calendar -->
+          <div class="bk-step-card">
+            <div class="bk-step-head">
+              <div class="step-num">2</div>
+              <div class="step-lbl">选择日期</div>
+            </div>
+            <div class="calendar-wrap">
+              <div class="month-nav">
+                <button class="m-arrow" onclick="bkChangeMonth(-1)">‹</button>
+                <span class="m-label" id="bk-month-label">2026年 三月</span>
+                <button class="m-arrow" onclick="bkChangeMonth(1)">›</button>
+              </div>
+              <div class="week-head" id="bk-week-head">
+                <span class="w-lbl">日</span><span class="w-lbl">一</span>
+                <span class="w-lbl">二</span><span class="w-lbl">三</span>
+                <span class="w-lbl">四</span><span class="w-lbl">五</span>
+                <span class="w-lbl">六</span>
+              </div>
+              <div class="cal-grid" id="bk-cal-grid"></div>
+              <div id="bk-avail-legend" style="margin-top:10px;font-size:11px;color:var(--mute);"></div>
+            </div>
+          </div>
+
+          <!-- Step 3: Time -->
+          <div class="bk-step-card">
+            <div class="bk-step-head">
+              <div class="step-num">3</div>
+              <div class="step-lbl">选择时间段</div>
+            </div>
+            <div class="notice-band" id="bk-avail-notice">请先选择日期</div>
+            <div class="time-slots-bk" id="bk-time-slots">
+              <!-- rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Step 4: Court -->
+          <div class="bk-step-card">
+            <div class="bk-step-head">
+              <div class="step-num">4</div>
+              <div class="step-lbl">选择球场</div>
+            </div>
+            <div id="bk-courts-list">
+              <!-- rendered dynamically from coach data -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right: order summary -->
+        <div class="bk-order-panel">
+          <div class="bk-order-title">📋 预约小结</div>
+          <div class="coach-mini" id="bk-coach-mini">
+            <div class="coach-mini-ava" id="bk-coach-ava">🎾</div>
+            <div>
+              <div class="coach-mini-name" id="bk-coach-name">—</div>
+              <div class="coach-mini-sub" id="bk-coach-sub">—</div>
+            </div>
+          </div>
+          <div class="os-row"><span class="os-lbl">课程类型</span><span class="os-val" id="bk-os-type">网球入门 & 提升</span></div>
+          <div class="os-row"><span class="os-lbl">日期时间</span><span class="os-val" id="bk-os-datetime">—</span></div>
+          <div class="os-row"><span class="os-lbl">球场</span><span class="os-val" id="bk-os-court">—</span></div>
+          <div class="total-row">
+            <span class="total-lbl">应付金额</span>
+            <span class="total-price" id="bk-total-price">$75</span>
+          </div>
+          <button class="bk-confirm-btn disabled" id="bk-confirm-btn" onclick="submitBM()">确认预约</button>
+          <div class="bk-err-band" id="bm-err"></div>
+          <div style="font-size:11px;color:var(--mute);text-align:center;margin-top:10px;">预约后24小时内可免费取消</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success state -->
+    <div class="bk-success-body" id="bm-success">
+      <div class="bk-suc-icon">🎉</div>
+      <div class="bk-suc-title">预约成功！</div>
+      <div class="bk-suc-sub">请等待教练确认，确认后将收到通知</div>
+      <div class="bk-suc-detail">
+        <div class="bk-suc-row"><span class="bk-suc-lbl">教练</span><span class="bk-suc-val" id="suc-coach">—</span></div>
+        <div class="bk-suc-row"><span class="bk-suc-lbl">日期</span><span class="bk-suc-val" id="suc-date">—</span></div>
+        <div class="bk-suc-row"><span class="bk-suc-lbl">时间</span><span class="bk-suc-val" id="suc-time">—</span></div>
+        <div class="bk-suc-row"><span class="bk-suc-lbl">球场</span><span class="bk-suc-val" id="suc-court">—</span></div>
+      </div>
+      <button style="width:100%;padding:13px;background:var(--green-light);color:var(--green);border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;" onclick="closeBM()">返回首页</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- LOGIN GATE MODAL -->
+<div id="login-gate" style="display:none;position:fixed;inset:0;z-index:5000;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;" onclick="if(event.target===this)closeLoginGate()">
+  <div style="background:white;border-radius:20px;padding:36px 32px;width:400px;max-width:95vw;animation:popIn 0.25s cubic-bezier(0.16,1,0.3,1);">
+    <div style="text-align:center;margin-bottom:22px;">
+      <div style="font-size:40px;margin-bottom:10px;">🔐</div>
+      <div style="font-size:20px;font-weight:900;margin-bottom:6px;">登录后才能预约</div>
+      <div style="font-size:13px;color:#999;line-height:1.5;">请先登录或注册账号<br>预约记录将保存到你的账户</div>
+    </div>
+
+    <div style="display:flex;background:#f0f2f5;border-radius:12px;padding:4px;margin-bottom:20px;">
+      <div id="gate-tab-login" style="flex:1;padding:9px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;border-radius:9px;background:white;color:#1a6b3a;box-shadow:0 2px 8px rgba(0,0,0,0.1);" onclick="switchGateTab('login')">登录</div>
+      <div id="gate-tab-register" style="flex:1;padding:9px;text-align:center;font-size:13px;font-weight:500;cursor:pointer;border-radius:9px;color:#999;" onclick="switchGateTab('register')">注册</div>
+    </div>
+
+    <div id="gate-name-field" style="display:none;margin-bottom:12px;">
+      <div style="font-size:12px;font-weight:600;color:#555;margin-bottom:5px;">姓名</div>
+      <input id="gate-name" type="text" placeholder="你的姓名" style="width:100%;height:42px;border:1.5px solid #e8e8e8;border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;">
+    </div>
+    <div style="margin-bottom:12px;">
+      <div style="font-size:12px;font-weight:600;color:#555;margin-bottom:5px;">邮箱</div>
+      <input id="gate-email" type="email" placeholder="your@email.com" style="width:100%;height:42px;border:1.5px solid #e8e8e8;border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;" onkeydown="if(event.key==='Enter')submitGate()">
+    </div>
+    <div style="margin-bottom:6px;">
+      <div style="font-size:12px;font-weight:600;color:#555;margin-bottom:5px;">密码</div>
+      <input id="gate-password" type="password" placeholder="至少 6 位" style="width:100%;height:42px;border:1.5px solid #e8e8e8;border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;" onkeydown="if(event.key==='Enter')submitGate()">
+    </div>
+
+    <div id="gate-err" style="display:none;background:#fdecea;border-radius:8px;padding:10px 14px;font-size:12px;color:#e53935;margin-top:10px;"></div>
+
+    <button id="gate-submit-btn" onclick="submitGate()" style="width:100%;height:48px;margin-top:16px;background:linear-gradient(135deg,#1a6b3a,#2d9a57);color:white;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 16px rgba(26,107,58,0.3);">
+      登录账号
+    </button>
+    <div style="text-align:center;margin-top:12px;">
+      <span style="font-size:12px;color:#999;cursor:pointer;" onclick="closeLoginGate()">稍后再说，先浏览教练</span>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════
+// CONFIG
+// ═══════════════════════════
+const SB_URL = 'https://kbllubfoxwbcmcgrklgh.supabase.co';
+const SB_KEY = 'sb_publishable_xDL0OkqVVBhRFuYm2GrqZg_o6wBlKCM';
+let currentUser = null;
+let authMode = 'login';
+var currentPanel = 'home';
+let currentRegion = 'all';
+let currentLang = 'all';
+let bmState = { coachId:null, coachName:'', price:75, date:null, time:null, court:null };
+
+// ═══════════════════════════
+// SUPABASE NATIVE CLIENT
+// ═══════════════════════════
+function sbHeaders(token) {
+  var h = { 'Content-Type':'application/json', 'apikey':SB_KEY, 'Authorization':'Bearer '+(token||SB_KEY) };
+  return h;
+}
+
+async function sbFrom(table, token) {
+  var filters = [], orderStr = '';
+  var api = {
+    select(){ return api; },
+    eq(col,val){ filters.push(col+'=eq.'+encodeURIComponent(val)); return api; },
+    neq(col,val){ filters.push(col+'=neq.'+encodeURIComponent(val)); return api; },
+    order(col,opts){ orderStr='order='+col+(opts&&opts.ascending===false?'.desc':'.asc'); return api; },
+    insert(rows){ return sbInsert(table, rows, token); },
+    then(res){ return sbSelect(table, filters, orderStr, token).then(res); }
+  };
+  return api;
+}
+
+async function sbSelect(table, filters, order, token) {
+  var parts = filters.concat(order||[]).filter(Boolean);
+  parts.push('limit=500');
+  var qs = '?'+parts.join('&');
+  var r = await fetch(SB_URL+'/rest/v1/'+table+qs, { headers: sbHeaders(token) });
+  if(!r.ok){ var e=await r.json().catch(()=>{}); return {data:null,error:e}; }
+  return { data: await r.json(), error: null };
+}
+
+async function sbInsert(table, rows, token) {
+  var body = Array.isArray(rows)?rows[0]:rows;
+  var r = await fetch(SB_URL+'/rest/v1/'+table, {
+    method:'POST', headers:Object.assign({},sbHeaders(token),{'Prefer':'return=minimal'}),
+    body: JSON.stringify(body)
+  });
+  if(!r.ok){ var e=await r.json().catch(()=>{}); return {data:null,error:e}; }
+  return {data:null,error:null};
+}
+
+// ═══════════════════════════
+// AUTH
+// ═══════════════════════════
+function switchAuthTab(mode) {
+  authMode = mode;
+  document.getElementById('tab-login').classList.toggle('active', mode==='login');
+  document.getElementById('tab-register').classList.toggle('active', mode==='register');
+  document.getElementById('auth-submit-btn').textContent = mode==='login' ? '登录账号' : '免费注册';
+  document.getElementById('register-name-field').style.display = mode==='register' ? 'block' : 'none';
+  document.getElementById('auth-note').textContent = mode==='login'
+    ? '还没有账号？点上方「注册」'
+    : '已有账号？点上方「登录」';
+  document.getElementById('auth-err').style.display = 'none';
+  document.getElementById('auth-confirm-notice').style.display = 'none';
+}
+
+// Google OAuth removed
+
+async function submitAuth() {
+  var email = document.getElementById('auth-email').value.trim();
+  var password = document.getElementById('auth-password').value;
+  var name = document.getElementById('auth-name').value.trim();
+  var errEl = document.getElementById('auth-err');
+  errEl.style.display = 'none';
+
+  if(!email||!email.includes('@')){ showAuthErr('请输入有效的邮箱地址'); return; }
+  if(!password||password.length<6){ showAuthErr('密码至少需要 6 位'); return; }
+  if(authMode==='register'&&!name){ showAuthErr('请填写你的姓名'); return; }
+
+  var btn = document.getElementById('auth-submit-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span>处理中…';
+
+  var endpoint = authMode==='login' ? '/auth/v1/token?grant_type=password' : '/auth/v1/signup';
+  var body = { email, password };
+  if(authMode==='register') body.data = { full_name: name };
+
+  var r = await fetch(SB_URL+endpoint, {
+    method:'POST',
+    headers:{ 'Content-Type':'application/json', 'apikey':SB_KEY },
+    body: JSON.stringify(body)
+  });
+  var data = await r.json();
+
+  btn.disabled = false;
+  btn.textContent = authMode==='login' ? '登录' : '注册账号';
+
+  if(!r.ok || data.error) {
+    var msg = data.error_description || data.msg || data.message || '操作失败，请重试';
+    if(msg.includes('Invalid login')) msg = '邮箱或密码错误';
+    if(msg.includes('already registered')) msg = '该邮箱已注册，请直接登录';
+    showAuthErr(msg); return;
+  }
+
+  if(authMode==='register') {
+    // No email confirmation — auto login after register
+    if(data.access_token) {
+      onAuthSuccess(data);
+    } else {
+      // Supabase returned session in different field
+      var session = data.session || data;
+      if(session && session.access_token) {
+        onAuthSuccess(session);
+      } else {
+        // Try logging in immediately after register
+        var loginRes = await fetch(SB_URL+'/auth/v1/token?grant_type=password', {
+          method:'POST',
+          headers:{ 'Content-Type':'application/json', 'apikey':SB_KEY },
+          body: JSON.stringify({ email, password })
+        });
+        var loginData = await loginRes.json();
+        if(loginData.access_token) {
+          onAuthSuccess(loginData);
+        } else {
+          showAuthErr('注册成功！请用刚才的邮箱和密码登录');
+          switchAuthTab('login');
+          document.getElementById('auth-email').value = email;
+        }
+      }
+    }
+    return;
+  }
+
+  // Success
+  onAuthSuccess(data);
+}
+
+function showAuthErr(msg) {
+  var e = document.getElementById('auth-err');
+  e.textContent = '⚠️ ' + msg;
+  e.style.display = 'block';
+}
+
+function onAuthSuccess(data) {
+  currentUser = { id: data.user.id, email: data.user.email, name: data.user.user_metadata?.full_name || data.user.email.split('@')[0], token: data.access_token };
+  localStorage.setItem('sb_session', JSON.stringify(currentUser));
+  launchApp();
+}
+
+function logout() {
+  localStorage.removeItem('sb_session');
+  currentUser = null;
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('auth-screen').style.display = 'flex';
+}
+
+// ── GUEST MODE: app loads without login ──
+function checkSession() {
+  // Check URL for OAuth callback token
+  var hash = window.location.hash;
+  if(hash.includes('access_token')) {
+    var params = new URLSearchParams(hash.replace('#',''));
+    var token = params.get('access_token');
+    if(token) {
+      fetch(SB_URL+'/auth/v1/user', { headers: sbHeaders(token) })
+        .then(function(r){return r.json();}).then(function(user){
+          if(user.id) {
+            currentUser = { id:user.id, email:user.email, name:(user.user_metadata&&user.user_metadata.full_name)||user.email.split('@')[0], token:token };
+            localStorage.setItem('sb_session', JSON.stringify(currentUser));
+            window.history.replaceState(null,'',window.location.pathname);
+            onUserLoggedIn();
+          }
+        }).catch(function(){});
+      return;
+    }
+  }
+  // Check localStorage for saved session
+  var saved = localStorage.getItem('sb_session');
+  if(saved) {
+    try {
+      currentUser = JSON.parse(saved);
+      onUserLoggedIn();
+    } catch(e) { localStorage.removeItem('sb_session'); }
+  }
+  // Either way, show app in guest mode
+  initApp();
+}
+
+function onUserLoggedIn() {
+  // Update UI with user info
+  document.getElementById('sb-name').textContent = currentUser.name;
+  document.getElementById('sb-email').textContent = currentUser.email;
+  document.getElementById('hero-greeting').textContent = '👋 你好，' + currentUser.name + '！';
+  // Show logout, hide login prompt
+  document.getElementById('sb-login-btn') && (document.getElementById('sb-login-btn').style.display='none');
+  document.getElementById('sb-user-info') && (document.getElementById('sb-user-info').style.display='flex');
+  loadMyBookings();
+}
+
+function initApp() {
+  // Update sidebar for guest
+  if(!currentUser) {
+    document.getElementById('sb-name').textContent = '游客';
+    document.getElementById('sb-email').textContent = '登录后可预约课程';
+  }
+  // Load coaches from DB (falls back to local James data if DB empty)
+  loadCoachesFromDB();
+}
+
+function launchApp() {
+  // Called after successful login from auth screen
+  document.getElementById('auth-screen').style.display = 'none';
+  onUserLoggedIn();
+  initApp();
+}
+
+// ═══════════════════════════
+// COACHES DATA
+// ═══════════════════════════
+// ═══════════════════════════════════════
+// COACHES — 完全从 Supabase 数据库读取
+// ═══════════════════════════════════════
+var COACHES = []; // 启动时为空，由 loadCoachesFromDB() 填充
+
+// 把数据库行转成本地格式
+function dbCoachToLocal(row) {
+  // 解析 courts: jsonb array [{name,addr}] 或 null
+  var courts = [];
+  if (row.courts) {
+    try {
+      courts = typeof row.courts === 'string' ? JSON.parse(row.courts) : row.courts;
+    } catch(e) { courts = []; }
+  }
+  // 解析 avail: integer array [0,0,0,0,0,1,0] 或 null
+  var avail = row.avail || [0,0,0,0,0,1,0];
+  return {
+    id:           row.id,
+    lang:         row.lang         || '中文 · English',
+    name:         row.name         || '',
+    badge:        row.badge        || '',
+    sub:          row.sub          || '',
+    price:        '$' + (row.price || 75) + '/时',
+    priceNum:     row.price        || 75,
+    location:     row.location     || '',
+    region:       row.region       || 'dc',
+    tags:         row.tags         || [],
+    gradient:     row.gradient     || 'linear-gradient(135deg,#0d3b23,#2d9a57)',
+    photo:        false,
+    photo_url:    row.photo_url    || null,
+    utr:          row.utr          || '—',
+    ranking:      row.ranking      || '—',
+    cert:         row.badge        || '—',
+    bio:          row.bio          || '',
+    achievements: row.achievements || [],
+    specs:        row.specs        || row.tags || [],
+    courts:       courts,
+    avail:        avail
+  };
+}
+
+// 从数据库加载教练列表
+async function loadCoachesFromDB() {
+  try {
+    var r = await fetch(
+      SB_URL + '/rest/v1/coaches?select=*&order=created_at.asc&limit=100',
+      { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY } }
+    );
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    var data = await r.json();
+    if (Array.isArray(data) && data.length > 0) {
+      COACHES = data.map(dbCoachToLocal);
+    } else {
+      COACHES = []; // 数据库为空时显示空列表
+    }
+  } catch(e) {
+    console.warn('DB load failed, showing empty list:', e.message);
+    COACHES = [];
+  }
+  // 渲染
+  renderCoaches();
+  renderHomeCoaches('all');
+  updateHomeStats();
+}
+
+// 更新首页统计数字
+function updateHomeStats() {
+  var coachCount = document.getElementById('stat-coaches');
+  if (coachCount) coachCount.textContent = COACHES.length;
+}
+
+
+// ═══════════════════════════════════════
+// COACH CARD HTML
+// ═══════════════════════════════════════
+var JAMES_PHOTO = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgFBgcGBQgHBgcJCAgJDBMMDAsLDBgREg4THBgdHRsYGxofIywlHyEqIRobJjQnKi4vMTIxHiU2OjYwOiwwMTD/wAARCAAoACgDASIAAhEBAxEB/8QAGwAAAgMBAQEAAAAAAAAAAAAAAAUDBAYCAQf/xAAsEAACAQQBBAECBgMAAAAAAAABAgMABAUREiExBhNBUWEUIjJCUnGhsf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8A8Z0jSLrWbxLSzjLyEZYnhVHuT4FR7V5ZW3UPc3pjWHllcRIgXzHjgDoT+Ky7yjh4q7/tMsgJRHuUeVY+R7j5qr6dqlzpN2t1aSFJAMEHlWHsw8GgLPaW7afcLbXkayRBuSV4zjzz71c0PW7jRb5LiB2MecTRA8JB4P8Ax5pvLdLqMM4VVy4VlDkgjB4qv0+6hbUYJxEjFpF7lWxzxQLSdSbT9VhvYJnjkjOUbPI+PB8GvQ9G1GPUrSO7giIRxgiQFSPbHivOs2URTF3a3C7VyCM8GvX9P1e20OyW1u4j8wfZ4yDj7vHFAYNB0W30C0Gn21wJYWUyABt8ZOT47j/AHVi6s7W5B2yshByzjnHiujdQ0jtcMuXZY2jGxV/c4yN3J/96rXkCW7SJAhaONyqM6bSwBxk+fBoA/8ASmkra6bLJJPILiMmVFJAOcduKy10/Tdtg01x8LHBO1kGeKsT3rR2VqLcQpJJHvYhSS2TnPP+fWjGnO4YC1QkqIxlm4xzQbV22t2sNvLGtxFBcTKo2g4yQgPiuqtHxOPNULvTuoJtVjZkIkZFEiDaFOBg4GB0r0z4Q/EWkzX1r08kVraFnPYR7gVUAhiM9/kV5bPqN5czGaS5kLk5JDH+qA//9k=';
+
+function coachCardHTML(c) {
+  var isJames = (c.name && c.name.indexOf('James') > -1);
+  var img = c.photo_url
+    ? '<img src="'+c.photo_url+'" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 10%;">'
+    : isJames
+      ? '<img src="'+JAMES_PHOTO+'" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 10%;">'
+      : '<div class="coach-img-ph">🎾</div>';
+  var tags = (c.tags||[]).slice(0,2).map(function(t){
+    return '<span class="ctag">'+t+'</span>';
+  }).join('');
+  return '<div class="coach-card" onclick="openCoachProfile(\''+c.id+'\')" style="cursor:pointer;">'
+    +'<div class="coach-img" style="background:'+(c.gradient||'linear-gradient(135deg,#0d3b23,#2d9a57)')+';">'+img
+    +'<div class="coach-badge-tag">'+(c.badge||'')+'</div>'
+    +'<div class="coach-price-tag">$'+(c.priceNum||c.price||75)+'/时</div></div>'
+    +'<div class="coach-body">'
+    +'<div class="coach-name">'+(c.name||'')+'</div>'
+    +'<div class="coach-sub-txt">'+(c.sub||'')+'</div>'
+    +'<div class="coach-tags"><span class="lang-tag">🗣 '+(c.lang||'')+'</span>'+tags+'</div>'
+    +'<button class="coach-book-btn" onclick="event.stopPropagation();openCoachProfile(\''+c.id+'\')">查看详情 →</button>'
+    +'</div></div>';
+}
+
+// ═══════════════════════════════════════
+// BOOKING MODAL
+// ═══════════════════════════════════════
+// ═══════════════════════════════════════
+// BOOKING MODAL — Full featured
+// ═══════════════════════════════════════
+var bkCalState = { year: new Date().getFullYear(), month: new Date().getMonth() };
+
+function openBM(coachId) {
+  if(!currentUser) {
+    pendingBookingCoachId = coachId;
+    showLoginGate();
+    return;
+  }
+  var c = COACHES.find(function(x){ return String(x.id)===String(coachId); });
+  if(!c) return;
+
+  // Build available weekday set from coach data
+  var availDays = new Set();
+  if(c.avail && c.avail.length === 7) {
+    c.avail.forEach(function(v,i){ if(v) availDays.add(i); });
+  } else if(c.available_days && c.available_days.length) {
+    var dayMap = {'周日':0,'周一':1,'周二':2,'周三':3,'周四':4,'周五':5,'周六':6};
+    c.available_days.forEach(function(d){ if(dayMap[d]!==undefined) availDays.add(dayMap[d]); });
+  } else {
+    availDays.add(6); // fallback Saturday
+  }
+
+  bmState = { coachId:c.id, coachName:c.name, price:c.priceNum||75,
+    date:null, dateLabel:null, time:null, court:null, availDays:availDays };
+
+  // Coach info in summary panel
+  document.getElementById('bk-coach-name').textContent = c.name;
+  document.getElementById('bk-coach-sub').textContent = (c.utr?'UTR '+c.utr+' · ':'')+c.location;
+  document.getElementById('bk-total-price').textContent = '$'+(c.priceNum||75);
+  document.getElementById('bk-os-type').textContent = '网球入门 & 提升';
+  document.getElementById('bk-os-datetime').textContent = '—';
+  document.getElementById('bk-os-court').textContent = '—';
+
+  // Coach avatar
+  var ava = document.getElementById('bk-coach-ava');
+  var isJames = c.name && c.name.indexOf('James') > -1;
+  if(c.photo_url) ava.innerHTML = '<img src="'+c.photo_url+'" alt="">';
+  else if(isJames) ava.innerHTML = '<img src="'+JAMES_PHOTO+'" alt="">';
+  else ava.innerHTML = '🎾';
+
+  // Update type card prices
+  var p = '$'+(c.priceNum||75);
+  var p1 = document.getElementById('bk-type-price1');
+  var p2 = document.getElementById('bk-type-price2');
+  if(p1) p1.textContent = p;
+  if(p2) p2.textContent = p;
+
+  // Reset type selection
+  document.querySelectorAll('.type-card').forEach(function(el){ el.classList.remove('selected'); });
+  var firstType = document.querySelector('.type-card');
+  if(firstType) firstType.classList.add('selected');
+
+  // Build courts from coach data
+  var courtsEl = document.getElementById('bk-courts-list');
+  var courtList = c.courts && c.courts.length ? c.courts : [{name:'VA Highlands Park',addr:'Arlington, Virginia'},{name:'OneLife Fitness – McLean',addr:'McLean, Virginia'}];
+  courtsEl.innerHTML = courtList.map(function(ct){
+    var nm = (ct.name||'').replace(/'/g,"&#39;");
+    return '<div class="court-card" data-name="'+nm+'" onclick="bkSelectCourt(this,this.getAttribute(\'data-name\'))">'
+      +'<div><span class="cc-name">'+ct.name+'</span>'
+      +'<span class="cc-addr">'+ct.addr+'</span>'
+      +'<span class="cc-area">N. Virginia</span></div>'
+      +'<div class="cc-check">✓</div></div>';
+  }).join('');
+
+  // Build available days legend & week header highlights
+  var dayNames = ['周日','周一','周二','周三','周四','周五','周六'];
+  var availNames = [];
+  availDays.forEach(function(i){ availNames.push(dayNames[i]); });
+  var legend = document.getElementById('bk-avail-legend');
+  if(legend) legend.textContent = '✅ 教练可约：' + availNames.join(' / ');
+
+  // Highlight available weekday headers
+  var heads = document.querySelectorAll('#bk-week-head .w-lbl');
+  heads.forEach(function(el, i){
+    el.classList.toggle('avail-header', availDays.has(i));
+  });
+
+  // Reset
+  document.getElementById('bk-confirm-btn').classList.add('disabled');
   document.getElementById('bm-err').style.display = 'none';
   document.getElementById('bm-form').style.display = 'block';
   document.getElementById('bm-success').style.display = 'none';
+  document.querySelector('.bk-modal-hd').style.display = 'flex';
 
-  // Render calendar picker
-  var calDate = new Date();
-  calDate.setDate(1);
-  bmState.calDate = calDate;
-  renderBMCalendar();
+  // Init calendar to current month
+  var now = new Date();
+  bkCalState.year = now.getFullYear();
+  bkCalState.month = now.getMonth();
+  bkRenderCalendar();
+  bkRenderTimeSlots(null);
 
   document.getElementById('bm-overlay').style.display = 'flex';
   document.body.style.overflow = 'hidden';
-}
-
-// Render a custom calendar in the booking modal
-function renderBMCalendar() {
-  var cal = document.getElementById('bm-calendar');
-  if(!cal) return;
-  var d = bmState.calDate;
-  var year = d.getFullYear(), month = d.getMonth();
-  var today = new Date(); today.setHours(0,0,0,0);
-  var months = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
-  var weekdays = ['日','一','二','三','四','五','六'];
-  var firstDay = new Date(year, month, 1).getDay();
-  var daysInMonth = new Date(year, month+1, 0).getDate();
-
-  var html = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">'
-    +'<button onclick="bmCalPrev()" style="width:28px;height:28px;border:1px solid var(--border);border-radius:8px;background:white;cursor:pointer;font-size:14px;">‹</button>'
-    +'<span style="font-size:13px;font-weight:700;">'+year+'年 '+months[month]+'</span>'
-    +'<button onclick="bmCalNext()" style="width:28px;height:28px;border:1px solid var(--border);border-radius:8px;background:white;cursor:pointer;font-size:14px;">›</button>'
-    +'</div>';
-
-  // Weekday headers
-  html += '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:4px;">';
-  weekdays.forEach(function(w,i){
-    var isAvail = bmState.availDays.has(i);
-    html += '<div style="text-align:center;font-size:11px;font-weight:700;padding:4px 0;color:'+(isAvail?'var(--green)':'#ccc')+';">'+w+'</div>';
-  });
-  html += '</div>';
-
-  // Days grid
-  html += '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;">';
-  // Empty cells
-  for(var i=0;i<firstDay;i++) html += '<div></div>';
-  // Day cells
-  for(var day=1;day<=daysInMonth;day++){
-    var thisDate = new Date(year, month, day);
-    thisDate.setHours(0,0,0,0);
-    var dow = thisDate.getDay();
-    var isAvail = bmState.availDays.has(dow);
-    var isPast = thisDate <= today;
-    var dateStr = year+'-'+String(month+1).padStart(2,'0')+'-'+String(day).padStart(2,'0');
-    var isSelected = bmState.date === dateStr;
-
-    var bg, color, cursor, onclick;
-    if(isSelected) {
-      bg='var(--green)'; color='white'; cursor='pointer'; onclick='selectBMDate("'+dateStr+'")';
-    } else if(!isAvail || isPast) {
-      bg='#f5f5f5'; color='#ccc'; cursor='default'; onclick='';
-    } else {
-      bg='white'; color='var(--text)'; cursor='pointer'; onclick='selectBMDate("'+dateStr+'")';
-    }
-
-    html += '<div onclick="'+onclick+'" style="text-align:center;padding:6px 2px;border-radius:8px;'
-      +'background:'+bg+';color:'+color+';cursor:'+cursor+';font-size:12px;font-weight:'+(isAvail&&!isPast?'600':'400')+';">'
-      +day+'</div>';
-  }
-  html += '</div>';
-
-  // Available days legend
-  var availNames = [];
-  var dayNames = ['周日','周一','周二','周三','周四','周五','周六'];
-  bmState.availDays.forEach(function(i){ availNames.push(dayNames[i]); });
-  html += '<div style="margin-top:10px;font-size:11px;color:var(--mute);">✅ 可约：'+(availNames.join(' / ') || '暂无可用日期')+'</div>';
-
-  cal.innerHTML = html;
-}
-
-function bmCalPrev() {
-  bmState.calDate.setMonth(bmState.calDate.getMonth()-1);
-  renderBMCalendar();
-}
-function bmCalNext() {
-  bmState.calDate.setMonth(bmState.calDate.getMonth()+1);
-  renderBMCalendar();
-}
-function selectBMDate(dateStr) {
-  bmState.date = dateStr;
-  renderBMCalendar();
-  loadSlots();
 }
 
 function closeBM() {
@@ -1151,66 +2661,168 @@ function closeBM() {
   loadMyBookings();
 }
 
-async function loadSlots() {
-  var dateVal = bmState.date;
-  if(!dateVal) return;
-  bmState.time = null;
+// ── Calendar rendering ──
+function bkRenderCalendar() {
+  var monthNames = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
+  document.getElementById('bk-month-label').textContent = bkCalState.year+'年 '+monthNames[bkCalState.month];
 
-  // Check if this date's weekday is in the coach's available days
-  var d = new Date(dateVal+'T00:00:00');
-  var dow = d.getDay();
-  if(!bmState.availDays || !bmState.availDays.has(dow)) {
-    document.getElementById('bm-slots').innerHTML = '<div style="grid-column:1/-1;font-size:12px;color:var(--red);padding:6px 0;">⚠️ 教练该日不可约，请选择绿色日期</div>';
+  var grid = document.getElementById('bk-cal-grid');
+  var firstDay = new Date(bkCalState.year, bkCalState.month, 1).getDay();
+  var daysInMonth = new Date(bkCalState.year, bkCalState.month+1, 0).getDate();
+  var today = new Date(); today.setHours(0,0,0,0);
+
+  var html = '';
+  for(var i=0; i<firstDay; i++) html += '<div class="cal-day other-month"></div>';
+
+  for(var d=1; d<=daysInMonth; d++) {
+    var date = new Date(bkCalState.year, bkCalState.month, d);
+    date.setHours(0,0,0,0);
+    var dow = date.getDay();
+    var isPast = date < today;
+    var isToday = date.getTime() === today.getTime();
+    var isAvail = bmState.availDays && bmState.availDays.has(dow);
+    var mm = String(bkCalState.month+1).padStart(2,'0');
+    var dd = String(d).padStart(2,'0');
+    var dateStr = bkCalState.year+'-'+mm+'-'+dd;
+    var label = bkCalState.year+'年'+(bkCalState.month+1)+'月'+d+'日';
+    var isSelected = bmState.date === dateStr;
+
+    var cls = 'cal-day';
+    var clickable = false;
+    if(isSelected) { cls += ' selected'; clickable = !isPast && isAvail; }
+    else if(isPast || !isAvail) { cls += ' disabled'; }
+    else if(isToday) { cls += ' today avail-day'; clickable = true; }
+    else { cls += ' avail-day'; clickable = true; }
+
+    if(clickable) {
+      html += '<div class="'+cls+'" data-date="'+dateStr+'" data-label="'+label+'" onclick="bkDayClick(this)">'+d+'</div>';
+    } else {
+      html += '<div class="'+cls+'">'+d+'</div>';
+    }
+  }
+  grid.innerHTML = html;
+}
+
+function bkDayClick(el) {
+  var dateStr = el.getAttribute('data-date');
+  var label = el.getAttribute('data-label');
+  bkSelectDate(dateStr, el, label);
+}
+
+function bkChangeMonth(delta) {
+  bkCalState.month += delta;
+  if(bkCalState.month > 11){ bkCalState.month=0; bkCalState.year++; }
+  if(bkCalState.month < 0){ bkCalState.month=11; bkCalState.year--; }
+  bkRenderCalendar();
+}
+
+function bkSelectDate(dateStr, el, label) {
+  bmState.date = dateStr;
+  bmState.dateLabel = label;
+  bmState.time = null;
+  document.querySelectorAll('#bk-cal-grid .cal-day').forEach(function(c){ c.classList.remove('selected'); });
+  el.classList.add('selected');
+  bkUpdateSummary();
+  bkRenderTimeSlots(dateStr);
+}
+
+// ── Time slots ──
+async function bkRenderTimeSlots(dateStr) {
+  var notice = document.getElementById('bk-avail-notice');
+  var slotsEl = document.getElementById('bk-time-slots');
+  if(!dateStr) {
+    notice.textContent = '请先选择日期';
+    slotsEl.innerHTML = '';
     return;
   }
-
-  var slots = ['9:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00'];
-  var booked = [];
-  try {
-    var res = await sbSelect('bookings',['booking_date=eq.'+dateVal,'status=neq.cancelled'],'',currentUser&&currentUser.token);
-    booked = (res.data||[]).map(function(b){ return b.booking_time; });
-  } catch(e){}
-  document.getElementById('bm-slots').innerHTML = slots.map(function(s) {
-    var taken = booked.indexOf(s) > -1;
-    if(taken) return '<button class="slot-btn taken" disabled>'+s+'<br><span style="font-size:10px;">已约</span></button>';
-    return '<button class="slot-btn" onclick="selectSlot(this,\'' + s + '\')">'+s+'</button>';
+  var slots = ['9:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00'];
+  notice.textContent = '⏰ 请选择上课时间';
+  slotsEl.innerHTML = slots.map(function(s){
+    return '<div class="t-slot-bk" data-slot="'+s+'" onclick="bkSlotClick(this)"><span>'+s+'</span><span>空闲</span></div>';
   }).join('');
+
+  // Load booked slots
+  try {
+    var res = await sbSelect('bookings',['booking_date=eq.'+dateStr,'status=neq.cancelled'],'',currentUser&&currentUser.token);
+    var booked = (res.data||[]).map(function(b){ return b.booking_time; });
+    slotsEl.querySelectorAll('.t-slot-bk').forEach(function(el){
+      var t = el.querySelector('span').textContent;
+      if(booked.indexOf(t) > -1){
+        el.classList.add('taken');
+        el.onclick = null;
+        el.querySelector('span:last-child').textContent = '已约';
+      }
+    });
+  } catch(e){}
 }
 
-function selectSlot(el, t) {
-  document.querySelectorAll('.slot-btn').forEach(function(b){ b.classList.remove('sel'); });
-  el.classList.add('sel');
-  bmState.time = t;
+function bkSlotClick(el) {
+  var t = el.getAttribute('data-slot');
+  bkSelectTime(el, t);
 }
 
-function selectCourt(el, name) {
-  document.querySelectorAll('.court-opt').forEach(function(c){ c.classList.remove('sel'); });
-  el.classList.add('sel');
+function bkSelectTime(el, time) {
+  document.querySelectorAll('.t-slot-bk').forEach(function(s){ s.classList.remove('selected'); });
+  el.classList.add('selected');
+  bmState.time = time;
+  bkUpdateSummary();
+}
+
+// ── Court selection ──
+function bkSelectCourt(el, name) {
+  document.querySelectorAll('.court-card').forEach(function(c){
+    c.classList.remove('selected');
+    var chk = c.querySelector('.cc-check');
+    if(chk) chk.style.cssText = '';
+  });
+  el.classList.add('selected');
   bmState.court = name;
+  bkUpdateSummary();
 }
 
+// ── Type selection ──
+function bkSelectType(el, name, price) {
+  document.querySelectorAll('.type-card').forEach(function(c){ c.classList.remove('selected'); });
+  el.classList.add('selected');
+  bmState.typeName = name;
+  document.getElementById('bk-os-type').textContent = name;
+  bkUpdateSummary();
+}
+
+// ── Summary update ──
+function bkUpdateSummary() {
+  var dtEl = document.getElementById('bk-os-datetime');
+  var courtEl = document.getElementById('bk-os-court');
+  var btn = document.getElementById('bk-confirm-btn');
+
+  if(bmState.dateLabel && bmState.time) dtEl.textContent = bmState.dateLabel+' '+bmState.time;
+  else if(bmState.date && bmState.time) dtEl.textContent = bmState.date+' '+bmState.time;
+  if(bmState.court) courtEl.textContent = bmState.court;
+
+  if(bmState.date && bmState.time && bmState.court) btn.classList.remove('disabled');
+  else btn.classList.add('disabled');
+}
+
+// ── Submit booking ──
 async function submitBM() {
-  var type = document.getElementById('bm-type').value;
-  var notes = document.getElementById('bm-notes') ? document.getElementById('bm-notes').value.trim() : '';
+  if(!bmState.date || !bmState.time || !bmState.court) return;
+  var btn = document.getElementById('bk-confirm-btn');
+  if(btn.classList.contains('disabled')) return;
   var errEl = document.getElementById('bm-err');
   errEl.style.display = 'none';
-  var errs = [];
-  if(!type) errs.push('请选择课程类型');
-  if(!bmState.date) errs.push('请选择日期');
-  if(!bmState.time) errs.push('请选择时间段');
-  if(!bmState.court) errs.push('请选择球场');
-  if(errs.length){ errEl.textContent='⚠️ '+errs.join(' · '); errEl.style.display='block'; return; }
 
-  var btn = document.getElementById('bm-btn');
   btn.disabled = true;
   btn.innerHTML = '<span class="spin"></span>提交中…';
+
+  var typeName = document.getElementById('bk-os-type').textContent || '网球入门 & 提升';
+  var notes = document.getElementById('bm-notes') ? document.getElementById('bm-notes').value.trim() : '';
 
   var row = {
     student_name: currentUser.name,
     student_email: currentUser.email,
     booking_date: bmState.date,
     booking_time: bmState.time,
-    lesson_type: type,
+    lesson_type: typeName,
     court: bmState.court,
     notes: notes||null,
     status: 'pending'
@@ -1219,24 +2831,37 @@ async function submitBM() {
   try {
     var r = await fetch(SB_URL+'/rest/v1/bookings', {
       method:'POST',
-      headers:{ 'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+(currentUser.token||SB_KEY),'Prefer':'return=minimal' },
+      headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+(currentUser.token||SB_KEY),'Prefer':'return=minimal'},
       body: JSON.stringify(row)
     });
-    btn.disabled = false; btn.textContent = '确认预约 →';
-    if(!r.ok){ var e=await r.json().catch(function(){return{};}); errEl.textContent='❌ 提交失败：'+(e.message||r.status); errEl.style.display='block'; return; }
+    btn.disabled = false; btn.textContent = '确认预约';
+    if(!r.ok){
+      var e = await r.json().catch(function(){return{};});
+      errEl.textContent = '❌ 提交失败：'+(e.message||r.status);
+      errEl.style.display = 'block';
+      return;
+    }
   } catch(e) {
-    btn.disabled = false; btn.textContent = '确认预约 →';
-    errEl.textContent='❌ 提交失败：'+e.message; errEl.style.display='block'; return;
+    btn.disabled = false; btn.textContent = '确认预约';
+    errEl.textContent = '❌ '+e.message; errEl.style.display = 'block'; return;
   }
 
+  // Show success
   var d = new Date(bmState.date+'T00:00:00');
   document.getElementById('suc-coach').textContent = bmState.coachName;
-  document.getElementById('suc-date').textContent = (d.getMonth()+1)+'月'+d.getDate()+'日';
+  document.getElementById('suc-date').textContent = bmState.dateLabel || bmState.date;
   document.getElementById('suc-time').textContent = bmState.time;
   document.getElementById('suc-court').textContent = bmState.court;
+  document.querySelector('.bk-modal-hd').style.display = 'none';
   document.getElementById('bm-form').style.display = 'none';
   document.getElementById('bm-success').style.display = 'block';
 }
+
+// Legacy aliases (referenced in profile page)
+function loadSlots() {}
+function selectSlot(el, t) { bkSelectTime(el, t); }
+function selectCourt(el, name) { bkSelectCourt(el, name); }
+
 
 // ═══════════════════════════════════════
 // RENDER COACHES
