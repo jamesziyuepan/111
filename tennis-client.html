@@ -3464,20 +3464,38 @@ async function bkRenderTimeSlots(dateStr) {
       +'<span>'+s+'</span><span>空闲</span></div>';
   }).join('');
 
-  // Load booked slots — filter by THIS coach only
+  // Load booked slots — filter by coach + date
   try {
-    var filters = ['booking_date=eq.'+dateStr, 'status=neq.cancelled'];
-    // If coach has a DB id (UUID), filter by coach_id
-    if(coach && coach.id && String(coach.id).includes('-')) {
-      filters.push('coach_id=eq.'+coach.id);
-    }
-    var url = SB_URL + '/rest/v1/bookings?' + filters.join('&') + '&limit=100';
-    var r = await fetch(url, {
+    var coachId = coach && coach.id ? String(coach.id) : null;
+    var hasUuid = coachId && coachId.includes('-');
+
+    // Query 1: filter by coach_id if available (precise)
+    // Query 2: fallback filter by date only (catches old bookings without coach_id)
+    var url1 = SB_URL + '/rest/v1/bookings?booking_date=eq.' + dateStr
+      + '&status=neq.cancelled'
+      + (hasUuid ? '&coach_id=eq.' + coachId : '')
+      + '&limit=100';
+
+    var r = await fetch(url1, {
       headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
     });
     if(!r.ok) throw new Error('HTTP ' + r.status);
     var data = await r.json();
     var booked = data.map(function(b){ return b.booking_time; });
+
+    // If we filtered by coach_id, also get bookings without coach_id on same date
+    // (to catch legacy bookings saved before coach_id was added)
+    if(hasUuid) {
+      var url2 = SB_URL + '/rest/v1/bookings?booking_date=eq.' + dateStr
+        + '&status=neq.cancelled&coach_id=is.null&limit=100';
+      var r2 = await fetch(url2, {
+        headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+      });
+      if(r2.ok) {
+        var data2 = await r2.json();
+        data2.forEach(function(b){ if(booked.indexOf(b.booking_time)===-1) booked.push(b.booking_time); });
+      }
+    }
 
     slotsEl.querySelectorAll('.t-slot-bk').forEach(function(el){
       var t = el.querySelector('span').textContent;
@@ -3553,9 +3571,17 @@ async function submitBM() {
 
   var typeName = document.getElementById('bk-os-type').textContent || '网球入门 & 提升';
 
+  // Get coach DB uuid for conflict checking
+  var coachDbId = null;
+  var coachObj = bmState.coachRef || COACHES.find(function(c){ return String(c.id)===String(bmState.coachId); });
+  if(coachObj && coachObj.id && String(coachObj.id).includes('-')) {
+    coachDbId = coachObj.id;
+  }
+
   var row = {
     student_name:   currentUser.name,
     student_email:  currentUser.email,
+    coach_id:       coachDbId,
     booking_date:   bmState.date,
     booking_time:   bmState.time,
     lesson_type:    typeName,
@@ -3736,11 +3762,7 @@ function openCoachProfile(coachId) {
 
     +'<div class="pcard"><div class="pcard-title">💰 课程价格</div>'
     +'<div class="price-row"><div><div class="price-name">单次课程</div><div class="price-desc">1对1私教，60分钟</div></div>'
-    +'<div class="price-val">'+c.price+'</div></div>'
-    +'<div style="margin-top:10px;padding:10px 12px;background:#fff8e1;border-radius:8px;border-left:3px solid #f59e0b;font-size:12px;color:#78350f;line-height:1.7;">'
-    +'💡 <strong>课程价格已包含</strong> Arlington County Tennis Court Reservation Fee $11/小时'
-    +'</div>'
-    +'</div>'
+    +'<div class="price-val">'+c.price+'</div></div></div>'
 
     +'<div class="pcard"><div class="pcard-title">📅 可约时间</div>'
     +'<div class="avail-row">'+availHtml+'</div></div>'
