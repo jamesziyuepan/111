@@ -1236,18 +1236,7 @@ function openCoachForm(coachId) {
     // Tags
     cfTags = c.tags||[];
     renderTagChips();
-    // Availability from available_days array
-    if(c.available_days && c.available_days.length) {
-      cfAvail = [0,0,0,0,0,0,0];
-      c.available_days.forEach(function(d){
-        var idx = dayNames.indexOf(d);
-        if(idx>=0){
-          cfAvail[idx]=1;
-          document.getElementById('avail-'+idx).classList.add('on');
-          document.getElementById('avail-'+idx).textContent='✓';
-        }
-      });
-    }
+    // available_days is now handled by schedule editor above
   } else {
     document.getElementById('cf-title').textContent = '添加新教练';
     document.getElementById('cf-delete-btn').style.display = 'none';
@@ -1275,6 +1264,7 @@ function closeCoachForm() {
 function toggleAvail(idx) {
   cfAvail[idx] = cfAvail[idx] ? 0 : 1;
   var btn = document.getElementById('avail-'+idx);
+  if(!btn) return; // avail grid no longer used
   btn.classList.toggle('on', cfAvail[idx]===1);
   btn.textContent = cfAvail[idx] ? '✓' : '✕';
 }
