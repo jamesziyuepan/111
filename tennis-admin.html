@@ -217,6 +217,94 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);height:100vh;ove
   border-color: #1a6b3a;
   color: #1a6b3a;
 }
+
+/* ── WEEKLY SCHEDULE EDITOR ── */
+.schedule-wrap { display: flex; flex-direction: column; gap: 10px; }
+.schedule-day-row {
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+.schedule-day-row.has-hours { border-color: #52b788; }
+.schedule-day-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #fafafa;
+  cursor: pointer;
+  user-select: none;
+}
+.schedule-day-row.has-hours .schedule-day-head { background: #f0faf4; }
+.schedule-day-toggle {
+  width: 38px; height: 22px;
+  border-radius: 11px;
+  background: #e0e0e0;
+  position: relative;
+  flex-shrink: 0;
+  transition: background 0.2s;
+  cursor: pointer;
+}
+.schedule-day-toggle.active { background: #1a6b3a; }
+.schedule-day-toggle::after {
+  content: '';
+  position: absolute;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: white;
+  top: 3px; left: 3px;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.schedule-day-toggle.active::after { transform: translateX(16px); }
+.schedule-day-name {
+  font-size: 14px; font-weight: 700;
+  flex: 1;
+}
+.schedule-day-summary {
+  font-size: 11px; color: var(--mute);
+  text-align: right;
+}
+.schedule-day-row.has-hours .schedule-day-summary { color: var(--green); font-weight: 600; }
+.schedule-hours-grid {
+  display: none;
+  padding: 10px 12px 12px;
+  border-top: 1px solid var(--border);
+}
+.schedule-day-row.expanded .schedule-hours-grid { display: block; }
+.schedule-hours-row {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 5px;
+  margin-bottom: 8px;
+}
+.schedule-quick-row {
+  display: flex; gap: 6px; margin-bottom: 10px;
+}
+.sch-quick-btn {
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px; background: white;
+  font-size: 11px; font-weight: 600;
+  cursor: pointer; font-family: inherit;
+  color: var(--sub); transition: all 0.12s;
+}
+.sch-quick-btn:hover { background: var(--green-light); color: var(--green); border-color: var(--green); }
+.sch-hour-btn {
+  padding: 7px 3px;
+  border: 1.5px solid #e8e8e8;
+  border-radius: 7px; background: #f9f9f9;
+  font-size: 11px; font-weight: 600;
+  cursor: pointer; text-align: center;
+  transition: all 0.12s; color: #bbb;
+  font-family: inherit;
+}
+.sch-hour-btn:hover { border-color: #52b788; background: #e8f5e9; color: #1a6b3a; }
+.sch-hour-btn.on {
+  background: #1a6b3a; border-color: #1a6b3a;
+  color: white; box-shadow: 0 1px 4px rgba(26,107,58,0.3);
+}
 </style>
 </head>
 <body>
@@ -497,16 +585,10 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);height:100vh;ove
           </div>
 
           <!-- 可约时间 -->
-          <div class="cf-sec">可约天（点击切换）</div>
-          <div class="avail-grid" id="cf-avail-grid"></div>
-
-          <div class="cf-sec" style="margin-top:16px;">可约时间段（点击选择，绿色=开放）</div>
-          <div class="hour-quick-btns">
-            <button class="hour-quick-btn" type="button" onclick="hoursSelectAll()">全选</button>
-            <button class="hour-quick-btn" type="button" onclick="hoursSelectNone()">清空</button>
-            <span style="font-size:11px;color:var(--mute);align-self:center;">已选 <span id="cf-hours-count">0</span> 个时段</span>
+          <div class="cf-sec">每日可约时间（点击天数展开，选择每天的上课时间段）</div>
+          <div class="schedule-wrap" id="cf-schedule-wrap">
+            <!-- Rendered by JS -->
           </div>
-          <div class="hour-grid" id="cf-hour-grid"></div>
 
           <!-- 常用球场 -->
           <div class="cf-sec">常用球场（每行格式：球场名称 | 地址，显示在详情页"常用球场"）</div>
@@ -905,48 +987,136 @@ async function uploadCoachPhoto(input) {
 }
 
 // ═══════════════════════════
-// HOUR SELECTOR
+// WEEKLY SCHEDULE EDITOR
 // ═══════════════════════════
 var ALL_HOURS = ['9:00','10:00','11:00','12:00','13:00','14:00',
                  '15:00','16:00','17:00','18:00','19:00','20:00','21:00'];
+var DAY_NAMES = ['周日','周一','周二','周三','周四','周五','周六'];
 
-function buildHourGrid() {
-  var grid = document.getElementById('cf-hour-grid');
-  if(!grid) return;
-  grid.innerHTML = ALL_HOURS.map(function(h) {
-    var isOn = cfHours.indexOf(h) > -1;
-    return '<button class="hour-btn' + (isOn ? ' on' : '') + '" data-hour="' + h + '" onclick="toggleHour(this)" type="button">' + h + '</button>';
-  }).join('');
-  var countEl = document.getElementById('cf-hours-count');
-  if(countEl) countEl.textContent = cfHours.length;
+// cfSchedule: { 0: ['9:00','10:00'], 1: [], ... 6: ['11:00','12:00'] }
+// key = weekday number (0=Sun, 6=Sat)
+var cfSchedule = {};
+
+function initSchedule() {
+  for(var i = 0; i < 7; i++) cfSchedule[i] = [];
 }
 
-function toggleHour(btn) {
+function buildScheduleEditor() {
+  var wrap = document.getElementById('cf-schedule-wrap');
+  if(!wrap) return;
+  wrap.innerHTML = DAY_NAMES.map(function(name, i) {
+    var hours = cfSchedule[i] || [];
+    var hasHours = hours.length > 0;
+    var summary = hasHours ? hours.length + ' 个时段' : '未开放';
+    return '<div class="schedule-day-row' + (hasHours ? ' has-hours' : '') + '" id="sch-row-' + i + '">'
+      + '<div class="schedule-day-head" onclick="toggleSchDay(' + i + ')">'
+      +   '<div class="schedule-day-toggle' + (hasHours ? ' active' : '') + '" id="sch-tog-' + i + '"></div>'
+      +   '<div class="schedule-day-name">' + name + '</div>'
+      +   '<div class="schedule-day-summary" id="sch-sum-' + i + '">' + summary + '</div>'
+      +   '<div style="font-size:12px;color:#ccc;margin-left:6px;">▾</div>'
+      + '</div>'
+      + '<div class="schedule-hours-grid" id="sch-hours-' + i + '">'
+      +   '<div class="schedule-quick-row">'
+      +     '<button class="sch-quick-btn" type="button" onclick="schDayAll(' + i + ')">全天</button>'
+      +     '<button class="sch-quick-btn" type="button" onclick="schDayAM(' + i + ')">上午</button>'
+      +     '<button class="sch-quick-btn" type="button" onclick="schDayPM(' + i + ')">下午</button>'
+      +     '<button class="sch-quick-btn" type="button" onclick="schDayNone(' + i + ')">清空</button>'
+      +   '</div>'
+      +   '<div class="schedule-hours-row">'
+      +     ALL_HOURS.map(function(h) {
+              var on = hours.indexOf(h) > -1;
+              return '<button class="sch-hour-btn' + (on ? ' on' : '') + '" data-day="' + i + '" data-hour="' + h + '" type="button" onclick="toggleSchHour(this)">' + h + '</button>';
+            }).join('')
+      +   '</div>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+function toggleSchDay(dayIdx) {
+  var row = document.getElementById('sch-row-' + dayIdx);
+  var hoursDiv = document.getElementById('sch-hours-' + dayIdx);
+  row.classList.toggle('expanded');
+}
+
+function toggleSchHour(btn) {
+  var dayIdx = parseInt(btn.getAttribute('data-day'));
   var h = btn.getAttribute('data-hour');
-  var idx = cfHours.indexOf(h);
+  if(!cfSchedule[dayIdx]) cfSchedule[dayIdx] = [];
+  var arr = cfSchedule[dayIdx];
+  var idx = arr.indexOf(h);
   if(idx > -1) {
-    cfHours.splice(idx, 1);
+    arr.splice(idx, 1);
     btn.classList.remove('on');
   } else {
-    cfHours.push(h);
-    cfHours.sort(function(a,b){
-      return parseInt(a.split(':')[0]) - parseInt(b.split(':')[0]);
-    });
+    arr.push(h);
+    arr.sort(function(a,b){ return parseInt(a) - parseInt(b); });
     btn.classList.add('on');
   }
-  // Update counter
-  var countEl = document.getElementById('cf-hours-count');
-  if(countEl) countEl.textContent = cfHours.length;
+  updateSchDayUI(dayIdx);
 }
 
-function hoursSelectAll() {
-  cfHours = ALL_HOURS.slice();
-  buildHourGrid();
+function updateSchDayUI(dayIdx) {
+  var hours = cfSchedule[dayIdx] || [];
+  var hasHours = hours.length > 0;
+  var row = document.getElementById('sch-row-' + dayIdx);
+  var tog = document.getElementById('sch-tog-' + dayIdx);
+  var sum = document.getElementById('sch-sum-' + dayIdx);
+  if(row) row.classList.toggle('has-hours', hasHours);
+  if(tog) tog.classList.toggle('active', hasHours);
+  if(sum) sum.textContent = hasHours ? hours.length + ' 个时段' : '未开放';
 }
 
-function hoursSelectNone() {
-  cfHours = [];
-  buildHourGrid();
+function schDayAll(dayIdx) {
+  cfSchedule[dayIdx] = ALL_HOURS.slice();
+  buildScheduleEditor();
+  // Re-expand the day
+  var row = document.getElementById('sch-row-' + dayIdx);
+  if(row) row.classList.add('expanded');
+}
+
+function schDayAM(dayIdx) {
+  cfSchedule[dayIdx] = ['9:00','10:00','11:00','12:00'];
+  buildScheduleEditor();
+  var row = document.getElementById('sch-row-' + dayIdx);
+  if(row) row.classList.add('expanded');
+}
+
+function schDayPM(dayIdx) {
+  cfSchedule[dayIdx] = ['13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00'];
+  buildScheduleEditor();
+  var row = document.getElementById('sch-row-' + dayIdx);
+  if(row) row.classList.add('expanded');
+}
+
+function schDayNone(dayIdx) {
+  cfSchedule[dayIdx] = [];
+  buildScheduleEditor();
+  var row = document.getElementById('sch-row-' + dayIdx);
+  if(row) row.classList.add('expanded');
+}
+
+// Convert cfSchedule to DB format: { "0": ["9:00"], "6": ["11:00","12:00"] }
+function scheduleToDb() {
+  var result = {};
+  for(var i = 0; i < 7; i++) {
+    if(cfSchedule[i] && cfSchedule[i].length > 0) {
+      result[String(i)] = cfSchedule[i];
+    }
+  }
+  return Object.keys(result).length > 0 ? result : null;
+}
+
+// Load from DB format back to cfSchedule
+function scheduleFromDb(dbVal) {
+  initSchedule();
+  if(!dbVal) return;
+  var obj = typeof dbVal === 'string' ? JSON.parse(dbVal) : dbVal;
+  for(var key in obj) {
+    if(obj.hasOwnProperty(key)) {
+      cfSchedule[parseInt(key)] = obj[key] || [];
+    }
+  }
 }
 
 // ═══════════════════════════
@@ -956,7 +1126,7 @@ var allCoaches = [];
 var editingCoachId = null;
 var cfTags = [];
 var cfAvail = [0,0,0,0,0,0,0];
-var cfHours = []; // selected hour strings e.g. ['9:00','10:00',...] // Sun-Sat
+var cfSchedule = {}; // {dayIdx: ['9:00','10:00',...], ...} // Sun-Sat
 
 async function loadCoaches() {
   var res = await sbGet('coaches', [], 'created_at.asc');
@@ -1011,22 +1181,10 @@ function openCoachForm(coachId) {
   cfTags = [];
   cfAvail = [0,0,0,0,0,0,0];
 
-  // Build availability grid
-  var grid = document.getElementById('cf-avail-grid');
-  grid.innerHTML = dayNames.map(function(d,i){
-    return '<div class="avail-day">'
-      +'<span class="avail-day-lbl">'+d+'</span>'
-      +'<button class="avail-toggle" id="avail-'+i+'" onclick="toggleAvail('+i+')" type="button">'
-      +(i===5?'✓':'✕')+'</button>'
-      +'</div>';
-  }).join('');
-  // Default Saturday (index 5 = 周六) on
-  cfAvail[5] = 1;
-  document.getElementById('avail-5').classList.add('on');
-
-  // Build hour grid (reset to empty for new, filled for edit)
-  cfHours = [];
-  buildHourGrid();
+  // Schedule editor replaces avail grid
+  // Reset schedule
+  initSchedule();
+  buildScheduleEditor();
 
   var fields = ['cf-name','cf-badge','cf-sub','cf-location','cf-bio','cf-utr','cf-ranking','cf-achievements','cf-courts','cf-photo-url'];
 
@@ -1049,9 +1207,21 @@ function openCoachForm(coachId) {
     document.getElementById('cf-photo-url').value = c.photo_url||'';
     if(c.photo_url) setPhotoPreview(c.photo_url);
     else resetPhotoPreview();
-    // Available hours
-    cfHours = c.available_hours || [];
-    buildHourGrid();
+    // Load schedule from coach data
+    if(c.schedule) {
+      scheduleFromDb(c.schedule);
+    } else if(c.available_hours && c.available_hours.length > 0) {
+      // Migrate old available_hours: apply to all avail days
+      initSchedule();
+      if(c.avail) {
+        c.avail.forEach(function(v, i){ if(v) cfSchedule[i] = c.available_hours.slice(); });
+      } else {
+        cfSchedule[6] = c.available_hours.slice(); // default saturday
+      }
+    } else {
+      initSchedule();
+    }
+    buildScheduleEditor();
     // Achievements: array → textarea (one per line)
     document.getElementById("cf-achievements").value = (c.achievements||[]).join("\n");
     // Courts: array of {name,addr} → textarea (name | addr)
@@ -1204,13 +1374,14 @@ async function saveCoach() {
     courts:         courts,
     gradient:         gradient,
     photo_url:        photoUrl,
-    available_hours:  cfHours.length > 0 ? cfHours : null
+    schedule:         scheduleToDb(),
+    available_hours:  null
   };
 
   var btn = document.querySelector('.cf-save');
   btn.disabled = true; btn.textContent = '保存中…';
 
-  console.log('Saving coach data:', JSON.stringify({available_hours: data.available_hours, cfHours: cfHours}));
+
   var res;
   try {
     if(editingCoachId) {

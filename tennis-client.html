@@ -3172,7 +3172,8 @@ function dbCoachToLocal(row) {
     specs:           row.specs           || row.tags || [],
     courts:          courts,
     avail:           avail,
-    available_hours: row.available_hours || []
+    available_hours: row.available_hours || [],
+    schedule:        row.schedule || null  // {dayIdx: ['9:00',...], ...}
   };
 }
 
@@ -3251,9 +3252,14 @@ function openBM(coachId) {
   var c = COACHES.find(function(x){ return String(x.id)===String(coachId); });
   if(!c) return;
 
-  // Build available weekday set from coach data
+  // Build available weekday set from schedule (new) or avail array (legacy)
   var availDays = new Set();
-  if(c.avail && c.avail.length === 7) {
+  if(c.schedule) {
+    var sch = typeof c.schedule === 'string' ? JSON.parse(c.schedule) : c.schedule;
+    for(var key in sch) {
+      if(sch[key] && sch[key].length > 0) availDays.add(parseInt(key));
+    }
+  } else if(c.avail && c.avail.length === 7) {
     c.avail.forEach(function(v,i){ if(v) availDays.add(i); });
   } else if(c.available_days && c.available_days.length) {
     var dayMap = {'周日':0,'周一':1,'周二':2,'周三':3,'周四':4,'周五':5,'周六':6};
@@ -3361,7 +3367,15 @@ function bkRenderCalendar() {
     var dow = date.getDay();
     var isPast = date < today;
     var isToday = date.getTime() === today.getTime();
-    var isAvail = bmState.availDays && bmState.availDays.has(dow);
+    // Check availability: schedule takes priority over avail array
+    var isAvail = false;
+    if(bmState.coachRef && bmState.coachRef.schedule) {
+      var sch = typeof bmState.coachRef.schedule === 'string'
+        ? JSON.parse(bmState.coachRef.schedule) : bmState.coachRef.schedule;
+      isAvail = !isPast && ((sch[dow] && sch[dow].length > 0) || (sch[String(dow)] && sch[String(dow)].length > 0));
+    } else {
+      isAvail = bmState.availDays && bmState.availDays.has(dow);
+    }
     var mm = String(bkCalState.month+1).padStart(2,'0');
     var dd = String(d).padStart(2,'0');
     var dateStr = bkCalState.year+'-'+mm+'-'+dd;
@@ -3422,16 +3436,27 @@ async function bkRenderTimeSlots(dateStr) {
   var allSlots = ['9:00','10:00','11:00','12:00','13:00','14:00',
                   '15:00','16:00','17:00','18:00','19:00','20:00','21:00'];
 
-  // Use coach's available_hours if set in DB, otherwise show all slots
-  var slots;
-  if(coach && coach.available_hours && Array.isArray(coach.available_hours) && coach.available_hours.length > 0) {
+  // Get slots for this specific day from schedule
+  var slots = allSlots; // default: show all
+  if(coach && coach.schedule) {
+    // schedule: {0: ['9:00',...], 6: ['11:00',...]}
+    var sch = typeof coach.schedule === 'string' ? JSON.parse(coach.schedule) : coach.schedule;
+    var d = new Date(dateStr + 'T00:00:00');
+    var dow = d.getDay(); // 0=Sun, 6=Sat
+    if(sch[dow] && sch[dow].length > 0) {
+      slots = sch[dow]; // use this day's specific hours
+    } else if(sch[String(dow)] && sch[String(dow)].length > 0) {
+      slots = sch[String(dow)];
+    } else {
+      // Day not in schedule = no slots available
+      notice.textContent = '⚠️ 教练该日暂无可约时段';
+      slotsEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--mute);font-size:13px;">教练该日暂无开放时段</div>';
+      return;
+    }
+  } else if(coach && coach.available_hours && coach.available_hours.length > 0) {
+    // Fallback: use old available_hours field
     slots = coach.available_hours;
-  } else {
-    slots = allSlots;
   }
-
-  // Debug log
-  console.log('Coach:', coach && coach.name, '| available_hours:', coach && coach.available_hours, '| showing slots:', slots.length);
 
   notice.textContent = '⏰ 请选择上课时间';
   slotsEl.innerHTML = slots.map(function(s){
