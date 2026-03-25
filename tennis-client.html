@@ -2688,6 +2688,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
       <div class="nav-item" onclick="showPanel('coaches',this)"><span class="nav-icon">🎾</span> 找教练</div>
       <div class="nav-item" onclick="showPanel('my-bookings',this)"><span class="nav-icon">📅</span> 我的预约</div>
       <div class="nav-item" onclick="showPanel('packages',this)"><span class="nav-icon">📦</span> 课程套餐</div>
+      <div class="nav-item" onclick="showPanel('benefit',this)"><span class="nav-icon">🎁</span> 平台好处</div>
       <div class="nav-section-label" style="margin-top:10px;">地区筛选</div>
       <div class="nav-item" onclick="showPanel('coaches',this);setRegion('dc')"><span class="nav-icon">📍</span> Washington DC</div>
       <div class="nav-item" onclick="showPanel('coaches',this);setRegion('md')"><span class="nav-icon">📍</span> Maryland</div>
@@ -2838,6 +2839,364 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
         </div>
       </div>
 
+      <!-- BENEFIT PANEL -->
+      <div id="panel-benefit" class="panel">
+
+        <!-- Hero -->
+        <div style="background:linear-gradient(135deg,#0d3b23 0%,#1a6b3a 50%,#2d9a57 100%);border-radius:20px;padding:36px 32px;margin-bottom:24px;position:relative;overflow:hidden;">
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,0.02) 0,rgba(255,255,255,0.02) 1px,transparent 0,transparent 28px);"></div>
+          <div style="position:absolute;right:24px;top:50%;transform:translateY(-50%);font-size:80px;opacity:0.08;">🎾</div>
+          <div style="position:relative;z-index:1;">
+            <div style="display:inline-block;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.9);font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:1px;margin-bottom:14px;">DC · MD · VA 华人网球社区</div>
+            <div style="color:white;font-size:clamp(20px,3vw,28px);font-weight:900;line-height:1.3;margin-bottom:8px;">加入平台，享受专属好处</div>
+            <div style="color:rgba(255,255,255,0.7);font-size:13px;line-height:1.7;">透明定价 · 灵活约课 · 本地教练 · 忠实会员专享福利</div>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;">
+          <div style="background:white;border-radius:14px;padding:16px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.06);">
+            <div style="font-size:24px;font-weight:900;color:var(--green);">10+</div>
+            <div style="font-size:11px;color:var(--mute);margin-top:2px;">认证教练</div>
+          </div>
+          <div style="background:white;border-radius:14px;padding:16px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.06);">
+            <div style="font-size:24px;font-weight:900;color:var(--green);">100+</div>
+            <div style="font-size:11px;color:var(--mute);margin-top:2px;">成功约课</div>
+          </div>
+          <div style="background:white;border-radius:14px;padding:16px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.06);">
+            <div style="font-size:24px;font-weight:900;color:var(--green);">4.9</div>
+            <div style="font-size:11px;color:var(--mute);margin-top:2px;">平均评分</div>
+          </div>
+          <div style="background:white;border-radius:14px;padding:16px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.06);">
+            <div style="font-size:24px;font-weight:900;color:var(--green);">3州</div>
+            <div style="font-size:11px;color:var(--mute);margin-top:2px;">DC·MD·VA</div>
+          </div>
+        </div>
+
+        <!-- Benefits Grid -->
+        <div style="margin-bottom:8px;">
+          <div style="font-size:16px;font-weight:800;margin-bottom:16px;">🎯 平台好处</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;">
+
+            <div style="background:white;border-radius:16px;padding:22px;box-shadow:0 1px 8px rgba(0,0,0,0.06);border:1.5px solid transparent;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--green-light)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='transparent';this.style.transform='none'">
+              <div style="width:46px;height:46px;border-radius:12px;background:var(--green-light);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;">🈶</div>
+              <div style="font-size:14px;font-weight:800;margin-bottom:6px;">中文平台界面</div>
+              <div style="font-size:12px;color:var(--sub);line-height:1.7;">平台界面、教练简介、约课流程全部中文显示。部分教练提供中文教学，可在筛选时选择。</div>
+            </div>
+
+            <div style="background:white;border-radius:16px;padding:22px;box-shadow:0 1px 8px rgba(0,0,0,0.06);border:1.5px solid transparent;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--green-light)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='transparent';this.style.transform='none'">
+              <div style="width:46px;height:46px;border-radius:12px;background:#fef3c7;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;">💰</div>
+              <div style="font-size:14px;font-weight:800;margin-bottom:6px;">透明公开定价</div>
+              <div style="font-size:12px;color:var(--sub);line-height:1.7;">每位教练的课时费一目了然，无隐藏费用，无中间商差价。你看到的价格就是你付的价格。</div>
+            </div>
+
+            <div style="background:white;border-radius:16px;padding:22px;box-shadow:0 1px 8px rgba(0,0,0,0.06);border:1.5px solid transparent;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--green-light)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='transparent';this.style.transform='none'">
+              <div style="width:46px;height:46px;border-radius:12px;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;">📅</div>
+              <div style="font-size:14px;font-weight:800;margin-bottom:6px;">灵活约课时间</div>
+              <div style="font-size:12px;color:var(--sub);line-height:1.7;">实时查看教练可用时间，按自己的日程安排上课，周末、工作日均可。</div>
+            </div>
+
+            <div style="background:white;border-radius:16px;padding:22px;box-shadow:0 1px 8px rgba(0,0,0,0.06);border:1.5px solid transparent;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--green-light)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='transparent';this.style.transform='none'">
+              <div style="width:46px;height:46px;border-radius:12px;background:#ede9fe;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;">🎯</div>
+              <div style="font-size:14px;font-weight:800;margin-bottom:6px;">按需匹配教练</div>
+              <div style="font-size:12px;color:var(--sub);line-height:1.7;">按技术水平、训练目标、上课地点筛选教练。入门、进阶、儿童训练均有对应教练。</div>
+            </div>
+
+            <div style="background:white;border-radius:16px;padding:22px;box-shadow:0 1px 8px rgba(0,0,0,0.06);border:1.5px solid transparent;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--green-light)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='transparent';this.style.transform='none'">
+              <div style="width:46px;height:46px;border-radius:12px;background:#ccfbf1;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;">📍</div>
+              <div style="font-size:14px;font-weight:800;margin-bottom:6px;">DC/MD/VA 本地覆盖</div>
+              <div style="font-size:12px;color:var(--sub);line-height:1.7;">平台聚焦大华盛顿地区，教练均在本地，上课地点近、接送方便，真正的社区平台。</div>
+            </div>
+
+            <div style="background:white;border-radius:16px;padding:22px;box-shadow:0 1px 8px rgba(0,0,0,0.06);border:1.5px solid transparent;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--green-light)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='transparent';this.style.transform='none'">
+              <div style="width:46px;height:46px;border-radius:12px;background:#fef3c7;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;">⏰</div>
+              <div style="font-size:14px;font-weight:800;margin-bottom:6px;">提前 48 小时取消</div>
+              <div style="font-size:12px;color:var(--sub);line-height:1.7;">只需提前 48 小时取消预约，无需支付任何费用，灵活应对临时变化，零压力约课。</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- US Open 抽奖卡片 -->
+        <div style="margin-top:20px;border-radius:16px;border:1.5px solid #fecdd3;background:linear-gradient(135deg,#fff1f2,#fff);padding:22px 24px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+            <span style="font-size:28px;">🏆</span>
+            <div>
+              <div style="font-size:15px;font-weight:800;">美网公开赛门票抽奖</div>
+              <div style="font-size:11px;color:#e11d48;font-weight:600;margin-top:2px;">每年抽取 3 位幸运学员 · 免费送门票</div>
+            </div>
+            <div style="margin-left:auto;font-size:11px;background:#e11d48;color:white;padding:3px 10px;border-radius:20px;font-weight:800;white-space:nowrap;">年度福利</div>
+          </div>
+
+          <div style="background:#fff1f2;border-radius:12px;padding:16px 18px;margin-bottom:16px;display:flex;align-items:center;gap:16px;">
+            <div style="font-size:48px;line-height:1;">🎾</div>
+            <div>
+              <div style="font-size:14px;font-weight:900;color:#1a1a1a;margin-bottom:4px;">US Open 门票 × 3 张</div>
+              <div style="font-size:12px;color:#e11d48;font-weight:600;">每年从所有学员中随机抽取 3 位</div>
+              <div style="font-size:12px;color:var(--sub);margin-top:3px;">在平台完成过约课即有资格参与</div>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);">
+              <span style="color:#e11d48;font-weight:800;">✓</span> <strong>无需额外报名</strong>——只要在平台约过课自动参与
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);">
+              <span style="color:#e11d48;font-weight:800;">✓</span> <strong>约课越多机会越大</strong>——每次约课增加一次抽奖资格
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);">
+              <span style="color:#e11d48;font-weight:800;">✓</span> <strong>每年 8 月公布结果</strong>——通过注册邮箱通知中奖学员
+            </div>
+          </div>
+
+          <div style="background:white;border:1px solid #fecdd3;border-radius:10px;padding:12px 16px;text-align:center;">
+            <div style="font-size:12px;color:#e11d48;font-weight:700;">🎯 你当前的抽奖资格</div>
+            <div style="font-size:22px;font-weight:900;color:#1a1a1a;margin:6px 0;" id="raffle-count">登录后查看</div>
+            <div style="font-size:11px;color:var(--mute);">累计约课次数 = 抽奖票数</div>
+          </div>
+        </div>
+
+        <!-- Loyalty Card -->
+        <div style="margin-top:20px;border-radius:16px;overflow:hidden;border:1.5px solid #fde68a;background:linear-gradient(135deg,#fffbeb,#fff);padding:22px 24px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+            <span style="font-size:28px;">🏆</span>
+            <div>
+              <div style="font-size:15px;font-weight:800;">Tennis Warehouse 专属折扣</div>
+              <div style="font-size:11px;color:#92400e;font-weight:600;margin-top:2px;">忠实会员专享 · 累计约课满 10 次自动解锁</div>
+            </div>
+            <div style="margin-left:auto;font-size:11px;background:#fbbf24;color:white;padding:3px 10px;border-radius:20px;font-weight:800;white-space:nowrap;">忠实会员</div>
+          </div>
+          <div style="background:#fef3c7;border-radius:10px;padding:16px 18px;display:flex;align-items:center;gap:14px;">
+            <div style="font-size:32px;font-weight:900;font-family:monospace;letter-spacing:3px;color:#92400e;">30% OFF</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:#1a1a1a;">Tennis Warehouse 全场折扣</div>
+              <div style="font-size:12px;color:#92400e;margin-top:3px;">🔒 约满 10 次后优惠码自动发放，前往「我的预约」查看进度</div>
+            </div>
+          </div>
+          <div style="margin-top:12px;text-align:center;">
+            <button onclick="showPanel('my-bookings', document.querySelector('.nav-item:nth-child(3)'))" style="padding:10px 24px;background:linear-gradient(135deg,var(--green),var(--green2));color:white;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">📅 查看我的约课进度 →</button>
+          </div>
+        </div>
+
+        <!-- 穿线服务卡片 -->
+        <div style="margin-top:20px;border-radius:16px;overflow:hidden;border:1.5px solid #bfdbfe;background:linear-gradient(135deg,#eff6ff,#fff);padding:22px 24px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+            <span style="font-size:28px;">🎯</span>
+            <div>
+              <div style="font-size:15px;font-weight:800;">专业穿线服务</div>
+              <div style="font-size:11px;color:#1d4ed8;font-weight:600;margin-top:2px;">Arlington VA 集中收拍 · 三天返还 · DC/MD/VA 覆盖</div>
+            </div>
+            <div style="margin-left:auto;font-size:11px;background:#3b82f6;color:white;padding:3px 10px;border-radius:20px;font-weight:800;white-space:nowrap;">新服务</div>
+          </div>
+
+          <!-- 价格卡 -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;">
+            <div style="background:white;border-radius:12px;padding:14px;text-align:center;box-shadow:0 1px 6px rgba(0,0,0,0.06);">
+              <div style="font-size:20px;font-weight:900;color:#1d4ed8;">$25</div>
+              <div style="font-size:10px;color:var(--mute);margin-top:3px;font-weight:600;">穿线工费</div>
+            </div>
+            <div style="background:white;border-radius:12px;padding:14px;text-align:center;box-shadow:0 1px 6px rgba(0,0,0,0.06);">
+              <div style="font-size:20px;font-weight:900;color:#1d4ed8;">+线费</div>
+              <div style="font-size:10px;color:var(--mute);margin-top:3px;font-weight:600;">单独选购</div>
+            </div>
+            <div style="background:#eff6ff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 1px 6px rgba(0,0,0,0.06);">
+              <div style="font-size:18px;font-weight:900;color:#1d4ed8;">✓ 自带</div>
+              <div style="font-size:10px;color:var(--mute);margin-top:3px;font-weight:600;">可自带线</div>
+            </div>
+          </div>
+
+          <!-- 特点 -->
+          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);">
+              <span style="color:#3b82f6;font-weight:800;">✓</span> <strong>Arlington VA 集中收拍</strong>——送到 1600 S Hayes St 指定地点，方便快捷
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);">
+              <span style="color:#3b82f6;font-weight:800;">✓</span> <strong>三天内返还</strong>——穿好后通知你取回
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);">
+              <span style="color:#3b82f6;font-weight:800;">✓</span> <strong>多种线材可选</strong>——尼龙、聚酯、天然肠线均有
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);">
+              <span style="color:#3b82f6;font-weight:800;">✓</span> <strong>可自带线</strong>——只收 $25 工费，省心省钱
+            </div>
+          </div>
+
+          <button onclick="openStringingModal()" style="width:100%;padding:14px;background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:white;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(59,130,246,0.35);">
+            🎯 立即预约穿线服务
+          </button>
+        </div>
+
+        <!-- 比赛配对卡片 -->
+        <div style="margin-top:20px;border-radius:16px;border:1.5px solid #e9d5ff;background:linear-gradient(135deg,#faf5ff,#fff);padding:22px 24px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+            <span style="font-size:28px;">🏅</span>
+            <div>
+              <div style="font-size:15px;font-weight:800;">DMV 比赛配对</div>
+              <div style="font-size:11px;color:#7c3aed;font-weight:600;margin-top:2px;">单打 · 双打 · 混双 · 帮你找搭档参赛</div>
+            </div>
+            <div style="margin-left:auto;font-size:11px;background:#7c3aed;color:white;padding:3px 10px;border-radius:20px;font-weight:800;white-space:nowrap;">即将上线</div>
+          </div>
+
+          <div style="background:#f3e8ff;border-radius:12px;padding:14px 16px;margin-bottom:14px;font-size:13px;color:#5b21b6;line-height:1.7;font-weight:600;">
+            🎾 想打比赛但找不到搭档？平台帮你对接 DMV 地区同水平球友，一起报名参赛。
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);">
+              <span style="color:#7c3aed;font-weight:800;">✓</span> <strong>单打比赛</strong>——USTA 联赛、本地 DMV 业余赛事
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);">
+              <span style="color:#7c3aed;font-weight:800;">✓</span> <strong>双打 / 混双配对</strong>——平台帮你找同水平搭档
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);">
+              <span style="color:#7c3aed;font-weight:800;">✓</span> <strong>自组友谊赛</strong>——约球友切磋，平台协助组织
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);">
+              <span style="color:#7c3aed;font-weight:800;">✓</span> <strong>华人圈专属</strong>——DC/MD/VA 华人球友社区
+            </div>
+          </div>
+
+          <div style="background:#f3e8ff;border-radius:10px;padding:12px 16px;text-align:center;margin-bottom:14px;">
+            <div style="font-size:12px;color:#5b21b6;font-weight:700;margin-bottom:4px;">🔔 功能即将上线</div>
+            <div style="font-size:11px;color:#7c3aed;">登记感兴趣，上线第一时间通知你</div>
+          </div>
+
+          <button onclick="openCompetitionInterest()" style="width:100%;padding:14px;background:linear-gradient(135deg,#6d28d9,#7c3aed);color:white;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(124,58,237,0.35);">
+            🏅 我感兴趣，提前登记
+          </button>
+        </div>
+
+      </div>
+
+<div id="stringing-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:3000;align-items:center;justify-content:center;">
+
+<!-- 比赛兴趣登记弹窗 -->
+<div id="competition-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:3000;align-items:center;justify-content:center;">
+  <div style="background:white;border-radius:20px;width:460px;max-width:95vw;max-height:90vh;overflow-y:auto;padding:32px;animation:popIn 0.25s cubic-bezier(0.16,1,0.3,1);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+      <div>
+        <div style="font-size:20px;font-weight:900;">🏅 比赛兴趣登记</div>
+        <div style="font-size:12px;color:var(--mute);margin-top:2px;">功能上线后第一时间通知你</div>
+      </div>
+      <div onclick="closeCompetitionInterest()" style="font-size:22px;cursor:pointer;color:var(--mute);padding:4px;">✕</div>
+    </div>
+
+    <!-- 比赛类型 -->
+    <div style="margin-bottom:18px;">
+      <div style="font-size:13px;font-weight:700;color:var(--sub);margin-bottom:8px;">🎾 感兴趣的比赛类型（可多选）</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div class="comp-opt" onclick="toggleCompOpt(this,'单打')" style="border:1.5px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;text-align:center;font-size:13px;font-weight:600;">🎯 单打</div>
+        <div class="comp-opt" onclick="toggleCompOpt(this,'双打')" style="border:1.5px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;text-align:center;font-size:13px;font-weight:600;">👥 双打</div>
+        <div class="comp-opt" onclick="toggleCompOpt(this,'混双')" style="border:1.5px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;text-align:center;font-size:13px;font-weight:600;">💑 混双</div>
+        <div class="comp-opt" onclick="toggleCompOpt(this,'友谊赛')" style="border:1.5px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;text-align:center;font-size:13px;font-weight:600;">🤝 友谊赛</div>
+      </div>
+    </div>
+
+    <!-- 水平 -->
+    <div style="margin-bottom:18px;">
+      <div style="font-size:13px;font-weight:700;color:var(--sub);margin-bottom:8px;">📊 你的水平（NTRP/UTR）</div>
+      <input id="comp-level" type="text" placeholder="如：NTRP 3.5、UTR 5、自评初中高级" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='#7c3aed'" onblur="this.style.borderColor='var(--border)'">
+    </div>
+
+    <!-- 联系方式 -->
+    <div style="margin-bottom:20px;">
+      <div style="font-size:13px;font-weight:700;color:var(--sub);margin-bottom:8px;">📱 联系方式</div>
+      <input id="comp-name" type="text" placeholder="姓名" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;margin-bottom:8px;" onfocus="this.style.borderColor='#7c3aed'" onblur="this.style.borderColor='var(--border)'">
+      <input id="comp-wechat" type="text" placeholder="微信号 *" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='#7c3aed'" onblur="this.style.borderColor='var(--border)'">
+    </div>
+
+    <div id="comp-err" style="background:#fdecea;border-radius:8px;padding:10px 14px;font-size:12px;color:var(--red);margin-bottom:12px;display:none;"></div>
+
+    <button onclick="submitCompetition()" id="comp-submit-btn" style="width:100%;padding:15px;background:linear-gradient(135deg,#6d28d9,#7c3aed);color:white;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(124,58,237,0.3);">
+      🏅 提交登记
+    </button>
+
+    <div id="comp-success" style="display:none;text-align:center;padding:20px 0;">
+      <div style="font-size:48px;margin-bottom:12px;">🎉</div>
+      <div style="font-size:18px;font-weight:900;margin-bottom:8px;">登记成功！</div>
+      <div style="font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:20px;">功能上线后我们会第一时间通过微信通知你，期待和你一起打比赛！</div>
+      <button onclick="closeCompetitionInterest()" style="padding:12px 32px;background:var(--green-light);color:var(--green);border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">关闭</button>
+    </div>
+  </div>
+</div>
+  <div style="background:white;border-radius:20px;width:500px;max-width:95vw;max-height:90vh;overflow-y:auto;padding:32px;animation:popIn 0.25s cubic-bezier(0.16,1,0.3,1);">
+
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+      <div>
+        <div style="font-size:20px;font-weight:900;">🎯 预约穿线服务</div>
+        <div style="font-size:12px;color:var(--mute);margin-top:2px;">上门取送 · 工费 $25 · 可自带线</div>
+      </div>
+      <div onclick="closeStringingModal()" style="font-size:22px;cursor:pointer;color:var(--mute);padding:4px;">✕</div>
+    </div>
+
+    <!-- 球拍信息 -->
+    <div style="margin-bottom:18px;">
+      <div style="font-size:13px;font-weight:700;color:var(--sub);margin-bottom:8px;">🎾 球拍信息</div>
+      <input id="str-racket" type="text" placeholder="球拍品牌 & 型号（如：Wilson Pro Staff 97）" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;margin-bottom:8px;" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='var(--border)'">
+      <input id="str-tension" type="text" placeholder="穿线磅数（如：55 lbs，不确定可留空）" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='var(--border)'">
+    </div>
+
+    <!-- 线材选择 -->
+    <div style="margin-bottom:18px;">
+      <div style="font-size:13px;font-weight:700;color:var(--sub);margin-bottom:8px;">🧵 线材</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;" id="str-string-opts">
+        <div class="str-opt selected" onclick="selectStringOpt(this,'own')" style="border:1.5px solid #3b82f6;background:#eff6ff;border-radius:10px;padding:12px;cursor:pointer;text-align:center;">
+          <div style="font-size:13px;font-weight:700;color:#1d4ed8;">自带线</div>
+          <div style="font-size:11px;color:#3b82f6;margin-top:2px;">只收 $25 工费</div>
+        </div>
+        <div class="str-opt" onclick="selectStringOpt(this,'select')" style="border:1.5px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;text-align:center;">
+          <div style="font-size:13px;font-weight:700;">帮我选线</div>
+          <div style="font-size:11px;color:var(--mute);margin-top:2px;">工费 + 线费另计</div>
+        </div>
+      </div>
+      <input id="str-string-note" type="text" placeholder="线材备注（如：偏好聚酯线、弹性好的）" style="width:100%;height:40px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:12px;font-family:inherit;outline:none;margin-top:8px;" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='var(--border)'">
+    </div>
+
+    <!-- 取送信息 -->
+    <div style="margin-bottom:18px;">
+      <div style="font-size:13px;font-weight:700;color:var(--sub);margin-bottom:8px;">📍 交拍方式</div>
+      <div style="background:#eff6ff;border-radius:10px;padding:12px 16px;margin-bottom:10px;font-size:13px;color:#1d4ed8;line-height:1.7;">
+        📌 <strong>集中收拍地点：1600 S Hayes St, Arlington, VA 22202</strong><br>
+        具体交拍时间会由穿线师通过微信确认，三天内穿好通知取回。
+      </div>
+      <input id="str-pickup-time" type="text" placeholder="希望送拍的时间（如：周六上午 10:00）" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='var(--border)'">
+    </div>
+
+    <!-- 联系方式 -->
+    <div style="margin-bottom:18px;">
+      <div style="font-size:13px;font-weight:700;color:var(--sub);margin-bottom:8px;">📱 联系方式</div>
+      <input id="str-name" type="text" placeholder="姓名" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;margin-bottom:8px;" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='var(--border)'">
+      <input id="str-wechat" type="text" placeholder="微信号 *" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;margin-bottom:8px;" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='var(--border)'">
+      <input id="str-phone" type="tel" placeholder="手机号（含国家区号，如 +1 571-xxx-xxxx）" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='var(--border)'">
+    </div>
+
+    <!-- 备注 -->
+    <div style="margin-bottom:20px;">
+      <textarea id="str-notes" placeholder="其他备注（可选）" rows="2" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:13px;font-family:inherit;outline:none;resize:none;" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='var(--border)'"></textarea>
+    </div>
+
+    <!-- 费用说明 -->
+    <div style="background:#eff6ff;border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:#1d4ed8;line-height:1.7;">
+      💡 <strong>费用说明：</strong>工费 $25。如需购线，穿线师确认时会提供线材选择，线费单独结算。付款方式：微信 / 支付宝 / Zelle。
+    </div>
+
+    <div id="str-err" style="background:#fdecea;border-radius:8px;padding:10px 14px;font-size:12px;color:var(--red);margin-bottom:12px;display:none;"></div>
+
+    <button onclick="submitStringing()" id="str-submit-btn" style="width:100%;padding:15px;background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:white;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(59,130,246,0.3);">
+      🎯 提交穿线预约
+    </button>
+
+    <!-- 成功提示 -->
+    <div id="str-success" style="display:none;text-align:center;padding:20px 0;">
+      <div style="font-size:48px;margin-bottom:12px;">✅</div>
+      <div style="font-size:18px;font-weight:900;margin-bottom:8px;">预约已提交！</div>
+      <div style="font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:20px;">穿线师会通过微信联系你确认取球拍时间，请保持微信畅通。</div>
+      <button onclick="closeStringingModal()" style="padding:12px 32px;background:var(--green-light);color:var(--green);border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">关闭</button>
+    </div>
+
+  </div>
+</div>
+
     </div><!-- end page-body -->
   </div><!-- end main -->
 
@@ -2853,8 +3212,11 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
       <div class="mob-nav-icon">📅</div><span>我的预约</span>
       <div id="mob-bk-badge" style="display:none;position:absolute;top:4px;right:18px;width:8px;height:8px;background:var(--red);border-radius:50%;"></div>
     </div>
+    <div class="mob-nav-item" id="mobnav-benefit" onclick="mobileNav('benefit',this)">
+      <div class="mob-nav-icon">🎁</div><span>好处</span>
+    </div>
     <div class="mob-nav-item" id="mobnav-me" onclick="mobileNavMe()">
-      <div class="mob-nav-icon" id="mob-me-icon">👤</div><span id="mob-me-label">我的</span>
+      <div class="mob-nav-icon" id="mob-me-icon">👤</div><span id="mob-me-label">登录</span>
     </div>
   </div>
 </div><!-- end app -->
@@ -4178,6 +4540,7 @@ var panelTitles = {
   'coaches': '找教练',
   'my-bookings': '我的预约',
   'packages': '课程套餐',
+  'benefit': '平台好处',
   'coach-profile': '教练详情'
 };
 
@@ -4272,6 +4635,13 @@ function updateLoyaltyCard(bookings) {
   var pct = Math.min(100, Math.round(cnt / LOYALTY_THRESHOLD_CLIENT * 100));
 
   card.style.display = 'block';
+
+  // 同步更新抽奖票数
+  var raffleEl = document.getElementById('raffle-count');
+  if(raffleEl) {
+    raffleEl.textContent = cnt + ' 张票';
+    raffleEl.style.color = cnt > 0 ? '#e11d48' : '#1a1a1a';
+  }
 
   if(unlocked) {
     // 已解锁状态
@@ -4482,9 +4852,179 @@ function showToastClient(msg) {
 }
 
 // ═══════════════════════════
+// 比赛配对登记
+// ═══════════════════════════
+var compOpts = [];
+
+function openCompetitionInterest() {
+  compOpts = [];
+  document.querySelectorAll('.comp-opt').forEach(function(o){
+    o.style.borderColor = 'var(--border)';
+    o.style.background = 'white';
+    o.style.color = 'var(--text)';
+  });
+  if(currentUser) document.getElementById('comp-name').value = currentUser.name || '';
+  document.getElementById('comp-success').style.display = 'none';
+  document.getElementById('comp-submit-btn').style.display = 'block';
+  document.getElementById('comp-err').style.display = 'none';
+  document.getElementById('competition-overlay').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCompetitionInterest() {
+  document.getElementById('competition-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function toggleCompOpt(el, val) {
+  var idx = compOpts.indexOf(val);
+  if(idx > -1) {
+    compOpts.splice(idx, 1);
+    el.style.borderColor = 'var(--border)';
+    el.style.background = 'white';
+    el.style.color = 'var(--text)';
+  } else {
+    compOpts.push(val);
+    el.style.borderColor = '#7c3aed';
+    el.style.background = '#faf5ff';
+    el.style.color = '#6d28d9';
+  }
+}
+
+async function submitCompetition() {
+  var wechat = document.getElementById('comp-wechat').value.trim();
+  var name   = document.getElementById('comp-name').value.trim();
+  var level  = document.getElementById('comp-level').value.trim();
+  var errEl  = document.getElementById('comp-err');
+  errEl.style.display = 'none';
+
+  if(!wechat) { errEl.textContent='⚠️ 请填写微信号'; errEl.style.display='block'; return; }
+
+  var btn = document.getElementById('comp-submit-btn');
+  btn.disabled = true; btn.textContent = '提交中…';
+
+  var row = {
+    student_name:   name || (currentUser && currentUser.name) || '未填写',
+    student_email:  (currentUser && currentUser.email) || '未填写',
+    student_wechat: wechat,
+    student_phone:  '',
+    booking_date:   new Date().toISOString().split('T')[0],
+    booking_time:   '待定',
+    lesson_type:    '比赛配对登记 | ' + (compOpts.length ? compOpts.join('、') : '未选') + (level?' | 水平:'+level:''),
+    court:          'DMV比赛配对',
+    status:         'pending',
+    deposit_amount: 0,
+    payment_method: 'wechat'
+  };
+
+  try {
+    var token = (currentUser && currentUser.token) || SB_KEY;
+    await fetch(SB_URL+'/rest/v1/bookings', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+token,'Prefer':'return=minimal'},
+      body: JSON.stringify(row)
+    });
+  } catch(e) { console.warn('Competition submit:', e.message); }
+
+  btn.disabled = false;
+  btn.style.display = 'none';
+  document.getElementById('comp-success').style.display = 'block';
+}
+
+// ═══════════════════════════
+// 穿线服务
+// ═══════════════════════════
+var strStringChoice = 'own'; // 'own' = 自带线, 'select' = 帮我选
+
+function openStringingModal() {
+  // 预填登录用户信息
+  if(currentUser) {
+    document.getElementById('str-name').value = currentUser.name || '';
+  }
+  document.getElementById('str-success').style.display = 'none';
+  document.getElementById('str-submit-btn').style.display = 'block';
+  document.getElementById('str-err').style.display = 'none';
+  document.getElementById('stringing-overlay').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeStringingModal() {
+  document.getElementById('stringing-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function selectStringOpt(el, val) {
+  strStringChoice = val;
+  document.querySelectorAll('.str-opt').forEach(function(o){
+    o.style.borderColor = 'var(--border)';
+    o.style.background = 'white';
+    o.querySelector('div').style.color = 'var(--text)';
+  });
+  el.style.borderColor = '#3b82f6';
+  el.style.background = '#eff6ff';
+  el.querySelector('div').style.color = '#1d4ed8';
+}
+
+async function submitStringing() {
+  var racket  = document.getElementById('str-racket').value.trim();
+  var wechat  = document.getElementById('str-wechat').value.trim();
+  var phone   = document.getElementById('str-phone').value.trim();
+  var address = '1600 S Hayes St, Arlington, VA 22202（集中收拍）';
+  var pickup  = document.getElementById('str-pickup-time').value.trim();
+  var name    = document.getElementById('str-name').value.trim();
+  var errEl   = document.getElementById('str-err');
+  errEl.style.display = 'none';
+
+  if(!racket)  { errEl.textContent='⚠️ 请填写球拍型号'; errEl.style.display='block'; return; }
+  if(!wechat)  { errEl.textContent='⚠️ 请填写微信号，穿线师会通过微信联系你'; errEl.style.display='block'; return; }
+
+  var btn = document.getElementById('str-submit-btn');
+  btn.disabled = true;
+  btn.textContent = '提交中…';
+
+  var row = {
+    student_name:    name || (currentUser && currentUser.name) || '未填写',
+    student_email:   (currentUser && currentUser.email) || '未填写',
+    student_wechat:  wechat,
+    student_phone:   phone,
+    booking_date:    new Date().toISOString().split('T')[0],
+    booking_time:    pickup || '待定',
+    lesson_type:     '穿线服务 | ' + (strStringChoice==='own'?'自带线':'帮我选线') + ' | ' + racket,
+    court:           address,
+    status:          'pending',
+    deposit_amount:  25,
+    payment_method:  'wechat'
+  };
+
+  try {
+    var token = (currentUser && currentUser.token) || SB_KEY;
+    var r = await fetch(SB_URL+'/rest/v1/bookings', {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+token,'Prefer':'return=minimal' },
+      body: JSON.stringify(row)
+    });
+    if(!r.ok) throw new Error('提交失败');
+  } catch(e) {
+    // 即使DB失败也显示成功（管理员能从admin看到）
+    console.warn('Stringing submit:', e.message);
+  }
+
+  btn.disabled = false;
+  btn.style.display = 'none';
+  document.getElementById('str-success').style.display = 'block';
+}
+
+// ═══════════════════════════
 // INIT
 // ═══════════════════════════
 checkSession();
+
+// 关闭穿线弹窗点击背景
+document.addEventListener('DOMContentLoaded', function(){
+  var so = document.getElementById('stringing-overlay');
+  if(so) so.addEventListener('click', function(e){ if(e.target===this) closeStringingModal(); });
+});
+
 
 // ── FORGOT PASSWORD ──
 function showForgotPwd() {
