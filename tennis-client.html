@@ -2797,6 +2797,34 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
           <div style="font-size:18px;font-weight:900;">📅 我的预约</div>
           <button onclick="loadMyBookings()" style="padding:7px 14px;background:var(--green-light);color:var(--green);border:none;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;">🔄 刷新</button>
         </div>
+
+        <!-- ── 忠实会员进度卡片 ── -->
+        <div id="loyalty-card" style="display:none;margin-bottom:18px;border-radius:16px;overflow:hidden;border:1.5px solid #fde68a;background:linear-gradient(135deg,#fffbeb,#fff);padding:18px 20px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font-size:24px;" id="loyalty-icon">🎾</span>
+              <div>
+                <div style="font-size:14px;font-weight:800;color:#1a1a1a;" id="loyalty-title">Tennis Warehouse 专属折扣</div>
+                <div style="font-size:11px;color:#92400e;font-weight:600;" id="loyalty-sub">累计约课满 10 次解锁 30% 优惠码</div>
+              </div>
+            </div>
+            <div id="loyalty-badge" style="font-size:11px;background:#fbbf24;color:white;padding:3px 10px;border-radius:20px;font-weight:800;white-space:nowrap;">忠实会员专享</div>
+          </div>
+          <div id="loyalty-progress-wrap">
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:#92400e;font-weight:600;margin-bottom:6px;">
+              <span id="loyalty-count-txt">已完成 0 / 10 次</span>
+              <span id="loyalty-remain-txt">差 10 次解锁</span>
+            </div>
+            <div style="height:8px;background:#fef3c7;border-radius:6px;overflow:hidden;">
+              <div id="loyalty-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#f59e0b,#fbbf24);border-radius:6px;transition:width 0.6s ease;"></div>
+            </div>
+          </div>
+          <div id="loyalty-unlocked" style="display:none;text-align:center;padding:8px 0 4px;">
+            <div style="font-size:13px;font-weight:700;color:#1a6b3a;margin-bottom:4px;">🎉 恭喜！优惠码已发送至你的注册邮箱</div>
+            <div style="font-size:12px;color:#555;">如未收到请检查垃圾邮件，或联系我们重发</div>
+          </div>
+        </div>
+
         <div id="my-bookings-list">
           <div class="empty-st"><div class="empty-st-icon">📋</div><div>暂无预约记录</div></div>
         </div>
@@ -4084,6 +4112,9 @@ async function loadMyBookings() {
       }
     }
 
+    // ── 更新忠实会员进度条 ──
+    updateLoyaltyCard(bookings);
+
     // Auto-refresh every 15 seconds to catch status changes from admin
     clearTimeout(bookingsRefreshTimer);
     bookingsRefreshTimer = setTimeout(function(){
@@ -4141,6 +4172,14 @@ function bookingCardHTML(b) {
     + '</div>';
 }
 
+
+var panelTitles = {
+  'home': '首页',
+  'coaches': '找教练',
+  'my-bookings': '我的预约',
+  'packages': '课程套餐',
+  'coach-profile': '教练详情'
+};
 
 function showPanel(id, navEl) {
   currentPanel = id;
@@ -4218,8 +4257,53 @@ function updateMobNav() {
 }
 
 // ═══════════════════════════
-// LOGIN GATE
+// 忠实会员进度条
 // ═══════════════════════════
+var LOYALTY_THRESHOLD_CLIENT = 10;
+
+function updateLoyaltyCard(bookings) {
+  var card = document.getElementById('loyalty-card');
+  if(!card || !currentUser) return;
+
+  // 只统计 confirmed 状态
+  var confirmed = bookings.filter(function(b){ return b.status === 'confirmed'; });
+  var cnt = confirmed.length;
+  var unlocked = cnt >= LOYALTY_THRESHOLD_CLIENT;
+  var pct = Math.min(100, Math.round(cnt / LOYALTY_THRESHOLD_CLIENT * 100));
+
+  card.style.display = 'block';
+
+  if(unlocked) {
+    // 已解锁状态
+    card.style.borderColor = '#6ee7b7';
+    card.style.background = 'linear-gradient(135deg,#f0fdf4,#fff)';
+    document.getElementById('loyalty-icon').textContent = '🏆';
+    document.getElementById('loyalty-title').textContent = 'Tennis Warehouse 30% 优惠码已解锁！';
+    document.getElementById('loyalty-sub').textContent = '优惠码已发送至 ' + currentUser.email;
+    document.getElementById('loyalty-badge').textContent = '✅ 忠实会员';
+    document.getElementById('loyalty-badge').style.background = '#1a6b3a';
+    document.getElementById('loyalty-progress-wrap').style.display = 'none';
+    document.getElementById('loyalty-unlocked').style.display = 'block';
+  } else {
+    // 进行中
+    document.getElementById('loyalty-progress-wrap').style.display = 'block';
+    document.getElementById('loyalty-unlocked').style.display = 'none';
+    document.getElementById('loyalty-count-txt').textContent = '已完成 ' + cnt + ' / ' + LOYALTY_THRESHOLD_CLIENT + ' 次';
+    document.getElementById('loyalty-remain-txt').textContent = '差 ' + (LOYALTY_THRESHOLD_CLIENT - cnt) + ' 次解锁';
+    // 延迟一帧让动画生效
+    setTimeout(function(){
+      document.getElementById('loyalty-bar').style.width = pct + '%';
+    }, 100);
+
+    // 快要解锁时换提示语
+    if(cnt >= 8) {
+      document.getElementById('loyalty-sub').textContent = '🔥 还差 ' + (LOYALTY_THRESHOLD_CLIENT - cnt) + ' 次就解锁！加油！';
+    }
+  }
+}
+
+// LOGIN
+
 var pendingBookingCoachId = null;
 var gateMode = 'login';
 

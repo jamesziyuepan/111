@@ -645,7 +645,7 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);height:100vh;ove
           </div>
           <div class="tbl-wrap">
             <table class="tbl">
-              <thead><tr><th>邮箱</th><th>姓名</th><th>注册时间</th><th>预约次数</th></tr></thead>
+              <thead><tr><th>邮箱</th><th>姓名</th><th>注册时间</th><th>已确认课次</th><th>忠实会员进度</th></tr></thead>
               <tbody id="users-tbody">
                 <tr><td colspan="4"><div class="empty-st"><div class="empty-st-icon">👥</div><div>点击刷新加载用户数据</div></div></td></tr>
               </tbody>
@@ -682,6 +682,10 @@ const SB_KEY = 'sb_publishable_xDL0OkqVVBhRFuYm2GrqZg_o6wBlKCM';
 // ⚠️ 修改这里设置你的管理员账号密码
 const ADMIN_USERNAME = 'admin';
 const ADMIN_PASSWORD = 'tennis2026!';  // 上线后请修改成强密码
+
+// ── 忠实会员配置 ──
+const LOYALTY_THRESHOLD = 10;         // 累计约课次数门槛
+const TW_DISCOUNT_CODE = 'DCTENNIS30'; // ⚠️ 替换成你的真实 Tennis Warehouse 优惠码
 
 var allBookings = [];
 var statusFilter = 'all';
@@ -866,6 +870,99 @@ async function confirmBk(id) {
   if(b) b.status = 'confirmed';
   updateStats(); renderBookingsTable(); renderDashPending(); renderDashRecent(); updateRevenuePanel();
   showToast('✅ 已确认预约', 'success');
+
+  // ── 忠实会员检测：确认后检查该学员 confirmed 总次数 ──
+  if(b) await checkLoyaltyAndNotify(b.student_email, b.student_name);
+}
+
+// 检查学员是否刚达到 10 次 confirmed 预约，达到则弹窗提醒
+async function checkLoyaltyAndNotify(email, name) {
+  try {
+    var r = await fetch(SB_URL + '/rest/v1/bookings?student_email=eq.' + encodeURIComponent(email)
+      + '&status=eq.confirmed&select=id,student_wechat,student_phone', { headers: sbHeaders() });
+    if(!r.ok) return;
+    var rows = await r.json();
+    var count = rows.length;
+
+    if(count === LOYALTY_THRESHOLD) {
+      // 拿微信号和手机号
+      var wechat = (rows[0] && rows[0].student_wechat) || '未填写';
+      var phone  = (rows[0] && rows[0].student_phone)  || '未填写';
+      showLoyaltyAlert(name, email, wechat, phone, count);
+    }
+  } catch(e) {
+    console.warn('[Loyalty] 检查失败:', e.message);
+  }
+}
+
+// 弹出忠实会员提醒弹窗
+function showLoyaltyAlert(name, email, wechat, phone, count) {
+  // 移除旧弹窗
+  var old = document.getElementById('loyalty-alert-overlay');
+  if(old) old.remove();
+
+  var overlay = document.createElement('div');
+  overlay.id = 'loyalty-alert-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:99999;display:flex;align-items:center;justify-content:center;';
+
+  overlay.innerHTML = `
+    <div style="background:white;border-radius:20px;width:420px;max-width:95vw;padding:36px;box-shadow:0 24px 80px rgba(0,0,0,0.4);animation:popIn 0.25s cubic-bezier(0.16,1,0.3,1);">
+      <div style="text-align:center;margin-bottom:24px;">
+        <div style="font-size:52px;margin-bottom:10px;">🏆</div>
+        <div style="font-size:20px;font-weight:900;color:#1a1a1a;margin-bottom:6px;">${name} 已解锁忠实会员！</div>
+        <div style="font-size:13px;color:#999;">累计完成 ${count} 次约课，请手动发送优惠码</div>
+      </div>
+
+      <div style="background:#f0fdf4;border:1.5px solid #6ee7b7;border-radius:14px;padding:18px 20px;margin-bottom:20px;">
+        <div style="font-size:12px;font-weight:700;color:#1a6b3a;letter-spacing:0.5px;margin-bottom:12px;">📋 学员联系方式</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <div style="font-size:13px;color:#555;">💚 微信号</div>
+          <div style="font-size:14px;font-weight:800;color:#1a1a1a;">${wechat}</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <div style="font-size:13px;color:#555;">📱 手机号</div>
+          <div style="font-size:14px;font-weight:800;color:#1a1a1a;">${phone}</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div style="font-size:13px;color:#555;">📧 邮箱</div>
+          <div style="font-size:13px;font-weight:600;color:#1a1a1a;">${email}</div>
+        </div>
+      </div>
+
+      <div style="background:#fffbeb;border:1.5px dashed #f59e0b;border-radius:14px;padding:18px 20px;margin-bottom:20px;text-align:center;">
+        <div style="font-size:12px;font-weight:700;color:#92400e;margin-bottom:8px;">🎾 发送以下优惠码给学员</div>
+        <div id="loyalty-code-display" style="font-size:28px;font-weight:900;letter-spacing:4px;color:#1a1a1a;font-family:monospace;margin-bottom:10px;">${TW_DISCOUNT_CODE}</div>
+        <div style="font-size:13px;color:#92400e;font-weight:600;">Tennis Warehouse 全场 30% 折扣</div>
+      </div>
+
+      <button onclick="copyLoyaltyCode('${TW_DISCOUNT_CODE}')"
+        style="width:100%;padding:14px;background:linear-gradient(135deg,#1a6b3a,#2d9a57);color:white;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;margin-bottom:10px;">
+        📋 复制优惠码
+      </button>
+      <button onclick="document.getElementById('loyalty-alert-overlay').remove()"
+        style="width:100%;padding:12px;background:#f7f8fa;color:#555;border:1.5px solid #e8e8e8;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;">
+        已发送，关闭
+      </button>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', function(e){ if(e.target===overlay) overlay.remove(); });
+}
+
+function copyLoyaltyCode(code) {
+  navigator.clipboard.writeText(code).then(function(){
+    showToast('✅ 优惠码已复制：' + code, 'success');
+  }).catch(function(){
+    // fallback
+    var el = document.createElement('textarea');
+    el.value = code;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    el.remove();
+    showToast('✅ 优惠码已复制：' + code, 'success');
+  });
 }
 
 async function cancelBk(id) {
@@ -1450,13 +1547,43 @@ async function loadUsers() {
   var emails = [...new Set(allBookings.map(b=>b.student_email))];
   document.getElementById('s-users').textContent = emails.length;
   var tbody = document.getElementById('users-tbody');
-  if(emails.length===0){ tbody.innerHTML='<tr><td colspan="4"><div class="empty-st"><div class="empty-st-icon">👥</div><div>暂无用户数据</div></div></td></tr>'; return; }
+  if(emails.length===0){ tbody.innerHTML='<tr><td colspan="5"><div class="empty-st"><div class="empty-st-icon">👥</div><div>暂无用户数据</div></div></td></tr>'; return; }
   tbody.innerHTML = emails.map(email => {
     var userBks = allBookings.filter(b=>b.student_email===email);
+    var confirmedBks = userBks.filter(b=>b.status==='confirmed');
     var name = userBks[0]?.student_name||'—';
     var created = new Date(userBks[userBks.length-1]?.created_at||'').toLocaleDateString('zh-CN');
-    return '<tr><td>'+email+'</td><td>'+name+'</td><td style="font-size:12px;color:var(--mute);">'+created+'</td><td style="font-weight:700;color:var(--green);">'+userBks.length+'</td></tr>';
+    var cnt = confirmedBks.length;
+    var pct = Math.min(100, Math.round(cnt / LOYALTY_THRESHOLD * 100));
+    var unlocked = cnt >= LOYALTY_THRESHOLD;
+    var progressBar = unlocked
+      ? '<div style="display:flex;align-items:center;gap:6px;"><span style="font-size:14px;">🏆</span><span style="font-size:11px;font-weight:800;color:#1a6b3a;">已解锁优惠码</span></div>'
+      : '<div style="margin-top:4px;">'
+        +'<div style="display:flex;justify-content:space-between;font-size:10px;color:var(--mute);margin-bottom:3px;">'
+        +'<span>累计 '+cnt+'/'+LOYALTY_THRESHOLD+' 次</span><span>差 '+(LOYALTY_THRESHOLD-cnt)+' 次解锁</span></div>'
+        +'<div style="height:5px;background:#f0f0f0;border-radius:3px;overflow:hidden;">'
+        +'<div style="height:100%;width:'+pct+'%;background:linear-gradient(90deg,#1a6b3a,#2d9a57);border-radius:3px;transition:width 0.4s;"></div>'
+        +'</div></div>';
+    var manualBtn = unlocked
+      ? '<button onclick="manualSendLoyalty(\''+email+'\',\''+name+'\')" style="padding:4px 10px;font-size:11px;background:#e8f5e9;color:#1a6b3a;border:none;border-radius:6px;cursor:pointer;font-weight:700;">📧 重发优惠码</button>'
+      : '';
+    return '<tr>'
+      +'<td><div style="font-weight:600;font-size:13px;">'+email+'</div>'+(manualBtn?'<div style="margin-top:4px;">'+manualBtn+'</div>':'')+'</td>'
+      +'<td>'+name+'</td>'
+      +'<td style="font-size:12px;color:var(--mute);">'+created+'</td>'
+      +'<td style="font-weight:700;color:var(--green);">'+userBks.length+'</td>'
+      +'<td style="min-width:160px;">'+progressBar+'</td>'
+      +'</tr>';
   }).join('');
+}
+
+// 手动弹出提醒（用于学员未收到的情况）
+async function manualSendLoyalty(email, name) {
+  var userBks = allBookings.filter(function(b){ return b.student_email===email && b.status==='confirmed'; });
+  var count = userBks.length;
+  var wechat = (userBks[0] && userBks[0].student_wechat) || '未填写';
+  var phone  = (userBks[0] && userBks[0].student_phone)  || '未填写';
+  showLoyaltyAlert(name, email, wechat, phone, count);
 }
 
 // ═══════════════════════════
