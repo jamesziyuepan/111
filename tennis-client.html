@@ -3162,34 +3162,97 @@ function onAuthSuccess(data) {
 
 // ── GUEST MODE: app loads without login ──
 function checkSession() {
-  // Check URL for OAuth callback token
   var hash = window.location.hash;
   if(hash.includes('access_token')) {
     var params = new URLSearchParams(hash.replace('#',''));
     var token = params.get('access_token');
+    var type  = params.get('type');
     if(token) {
+      window.history.replaceState(null,'',window.location.pathname);
+      if(type === 'recovery') {
+        // Password reset link — show reset UI
+        initApp();
+        showResetPasswordUI(token);
+        return;
+      }
+      // Normal login
       fetch(SB_URL+'/auth/v1/user', { headers: sbHeaders(token) })
         .then(function(r){return r.json();}).then(function(user){
           if(user.id) {
             currentUser = { id:user.id, email:user.email, name:(user.user_metadata&&user.user_metadata.full_name)||user.email.split('@')[0], token:token };
             localStorage.setItem('sb_session', JSON.stringify(currentUser));
-            window.history.replaceState(null,'',window.location.pathname);
             onUserLoggedIn();
           }
         }).catch(function(){});
       return;
     }
   }
-  // Check localStorage for saved session
   var saved = localStorage.getItem('sb_session');
   if(saved) {
-    try {
-      currentUser = JSON.parse(saved);
-      onUserLoggedIn();
-    } catch(e) { localStorage.removeItem('sb_session'); }
+    try { currentUser = JSON.parse(saved); onUserLoggedIn(); }
+    catch(e) { localStorage.removeItem('sb_session'); }
   }
-  // Either way, show app in guest mode
   initApp();
+}
+
+function showResetPasswordUI(token) {
+  var el = document.createElement('div');
+  el.style.cssText = 'position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,0.65);display:flex;align-items:center;justify-content:center;';
+  var card = document.createElement('div');
+  card.style.cssText = 'background:white;border-radius:20px;padding:32px 28px;width:380px;max-width:92vw;box-shadow:0 20px 60px rgba(0,0,0,0.3);';
+  card.innerHTML =
+    '<div style="text-align:center;margin-bottom:24px;">'
+    + '<div style="font-size:44px;margin-bottom:10px;">🔐</div>'
+    + '<div style="font-size:20px;font-weight:900;margin-bottom:6px;">设置新密码</div>'
+    + '<div style="font-size:13px;color:#888;">请输入您的新密码</div>'
+    + '</div>'
+    + '<div style="margin-bottom:14px;">'
+    +   '<label style="font-size:12px;font-weight:700;color:#555;display:block;margin-bottom:6px;">新密码</label>'
+    +   '<input id="rp-new" type="password" placeholder="至少 6 位" style="width:100%;height:46px;border:1.5px solid #e0e0e0;border-radius:10px;padding:0 14px;font-size:14px;font-family:inherit;outline:none;box-sizing:border-box;">'
+    + '</div>'
+    + '<div style="margin-bottom:20px;">'
+    +   '<label style="font-size:12px;font-weight:700;color:#555;display:block;margin-bottom:6px;">确认新密码</label>'
+    +   '<input id="rp-confirm" type="password" placeholder="再次输入新密码" style="width:100%;height:46px;border:1.5px solid #e0e0e0;border-radius:10px;padding:0 14px;font-size:14px;font-family:inherit;outline:none;box-sizing:border-box;">'
+    + '</div>'
+    + '<div id="rp-err" style="background:#fdecea;border-radius:8px;padding:10px 12px;font-size:12px;color:#e53935;display:none;margin-bottom:12px;"></div>'
+    + '<div id="rp-ok" style="background:#e8f5e9;border-radius:8px;padding:10px 12px;font-size:12px;color:#1a6b3a;display:none;margin-bottom:12px;"></div>'
+    + '<button id="rp-btn" onclick="doResetPassword()" style="width:100%;padding:14px;background:linear-gradient(135deg,#1a6b3a,#2d9a57);color:white;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;">确认修改密码</button>';
+  el.appendChild(card);
+  document.body.appendChild(el);
+  window._rToken = token;
+  window._rEl = el;
+}
+
+async function doResetPassword() {
+  var np = document.getElementById('rp-new').value;
+  var cp = document.getElementById('rp-confirm').value;
+  var err = document.getElementById('rp-err');
+  var ok  = document.getElementById('rp-ok');
+  var btn = document.getElementById('rp-btn');
+  err.style.display='none'; ok.style.display='none';
+  if(!np||np.length<6){ err.textContent='⚠️ 密码至少需要 6 位'; err.style.display='block'; return; }
+  if(np!==cp){ err.textContent='⚠️ 两次输入的密码不一致'; err.style.display='block'; return; }
+  btn.disabled=true; btn.textContent='修改中…';
+  try {
+    var r = await fetch(SB_URL+'/auth/v1/user',{
+      method:'PUT',
+      headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+window._rToken},
+      body:JSON.stringify({password:np})
+    });
+    if(r.ok){
+      ok.innerHTML='✅ 密码修改成功！请用新密码重新登录';
+      ok.style.display='block';
+      btn.textContent='修改成功 ✓'; btn.style.background='#e8f5e9'; btn.style.color='#1a6b3a';
+      setTimeout(function(){ if(window._rEl) window._rEl.remove(); }, 2500);
+    } else {
+      var e=await r.json().catch(function(){return{};});
+      err.textContent='❌ '+(e.message||'修改失败，请重新发送重置链接');
+      err.style.display='block'; btn.disabled=false; btn.textContent='确认修改密码';
+    }
+  } catch(e){
+    err.textContent='❌ 网络错误，请稍后重试';
+    err.style.display='block'; btn.disabled=false; btn.textContent='确认修改密码';
+  }
 }
 
 function onUserLoggedIn() {
