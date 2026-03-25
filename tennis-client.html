@@ -2939,9 +2939,6 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
       <input id="gate-password" type="password" placeholder="至少 6 位" style="width:100%;height:42px;border:1.5px solid #e8e8e8;border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;" onkeydown="if(event.key==='Enter')submitGate()">
     </div>
 
-    <div style="text-align:right;margin:6px 0 2px;">
-      <span onclick="showForgotPwd()" style="font-size:12px;color:#1a6b3a;cursor:pointer;font-weight:600;text-decoration:underline;">忘记密码？</span>
-    </div>
     <div id="gate-err" style="display:none;background:#fdecea;border-radius:8px;padding:10px 14px;font-size:12px;color:#e53935;margin-top:10px;"></div>
 
     <button id="gate-submit-btn" onclick="submitGate()" style="width:100%;height:48px;margin-top:16px;background:linear-gradient(135deg,#1a6b3a,#2d9a57);color:white;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 16px rgba(26,107,58,0.3);">
@@ -3116,12 +3113,21 @@ function onAuthSuccess(data) {
 
 // ── GUEST MODE: app loads without login ──
 function checkSession() {
-  // Check URL for OAuth callback token
+  // Check URL for token (OAuth callback or password reset)
   var hash = window.location.hash;
   if(hash.includes('access_token')) {
     var params = new URLSearchParams(hash.replace('#',''));
     var token = params.get('access_token');
+    var type  = params.get('type'); // 'recovery' = password reset link
     if(token) {
+      if(type === 'recovery') {
+        // Password reset flow - show reset password UI
+        window.history.replaceState(null,'',window.location.pathname);
+        initApp();
+        showResetPasswordUI(token);
+        return;
+      }
+      // Normal login token
       fetch(SB_URL+'/auth/v1/user', { headers: sbHeaders(token) })
         .then(function(r){return r.json();}).then(function(user){
           if(user.id) {
@@ -3144,6 +3150,89 @@ function checkSession() {
   }
   // Either way, show app in guest mode
   initApp();
+}
+
+function showResetPasswordUI(token) {
+  // Create reset password overlay
+  var el = document.createElement('div');
+  el.id = 'reset-pwd-overlay';
+  el.style.cssText = 'position:fixed;inset:0;z-index:7000;background:rgba(0,0,0,0.65);display:flex;align-items:center;justify-content:center;';
+  el.innerHTML = '<div style="background:white;border-radius:20px;padding:32px 28px;width:380px;max-width:92vw;box-shadow:0 20px 60px rgba(0,0,0,0.3);">'
+    + '<div style="text-align:center;margin-bottom:24px;">'
+    +   '<div style="font-size:40px;margin-bottom:10px;">🔐</div>'
+    +   '<div style="font-size:20px;font-weight:900;margin-bottom:6px;">设置新密码</div>'
+    +   '<div style="font-size:13px;color:#888;line-height:1.6;">请输入您的新密码</div>'
+    + '</div>'
+    + '<div style="margin-bottom:14px;">'
+    +   '<label style="font-size:12px;font-weight:700;color:#555;display:block;margin-bottom:6px;">新密码</label>'
+    +   '<input id="reset-pwd-new" type="password" placeholder="至少 6 位" style="width:100%;height:46px;border:1.5px solid #e0e0e0;border-radius:10px;padding:0 14px;font-size:14px;font-family:inherit;outline:none;box-sizing:border-box;">'
+    + '</div>'
+    + '<div style="margin-bottom:20px;">'
+    +   '<label style="font-size:12px;font-weight:700;color:#555;display:block;margin-bottom:6px;">确认新密码</label>'
+    +   '<input id="reset-pwd-confirm" type="password" placeholder="再次输入新密码" style="width:100%;height:46px;border:1.5px solid #e0e0e0;border-radius:10px;padding:0 14px;font-size:14px;font-family:inherit;outline:none;box-sizing:border-box;">'
+    + '</div>'
+    + '<div id="reset-pwd-err" style="background:#fdecea;border-radius:8px;padding:10px 12px;font-size:12px;color:#e53935;display:none;margin-bottom:12px;"></div>'
+    + '<div id="reset-pwd-ok" style="background:#e8f5e9;border-radius:8px;padding:10px 12px;font-size:12px;color:#1a6b3a;display:none;margin-bottom:12px;"></div>'
+    + '<button id="reset-pwd-btn" onclick="doResetPassword()" style="width:100%;padding:14px;background:linear-gradient(135deg,#1a6b3a,#2d9a57);color:white;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;">确认修改密码</button>'
+    + '</div>';
+  document.body.appendChild(el);
+
+  // Store token for use when submitting
+  window._resetToken = token;
+}
+
+async function doResetPassword() {
+  var newPwd     = document.getElementById('reset-pwd-new').value;
+  var confirmPwd = document.getElementById('reset-pwd-confirm').value;
+  var errEl      = document.getElementById('reset-pwd-err');
+  var okEl       = document.getElementById('reset-pwd-ok');
+  var btn        = document.getElementById('reset-pwd-btn');
+
+  errEl.style.display = 'none';
+  okEl.style.display  = 'none';
+
+  if(!newPwd || newPwd.length < 6) {
+    errEl.textContent = '⚠️ 密码至少需要 6 位'; errEl.style.display='block'; return;
+  }
+  if(newPwd !== confirmPwd) {
+    errEl.textContent = '⚠️ 两次输入的密码不一致'; errEl.style.display='block'; return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = '修改中…';
+
+  try {
+    var r = await fetch(SB_URL + '/auth/v1/user', {
+      method: 'PUT',
+      headers: { 'Content-Type':'application/json', 'apikey':SB_KEY, 'Authorization':'Bearer '+window._resetToken },
+      body: JSON.stringify({ password: newPwd })
+    });
+
+    if(r.ok) {
+      okEl.innerHTML = '✅ 密码修改成功！<br>请用新密码重新登录';
+      okEl.style.display = 'block';
+      btn.textContent = '修改成功';
+      btn.style.background = '#e8f5e9';
+      btn.style.color = '#1a6b3a';
+      // Close overlay after 2 seconds
+      setTimeout(function(){
+        var overlay = document.getElementById('reset-pwd-overlay');
+        if(overlay) overlay.remove();
+        window._resetToken = null;
+      }, 2500);
+    } else {
+      var e = await r.json().catch(function(){return{};});
+      errEl.textContent = '❌ ' + (e.message || '修改失败，请重新发送重置链接');
+      errEl.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = '确认修改密码';
+    }
+  } catch(e) {
+    errEl.textContent = '❌ 网络错误，请稍后重试';
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = '确认修改密码';
+  }
 }
 
 function onUserLoggedIn() {
@@ -4227,12 +4316,11 @@ checkSession();
 
 // ── FORGOT PASSWORD ──
 function showForgotPwd() {
-  // Pre-fill email from either auth-screen or login-gate
+  // Pre-fill email if already entered
+  var emailInput = document.getElementById('auth-email');
   var forgotEmail = document.getElementById('forgot-email');
-  var authEmail = document.getElementById('auth-email');
-  var gateEmail = document.getElementById('gate-email');
-  var email = (authEmail && authEmail.value) || (gateEmail && gateEmail.value) || '';
-  forgotEmail.value = email;
+  if(emailInput && emailInput.value) forgotEmail.value = emailInput.value;
+  else forgotEmail.value = '';
   document.getElementById('forgot-err').style.display = 'none';
   document.getElementById('forgot-ok').style.display = 'none';
   var btn = document.getElementById('forgot-btn');
