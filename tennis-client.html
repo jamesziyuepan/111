@@ -2939,6 +2939,9 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
       <input id="gate-password" type="password" placeholder="至少 6 位" style="width:100%;height:42px;border:1.5px solid #e8e8e8;border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;" onkeydown="if(event.key==='Enter')submitGate()">
     </div>
 
+    <div style="text-align:right;margin:6px 0 2px;">
+      <span onclick="showForgotPwd()" style="font-size:12px;color:#1a6b3a;cursor:pointer;font-weight:600;text-decoration:underline;">忘记密码？</span>
+    </div>
     <div id="gate-err" style="display:none;background:#fdecea;border-radius:8px;padding:10px 14px;font-size:12px;color:#e53935;margin-top:10px;"></div>
 
     <button id="gate-submit-btn" onclick="submitGate()" style="width:100%;height:48px;margin-top:16px;background:linear-gradient(135deg,#1a6b3a,#2d9a57);color:white;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 16px rgba(26,107,58,0.3);">
@@ -4224,11 +4227,12 @@ checkSession();
 
 // ── FORGOT PASSWORD ──
 function showForgotPwd() {
-  // Pre-fill email if already entered
-  var emailInput = document.getElementById('auth-email');
+  // Pre-fill email from either auth-screen or login-gate
   var forgotEmail = document.getElementById('forgot-email');
-  if(emailInput && emailInput.value) forgotEmail.value = emailInput.value;
-  else forgotEmail.value = '';
+  var authEmail = document.getElementById('auth-email');
+  var gateEmail = document.getElementById('gate-email');
+  var email = (authEmail && authEmail.value) || (gateEmail && gateEmail.value) || '';
+  forgotEmail.value = email;
   document.getElementById('forgot-err').style.display = 'none';
   document.getElementById('forgot-ok').style.display = 'none';
   var btn = document.getElementById('forgot-btn');
