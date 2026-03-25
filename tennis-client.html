@@ -2582,6 +2582,10 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
       <input class="auth-input" id="auth-password" type="password" placeholder="至少 6 位" onkeydown="if(event.key==='Enter')submitAuth()">
     </div>
 
+    <div style="text-align:right;margin-top:-6px;margin-bottom:10px;">
+      <span onclick="showForgotPwd()" style="font-size:12px;color:var(--green);cursor:pointer;font-weight:600;">忘记密码？</span>
+    </div>
+
     <div class="auth-err" id="auth-err"></div>
 
     <button class="auth-submit-btn" id="auth-submit-btn" onclick="submitAuth()">登录账号</button>
@@ -2591,6 +2595,28 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
     </div>
 
 <!-- Email confirmation not required -->
+  </div>
+</div>
+
+<!-- ══ FORGOT PASSWORD OVERLAY ══ -->
+<div id="forgot-overlay" style="display:none;position:fixed;inset:0;z-index:5000;background:rgba(0,0,0,0.55);align-items:center;justify-content:center;">
+  <div style="background:white;border-radius:20px;padding:32px 28px;width:360px;max-width:92vw;">
+    <div style="font-size:20px;font-weight:900;margin-bottom:6px;">🔑 重置密码</div>
+    <div style="font-size:13px;color:var(--mute);margin-bottom:20px;line-height:1.6;">
+      输入您的注册邮箱，我们将发送重置密码链接
+    </div>
+    <div class="auth-field">
+      <label class="auth-label">邮箱地址</label>
+      <input class="auth-input" id="forgot-email" type="email" placeholder="your@email.com">
+    </div>
+    <div id="forgot-err" style="background:#fdecea;border-radius:8px;padding:10px 12px;font-size:12px;color:var(--red);display:none;margin-bottom:12px;"></div>
+    <div id="forgot-ok" style="background:#e8f5e9;border-radius:8px;padding:10px 12px;font-size:12px;color:#1a6b3a;display:none;margin-bottom:12px;line-height:1.6;"></div>
+    <button onclick="sendResetEmail()" id="forgot-btn" style="width:100%;padding:13px;background:linear-gradient(135deg,var(--green),var(--green2));color:white;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;margin-bottom:10px;">
+      发送重置链接
+    </button>
+    <button onclick="closeForgotPwd()" style="width:100%;padding:11px;background:#f5f5f5;color:var(--sub);border:none;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">
+      取消
+    </button>
   </div>
 </div>
 
@@ -3553,14 +3579,9 @@ async function submitBM() {
 
   var typeName = document.getElementById('bk-os-type').textContent || '网球入门 & 提升';
 
-  // Get coach DB id
-  var coachObj = bmState.coachRef || COACHES.find(function(c){ return String(c.id)===String(bmState.coachId); });
-  var coachDbId = (coachObj && coachObj.id && String(coachObj.id).includes('-')) ? coachObj.id : null;
-
   var row = {
     student_name:   currentUser.name,
     student_email:  currentUser.email,
-    coach_id:       coachDbId,
     booking_date:   bmState.date,
     booking_time:   bmState.time,
     lesson_type:    typeName,
@@ -3923,13 +3944,7 @@ function bookingCardHTML(b) {
     // Info
     + '<div style="flex:1;min-width:0;">'
     +   '<div style="font-size:15px;font-weight:800;margin-bottom:3px;">' + b.booking_time + '</div>'
-    +   '<div style="font-size:12px;color:var(--sub);margin-bottom:4px;">🎾 ' + (function(){
-        if(b.coach_id) {
-          var c = COACHES.find(function(x){ return String(x.id)===String(b.coach_id); });
-          if(c) return c.name;
-        }
-        return b.coach_name || 'James 教练';
-      })() + '</div>'
+    +   '<div style="font-size:12px;color:var(--sub);margin-bottom:4px;">🎾 James 教练</div>'
     +   '<div style="font-size:11px;color:var(--mute);margin-bottom:6px;">📍 ' + (b.court||'—') + '</div>'
     +   '<span style="display:inline-block;font-size:11px;font-weight:600;background:var(--green-light);color:var(--green);padding:2px 8px;border-radius:6px;">' + (b.lesson_type||'—') + '</span>'
     + '</div>'
