@@ -2833,10 +2833,133 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 
       <!-- PACKAGES PANEL -->
       <div id="panel-packages" class="panel">
-        <div class="content-card">
-          <div class="cc-title">📦 课程套餐</div>
-          <div style="text-align:center;padding:30px;color:var(--mute);">套餐详情即将上线，请先通过「找教练」直接预约单次课程</div>
+
+        <!-- Header -->
+        <div style="background:linear-gradient(135deg,#0d3b23,#1a6b3a,#2d9a57);border-radius:20px;padding:28px 28px;margin-bottom:24px;position:relative;overflow:hidden;">
+          <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,0.02) 0,rgba(255,255,255,0.02) 1px,transparent 0,transparent 28px);"></div>
+          <div style="position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:72px;opacity:0.08;">📦</div>
+          <div style="position:relative;z-index:1;">
+            <div style="color:white;font-size:22px;font-weight:900;margin-bottom:6px;">课程套餐</div>
+            <div style="color:rgba(255,255,255,0.7);font-size:13px;">买得越多，省得越多 · 套餐课时永久有效</div>
+          </div>
         </div>
+
+        <!-- ── 标准教练 $75 ── -->
+        <div style="font-size:15px;font-weight:800;margin-bottom:4px;">标准教练</div>
+        <div style="font-size:12px;color:var(--mute);margin-bottom:16px;">单次课 $75 / 小时 · 含场地费</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:28px;">
+
+          <!-- 单次 -->
+          <div style="background:white;border-radius:16px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border:1.5px solid var(--border);">
+            <div style="font-size:11px;font-weight:700;color:var(--mute);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">单次课</div>
+            <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:14px;">
+              <span style="font-size:32px;font-weight:900;">$75</span>
+              <span style="font-size:12px;color:var(--mute);">/ 节</span>
+            </div>
+            <div style="font-size:12px;color:var(--sub);margin-bottom:16px;">按次付款，灵活无压力</div>
+            <button onclick="showPanel('coaches',document.querySelectorAll('.nav-item')[1])" style="width:100%;padding:10px;background:var(--green-light);color:var(--green);border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">立即找教练</button>
+          </div>
+
+          <!-- 5节 -->
+          <div style="background:white;border-radius:16px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border:1.5px solid #fde68a;">
+            <div style="font-size:11px;font-weight:700;color:#92400e;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">5 节套餐</div>
+            <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:2px;">
+              <span style="font-size:32px;font-weight:900;">$365</span>
+              <span style="font-size:12px;color:var(--mute);">总价</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+              <span style="font-size:11px;color:var(--mute);text-decoration:line-through;">$375</span>
+              <span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;">省 $10</span>
+            </div>
+            <div style="font-size:11px;color:var(--mute);margin-bottom:14px;">$75/节 × 5 节</div>
+            <button onclick="openPackageModal('5节套餐（标准$75教练）','$365','共5节，省$10')" style="width:100%;padding:10px;background:linear-gradient(135deg,#d97706,#f59e0b);color:white;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">购买 5 节</button>
+          </div>
+
+          <!-- 10节 -->
+          <div style="background:linear-gradient(135deg,#0d3b23,#1a6b3a);border-radius:16px;padding:22px;box-shadow:0 6px 20px rgba(13,59,35,0.2);border:1.5px solid #2d9a57;position:relative;">
+            <div style="position:absolute;top:-1px;right:16px;background:linear-gradient(135deg,#f59e0b,#fbbf24);color:white;font-size:10px;font-weight:900;padding:3px 12px;border-radius:0 0 8px 8px;">最划算</div>
+            <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">10 节套餐</div>
+            <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:2px;">
+              <span style="font-size:32px;font-weight:900;color:white;">$720</span>
+              <span style="font-size:12px;color:rgba(255,255,255,0.5);">总价</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+              <span style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:line-through;">$750</span>
+              <span style="background:rgba(245,158,11,0.25);color:#fbbf24;font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;">省 $30</span>
+            </div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:6px;">$75/节 × 10 节</div>
+            <div style="font-size:11px;color:#52b788;margin-bottom:14px;">🎁 自动解锁 TW 30% 折扣</div>
+            <button onclick="openPackageModal('10节套餐（标准$75教练）','$720','共10节，省$30')" style="width:100%;padding:10px;background:linear-gradient(135deg,#2d9a57,#52b788);color:white;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">购买 10 节</button>
+          </div>
+        </div>
+
+        <!-- ── 高级教练 $100 ── -->
+        <div style="font-size:15px;font-weight:800;margin-bottom:4px;">高级教练</div>
+        <div style="font-size:12px;color:var(--mute);margin-bottom:16px;">单次课 $100 / 小时 · 含场地费</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:12px;">
+
+          <!-- 单次 -->
+          <div style="background:white;border-radius:16px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border:1.5px solid var(--border);">
+            <div style="font-size:11px;font-weight:700;color:var(--mute);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">单次课</div>
+            <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:14px;">
+              <span style="font-size:32px;font-weight:900;">$100</span>
+              <span style="font-size:12px;color:var(--mute);">/ 节</span>
+            </div>
+            <div style="font-size:12px;color:var(--sub);margin-bottom:16px;">按次付款，灵活无压力</div>
+            <button onclick="showPanel('coaches',document.querySelectorAll('.nav-item')[1])" style="width:100%;padding:10px;background:var(--green-light);color:var(--green);border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">立即找教练</button>
+          </div>
+
+          <!-- 5节 -->
+          <div style="background:white;border-radius:16px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border:1.5px solid #fde68a;">
+            <div style="font-size:11px;font-weight:700;color:#92400e;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">5 节套餐</div>
+            <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:2px;">
+              <span style="font-size:32px;font-weight:900;">$450</span>
+              <span style="font-size:12px;color:var(--mute);">总价</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+              <span style="font-size:11px;color:var(--mute);text-decoration:line-through;">$500</span>
+              <span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;">省 $10</span>
+            </div>
+            <div style="font-size:11px;color:var(--mute);margin-bottom:14px;">$90/节 × 5 节</div>
+            <button onclick="openPackageModal('5节套餐（高级$100教练）','$450','共5节，$90/节，省$10')" style="width:100%;padding:10px;background:linear-gradient(135deg,#d97706,#f59e0b);color:white;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">购买 5 节</button>
+          </div>
+
+          <!-- 10节 -->
+          <div style="background:linear-gradient(135deg,#1e1b4b,#3730a3);border-radius:16px;padding:22px;box-shadow:0 6px 20px rgba(55,48,163,0.2);border:1.5px solid #6366f1;position:relative;">
+            <div style="position:absolute;top:-1px;right:16px;background:linear-gradient(135deg,#f59e0b,#fbbf24);color:white;font-size:10px;font-weight:900;padding:3px 12px;border-radius:0 0 8px 8px;">最划算</div>
+            <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">10 节套餐</div>
+            <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:2px;">
+              <span style="font-size:32px;font-weight:900;color:white;">$850</span>
+              <span style="font-size:12px;color:rgba(255,255,255,0.5);">总价</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+              <span style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:line-through;">$1,000</span>
+              <span style="background:rgba(245,158,11,0.25);color:#fbbf24;font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;">省 $30</span>
+            </div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:6px;">$85/节 × 10 节</div>
+            <div style="font-size:11px;color:#a5b4fc;margin-bottom:14px;">🎁 自动解锁 TW 30% 折扣</div>
+            <button onclick="openPackageModal('10节套餐（高级$100教练）','$850','共10节，$85/节，省$30')" style="width:100%;padding:10px;background:linear-gradient(135deg,#4f46e5,#6366f1);color:white;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">购买 10 节</button>
+          </div>
+        </div>
+
+        <!-- 含场地费标注 -->
+        <div style="display:flex;align-items:center;gap:8px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px 14px;margin-bottom:28px;">
+          <span style="font-size:16px;">📍</span>
+          <span style="font-size:12px;color:#166534;font-weight:600;">以上所有套餐价格均<strong>含场地费</strong>，无需额外支付任何场地费用</span>
+        </div>
+
+        <!-- 说明 -->
+        <div class="content-card" style="font-size:13px;color:var(--sub);line-height:1.9;">
+          <div class="cc-title">📋 购买说明</div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div>💳 <strong>付款方式：</strong>微信支付</div>
+            <div>📅 <strong>课时有效期：</strong>永久有效，无需担心过期</div>
+            <div>🔄 <strong>同价位通用：</strong>套餐课时可用于同价位任意教练</div>
+            <div>❌ <strong>退款政策：</strong>未使用课时可申请退款，已使用不退</div>
+            <div>📩 <strong>购买流程：</strong>点击购买后填写信息，客服在 8 小时内联系你完成付款和激活</div>
+          </div>
+        </div>
+
       </div>
 
       <!-- BENEFIT PANEL -->
@@ -3068,6 +3191,35 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 
       </div>
 
+<!-- 套餐购买弹窗 -->
+<div id="package-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:3000;align-items:center;justify-content:center;">
+  <div style="background:white;border-radius:20px;width:440px;max-width:95vw;padding:32px;animation:popIn 0.25s cubic-bezier(0.16,1,0.3,1);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <div>
+        <div style="font-size:20px;font-weight:900;" id="pkg-modal-title">购买套餐</div>
+        <div style="font-size:12px;color:var(--mute);margin-top:2px;" id="pkg-modal-sub"></div>
+      </div>
+      <div onclick="closePackageModal()" style="font-size:22px;cursor:pointer;color:var(--mute);">✕</div>
+    </div>
+    <div style="background:var(--green-light);border-radius:12px;padding:14px 16px;margin-bottom:20px;font-size:13px;color:var(--green);line-height:1.7;">
+      📩 提交后客服会在 <strong>8 小时内</strong>通过微信联系你，确认付款方式（微信）并激活套餐。
+    </div>
+    <div style="margin-bottom:14px;">
+      <input id="pkg-name" type="text" placeholder="姓名" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;margin-bottom:8px;" onfocus="this.style.borderColor='var(--green)'" onblur="this.style.borderColor='var(--border)'">
+      <input id="pkg-wechat" type="text" placeholder="微信号 *" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;margin-bottom:8px;" onfocus="this.style.borderColor='var(--green)'" onblur="this.style.borderColor='var(--border)'">
+      <input id="pkg-phone" type="tel" placeholder="手机号（含国家区号）" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='var(--green)'" onblur="this.style.borderColor='var(--border)'">
+    </div>
+    <div id="pkg-err" style="background:#fdecea;border-radius:8px;padding:10px 14px;font-size:12px;color:var(--red);margin-bottom:12px;display:none;"></div>
+    <button onclick="submitPackage()" id="pkg-submit-btn" style="width:100%;padding:14px;background:linear-gradient(135deg,var(--green),var(--green2));color:white;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;">✅ 提交购买申请</button>
+    <div id="pkg-success" style="display:none;text-align:center;padding:16px 0;">
+      <div style="font-size:44px;margin-bottom:10px;">🎉</div>
+      <div style="font-size:17px;font-weight:900;margin-bottom:6px;">申请已提交！</div>
+      <div style="font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:16px;">客服会在 8 小时内通过微信联系你完成付款和套餐激活。</div>
+      <button onclick="closePackageModal()" style="padding:10px 28px;background:var(--green-light);color:var(--green);border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">关闭</button>
+    </div>
+  </div>
+</div>
+
 <div id="stringing-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:3000;align-items:center;justify-content:center;">
 
 <!-- 比赛兴趣登记弹窗 -->
@@ -3177,7 +3329,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 
     <!-- 费用说明 -->
     <div style="background:#eff6ff;border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:#1d4ed8;line-height:1.7;">
-      💡 <strong>费用说明：</strong>工费 $25。如需购线，穿线师确认时会提供线材选择，线费单独结算。付款方式：微信 / 支付宝 / Zelle。
+      💡 <strong>费用说明：</strong>工费 $25。如需购线，穿线师确认时会提供线材选择，线费单独结算。付款方式：微信。
     </div>
 
     <div id="str-err" style="background:#fdecea;border-radius:8px;padding:10px 14px;font-size:12px;color:var(--red);margin-bottom:12px;display:none;"></div>
@@ -3212,11 +3364,11 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
       <div class="mob-nav-icon">📅</div><span>我的预约</span>
       <div id="mob-bk-badge" style="display:none;position:absolute;top:4px;right:18px;width:8px;height:8px;background:var(--red);border-radius:50%;"></div>
     </div>
+    <div class="mob-nav-item" id="mobnav-packages" onclick="mobileNav('packages',this)">
+      <div class="mob-nav-icon">📦</div><span>套餐</span>
+    </div>
     <div class="mob-nav-item" id="mobnav-benefit" onclick="mobileNav('benefit',this)">
       <div class="mob-nav-icon">🎁</div><span>好处</span>
-    </div>
-    <div class="mob-nav-item" id="mobnav-me" onclick="mobileNavMe()">
-      <div class="mob-nav-icon" id="mob-me-icon">👤</div><span id="mob-me-label">登录</span>
     </div>
   </div>
 </div><!-- end app -->
@@ -4852,6 +5004,68 @@ function showToastClient(msg) {
 }
 
 // ═══════════════════════════
+// 课程套餐
+// ═══════════════════════════
+var pkgName = '';
+
+function openPackageModal(name, price, desc) {
+  pkgName = name;
+  document.getElementById('pkg-modal-title').textContent = '购买 ' + name;
+  document.getElementById('pkg-modal-sub').textContent = price + ' · ' + desc;
+  if(currentUser) document.getElementById('pkg-name').value = currentUser.name || '';
+  document.getElementById('pkg-success').style.display = 'none';
+  document.getElementById('pkg-submit-btn').style.display = 'block';
+  document.getElementById('pkg-err').style.display = 'none';
+  document.getElementById('package-overlay').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closePackageModal() {
+  document.getElementById('package-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+async function submitPackage() {
+  var wechat = document.getElementById('pkg-wechat').value.trim();
+  var name   = document.getElementById('pkg-name').value.trim();
+  var phone  = document.getElementById('pkg-phone').value.trim();
+  var errEl  = document.getElementById('pkg-err');
+  errEl.style.display = 'none';
+  if(!wechat) { errEl.textContent='⚠️ 请填写微信号'; errEl.style.display='block'; return; }
+
+  var btn = document.getElementById('pkg-submit-btn');
+  btn.disabled = true; btn.textContent = '提交中…';
+
+  var prices = {'5节套餐': 325, '10节套餐': 720};
+  var row = {
+    student_name:   name || (currentUser && currentUser.name) || '未填写',
+    student_email:  (currentUser && currentUser.email) || '未填写',
+    student_wechat: wechat,
+    student_phone:  phone,
+    booking_date:   new Date().toISOString().split('T')[0],
+    booking_time:   '待定',
+    lesson_type:    '套餐购买 | ' + pkgName,
+    court:          '课程套餐',
+    status:         'pending',
+    deposit_amount: prices[pkgName] || 0,
+    payment_method: 'wechat'
+  };
+
+  try {
+    var token = (currentUser && currentUser.token) || SB_KEY;
+    await fetch(SB_URL+'/rest/v1/bookings', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+token,'Prefer':'return=minimal'},
+      body: JSON.stringify(row)
+    });
+  } catch(e) { console.warn('Package submit:', e.message); }
+
+  btn.disabled = false;
+  btn.style.display = 'none';
+  document.getElementById('pkg-success').style.display = 'block';
+}
+
+// ═══════════════════════════
 // 比赛配对登记
 // ═══════════════════════════
 var compOpts = [];
@@ -5109,7 +5323,6 @@ async function sendResetEmail() {
     </div>
     <div class="pay-methods">
       <div class="pay-mcard sel-w" id="pmw" onclick="selPayM('w')"><div class="pay-mcard-icon">💚</div><div class="pay-mcard-name">微信支付</div></div>
-      <div class="pay-mcard" id="pma" onclick="selPayM('a')"><div class="pay-mcard-icon">💙</div><div class="pay-mcard-name">支付宝</div></div>
     </div>
     <div class="pay-qr-box">
       <div class="pay-qr-ttl" id="pay-qr-ttl">扫码支付</div>
