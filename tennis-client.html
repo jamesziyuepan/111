@@ -2554,7 +2554,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 .pay-amt-cny{font-size:24px;font-weight:800;color:#7dffb3}
 .pay-rate{font-size:11px;opacity:.6;margin-top:6px;display:flex;align-items:center;gap:6px}
 .pay-rspin{display:inline-block;width:10px;height:10px;border:1.5px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite}
-.pay-methods{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.pay-methods{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:16px}
 .pay-mcard{border:2px solid var(--border);border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;transition:all .15s}
 .pay-mcard.sel-w{border-color:#07c160;background:#f0faf4}
 .pay-mcard.sel-a{border-color:#1677ff;background:#eff6ff}
@@ -4266,13 +4266,14 @@ async function submitBM() {
 }
 
 function selPayM(m) {
-  payState.m = m;
-  document.getElementById('pmw').className = 'pay-mcard'+(m==='w'?' sel-w':'');
-  document.getElementById('pma').className = 'pay-mcard'+(m==='a'?' sel-a':'');
-  document.getElementById('pay-qr-ttl').textContent = m==='w'?'扫码支付微信':'扫码支付支付宝';
-  document.getElementById('pay-qr-badge').className = 'pay-qr-badge '+m;
-  document.getElementById('pay-qr-img').src = m==='w'?WECHAT_QR:ALIPAY_QR;
-  document.getElementById('pay-confirm').className = 'pay-btn '+m;
+  payState.m = 'w'; // 只剩微信，固定为 w
+  var pmw = document.getElementById('pmw');
+  if(pmw) pmw.className = 'pay-mcard sel-w';
+  document.getElementById('pay-qr-ttl').textContent = '扫码支付微信';
+  var badge = document.getElementById('pay-qr-badge');
+  if(badge) badge.className = 'pay-qr-badge w';
+  document.getElementById('pay-qr-img').src = WECHAT_QR;
+  document.getElementById('pay-confirm').className = 'pay-btn w';
 }
 
 function closePayOverlay() {
