@@ -8,7 +8,10 @@
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Noto Sans SC', sans-serif; background: linear-gradient(135deg, #0a2e1a 0%, #0d3b23 50%, #1a5c38 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-.card { background: white; border-radius: 24px; padding: 48px 40px; width: 420px; max-width: 95vw; text-align: center; box-shadow: 0 24px 80px rgba(0,0,0,0.4); }
+.card { background: white; border-radius: 24px; padding: 48px 40px; width: 420px; max-width: 95vw; text-align: center; box-shadow: 0 24px 80px rgba(0,0,0,0.4); position: relative; }
+.lang-toggle { position: absolute; top: 16px; right: 16px; display: flex; gap: 6px; }
+.lang-btn { padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; border: 1.5px solid #e8e8e8; background: white; color: #999; transition: all 0.15s; font-family: inherit; }
+.lang-btn.active { background: #1a6b3a; color: white; border-color: #1a6b3a; }
 .logo { width: 72px; height: 72px; border-radius: 20px; background: linear-gradient(135deg, #0d3b23, #2d9a57); display: flex; align-items: center; justify-content: center; font-size: 36px; margin: 0 auto 16px; box-shadow: 0 8px 24px rgba(13,59,35,0.4); }
 h1 { font-size: 24px; font-weight: 900; color: #111; margin-bottom: 6px; }
 .sub { font-size: 13px; color: #999; margin-bottom: 36px; }
@@ -21,28 +24,53 @@ h1 { font-size: 24px; font-weight: 900; color: #111; margin-bottom: 6px; }
 .footer { font-size: 11px; color: #bbb; margin-top: 8px; }
 </style>
 <script>
-// If landed on index.html with a password reset token, redirect to tennis-client.html
 var hash = window.location.hash;
 if(hash.includes('access_token') && hash.includes('type=recovery')) {
   window.location.href = '/tennis-client.html' + hash;
+}
+
+function setLang(lang) {
+  if(lang === 'en') {
+    document.getElementById('title').textContent = 'Tennis Coaching Platform';
+    document.getElementById('subtitle').textContent = 'DC · MD · VA Chinese Tennis Community';
+    document.getElementById('client-btn').href = '/tennis-client-en.html';
+    document.getElementById('client-btn').innerHTML = '🎾 Student Portal<span class="btn-sub">Browse coaches · Book lessons · View bookings</span>';
+    document.getElementById('admin-btn').innerHTML = '⚙️ Admin Dashboard<span class="btn-sub">Platform administrators only</span>';
+    document.getElementById('footer').textContent = '© 2026 Tennis Platform DC/MD/VA';
+    document.getElementById('lang-zh').classList.remove('active');
+    document.getElementById('lang-en').classList.add('active');
+  } else {
+    document.getElementById('title').textContent = '网球教练平台';
+    document.getElementById('subtitle').textContent = 'DC · MD · VA 华人网球社区';
+    document.getElementById('client-btn').href = '/tennis-client.html';
+    document.getElementById('client-btn').innerHTML = '🎾 学员入口<span class="btn-sub">浏览教练 · 在线约课 · 查看预约</span>';
+    document.getElementById('admin-btn').innerHTML = '⚙️ 管理后台<span class="btn-sub">平台管理员专用</span>';
+    document.getElementById('footer').textContent = '© 2026 Tennis Platform DC/MD/VA';
+    document.getElementById('lang-zh').classList.add('active');
+    document.getElementById('lang-en').classList.remove('active');
+  }
 }
 </script>
 </head>
 <body>
 <div class="card">
+  <div class="lang-toggle">
+    <button class="lang-btn active" id="lang-zh" onclick="setLang('zh')">中文</button>
+    <button class="lang-btn" id="lang-en" onclick="setLang('en')">EN</button>
+  </div>
   <div class="logo">🎾</div>
-  <h1>网球教练平台</h1>
-  <p class="sub">DC · MD · VA 华人网球社区</p>
-  <a class="btn btn-client" href="/tennis-client.html">
+  <h1 id="title">网球教练平台</h1>
+  <p class="sub" id="subtitle">DC · MD · VA 华人网球社区</p>
+  <a class="btn btn-client" id="client-btn" href="/tennis-client.html">
     🎾 学员入口
     <span class="btn-sub">浏览教练 · 在线约课 · 查看预约</span>
   </a>
   <div class="divider"></div>
-  <a class="btn btn-admin" href="/tennis-admin.html">
+  <a class="btn btn-admin" id="admin-btn" href="/tennis-admin.html">
     ⚙️ 管理后台
     <span class="btn-sub">平台管理员专用</span>
   </a>
-  <p class="footer">© 2026 Tennis Platform DC/MD/VA</p>
+  <p class="footer" id="footer">© 2026 Tennis Platform DC/MD/VA</p>
 </div>
 </body>
 </html>
