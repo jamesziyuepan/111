@@ -4463,10 +4463,16 @@ function openCoachProfile(coachId) {
     +'<button class="btn-msg-secondary">💬 Message</button>'
     +'</div></div>';
 
-  // Build main content
-  var achHtml = (c.achievements||[]).map(function(a){
+  // Build main content — use English fields if available
+  var achHtml = (c.achievements_en||c.achievements||[]).map(function(a){
     return '<div class="ach-item"><span class="ach-ck">✅</span><span class="ach-txt">'+a+'</span></div>';
   }).join('');
+
+  var bioText = c.bio_en || c.bio || '';
+  var aboutSection = bioText
+    ? '<div class="pcard"><div class="pcard-title">👋 About Me</div>'
+      +'<div style="font-size:13px;color:var(--sub);line-height:1.8;">'+bioText+'</div></div>'
+    : '';
 
   var specHtml = (c.specs||[]).map(function(s){
     return '<span class="spec-tag">'+s+'</span>';
@@ -4477,8 +4483,7 @@ function openCoachProfile(coachId) {
   }).join('');
 
   document.getElementById('profile-main-content').innerHTML =
-    '<div class="pcard"><div class="pcard-title">👋 About Me</div>'
-    +'<div style="font-size:13px;color:var(--sub);line-height:1.8;">'+(c.bio||'')+'</div></div>'
+    aboutSection
 
     +'<div class="pcard"><div class="pcard-title">🏆 Achievements</div>'+achHtml+'</div>'
 
@@ -4486,7 +4491,7 @@ function openCoachProfile(coachId) {
     +'<div class="spec-tags">'+specHtml+'</div></div>'
 
     +'<div class="pcard"><div class="pcard-title">💰 Pricing</div>'
-    +'<div class="price-row"><div><div class="price-name">Single Lesson程</div><div class="price-desc">1-on-1 private lesson, 60 min</div></div>'
+    +'<div class="price-row"><div><div class="price-name">Single Lesson</div><div class="price-desc">1-on-1 private lesson, 60 min</div></div>'
     +'<div class="price-val">'+c.price+'</div></div></div>'
 
     +'<div class="pcard"><div class="pcard-title">📅 Availability</div>'

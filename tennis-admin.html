@@ -571,11 +571,24 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);height:100vh;ove
             <textarea class="cf-ta" id="cf-bio" rows="4" placeholder="教练背景、执教理念、擅长方向…&#10;例：你好！我是 James，现任 NCAA Division I 运动表现与体能助理教练…"></textarea>
           </div>
 
+          <!-- 个人简介英文 -->
+          <div class="cf-sec" style="color:#1d4ed8;">🇺🇸 English Bio（英文版"About Me"，供英文页面显示）</div>
+          <div class="cf-grp">
+            <textarea class="cf-ta" id="cf-bio-en" rows="4" placeholder="English version of the bio. Displayed on the English platform. Leave blank to hide the About Me section on the English page."></textarea>
+          </div>
+
           <!-- 运动履历 -->
           <div class="cf-sec">运动履历（每行一条，显示在详情页"运动履历"）</div>
           <div class="cf-grp">
             <textarea class="cf-ta" id="cf-achievements" rows="5"
               placeholder="每行输入一条履历，例：&#10;NCAA D1 运动表现与体能助理教练（现任）&#10;运动科学 & 运动医学在读&#10;NCAA D3 大学网球校队 · 最高 UTR 8.3"></textarea>
+          </div>
+
+          <!-- 运动履历英文 -->
+          <div class="cf-sec" style="color:#1d4ed8;">🇺🇸 English Achievements（英文版运动履历，每行一条）</div>
+          <div class="cf-grp">
+            <textarea class="cf-ta" id="cf-achievements-en" rows="5"
+              placeholder="One achievement per line (English). e.g.:&#10;NCAA D1 Athletic Performance & Strength Assistant Coach (current)&#10;B.S. Exercise Science & Sports Medicine (in progress)&#10;NCAA D3 College Tennis Team · Peak UTR 8.3"></textarea>
           </div>
 
           <!-- 课程类型标签 -->
@@ -645,7 +658,7 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);height:100vh;ove
           </div>
           <div class="tbl-wrap">
             <table class="tbl">
-              <thead><tr><th>邮箱</th><th>姓名</th><th>注册时间</th><th>已确认课次</th><th>忠实会员进度</th></tr></thead>
+              <thead><tr><th>邮箱</th><th>姓名</th><th>注册时间</th><th>预约次数</th></tr></thead>
               <tbody id="users-tbody">
                 <tr><td colspan="4"><div class="empty-st"><div class="empty-st-icon">👥</div><div>点击刷新加载用户数据</div></div></td></tr>
               </tbody>
@@ -682,10 +695,6 @@ const SB_KEY = 'sb_publishable_xDL0OkqVVBhRFuYm2GrqZg_o6wBlKCM';
 // ⚠️ 修改这里设置你的管理员账号密码
 const ADMIN_USERNAME = 'admin';
 const ADMIN_PASSWORD = 'tennis2026!';  // 上线后请修改成强密码
-
-// ── 忠实会员配置 ──
-const LOYALTY_THRESHOLD = 10;         // 累计约课次数门槛
-const TW_DISCOUNT_CODE = 'DCTENNIS30'; // ⚠️ 替换成你的真实 Tennis Warehouse 优惠码
 
 var allBookings = [];
 var statusFilter = 'all';
@@ -870,99 +879,6 @@ async function confirmBk(id) {
   if(b) b.status = 'confirmed';
   updateStats(); renderBookingsTable(); renderDashPending(); renderDashRecent(); updateRevenuePanel();
   showToast('✅ 已确认预约', 'success');
-
-  // ── 忠实会员检测：确认后检查该学员 confirmed 总次数 ──
-  if(b) await checkLoyaltyAndNotify(b.student_email, b.student_name);
-}
-
-// 检查学员是否刚达到 10 次 confirmed 预约，达到则弹窗提醒
-async function checkLoyaltyAndNotify(email, name) {
-  try {
-    var r = await fetch(SB_URL + '/rest/v1/bookings?student_email=eq.' + encodeURIComponent(email)
-      + '&status=eq.confirmed&select=id,student_wechat,student_phone', { headers: sbHeaders() });
-    if(!r.ok) return;
-    var rows = await r.json();
-    var count = rows.length;
-
-    if(count === LOYALTY_THRESHOLD) {
-      // 拿微信号和手机号
-      var wechat = (rows[0] && rows[0].student_wechat) || '未填写';
-      var phone  = (rows[0] && rows[0].student_phone)  || '未填写';
-      showLoyaltyAlert(name, email, wechat, phone, count);
-    }
-  } catch(e) {
-    console.warn('[Loyalty] 检查失败:', e.message);
-  }
-}
-
-// 弹出忠实会员提醒弹窗
-function showLoyaltyAlert(name, email, wechat, phone, count) {
-  // 移除旧弹窗
-  var old = document.getElementById('loyalty-alert-overlay');
-  if(old) old.remove();
-
-  var overlay = document.createElement('div');
-  overlay.id = 'loyalty-alert-overlay';
-  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:99999;display:flex;align-items:center;justify-content:center;';
-
-  overlay.innerHTML = `
-    <div style="background:white;border-radius:20px;width:420px;max-width:95vw;padding:36px;box-shadow:0 24px 80px rgba(0,0,0,0.4);animation:popIn 0.25s cubic-bezier(0.16,1,0.3,1);">
-      <div style="text-align:center;margin-bottom:24px;">
-        <div style="font-size:52px;margin-bottom:10px;">🏆</div>
-        <div style="font-size:20px;font-weight:900;color:#1a1a1a;margin-bottom:6px;">${name} 已解锁忠实会员！</div>
-        <div style="font-size:13px;color:#999;">累计完成 ${count} 次约课，请手动发送优惠码</div>
-      </div>
-
-      <div style="background:#f0fdf4;border:1.5px solid #6ee7b7;border-radius:14px;padding:18px 20px;margin-bottom:20px;">
-        <div style="font-size:12px;font-weight:700;color:#1a6b3a;letter-spacing:0.5px;margin-bottom:12px;">📋 学员联系方式</div>
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-          <div style="font-size:13px;color:#555;">💚 微信号</div>
-          <div style="font-size:14px;font-weight:800;color:#1a1a1a;">${wechat}</div>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-          <div style="font-size:13px;color:#555;">📱 手机号</div>
-          <div style="font-size:14px;font-weight:800;color:#1a1a1a;">${phone}</div>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;">
-          <div style="font-size:13px;color:#555;">📧 邮箱</div>
-          <div style="font-size:13px;font-weight:600;color:#1a1a1a;">${email}</div>
-        </div>
-      </div>
-
-      <div style="background:#fffbeb;border:1.5px dashed #f59e0b;border-radius:14px;padding:18px 20px;margin-bottom:20px;text-align:center;">
-        <div style="font-size:12px;font-weight:700;color:#92400e;margin-bottom:8px;">🎾 发送以下优惠码给学员</div>
-        <div id="loyalty-code-display" style="font-size:28px;font-weight:900;letter-spacing:4px;color:#1a1a1a;font-family:monospace;margin-bottom:10px;">${TW_DISCOUNT_CODE}</div>
-        <div style="font-size:13px;color:#92400e;font-weight:600;">Tennis Warehouse 全场 30% 折扣</div>
-      </div>
-
-      <button onclick="copyLoyaltyCode('${TW_DISCOUNT_CODE}')"
-        style="width:100%;padding:14px;background:linear-gradient(135deg,#1a6b3a,#2d9a57);color:white;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;margin-bottom:10px;">
-        📋 复制优惠码
-      </button>
-      <button onclick="document.getElementById('loyalty-alert-overlay').remove()"
-        style="width:100%;padding:12px;background:#f7f8fa;color:#555;border:1.5px solid #e8e8e8;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;">
-        已发送，关闭
-      </button>
-    </div>
-  `;
-
-  document.body.appendChild(overlay);
-  overlay.addEventListener('click', function(e){ if(e.target===overlay) overlay.remove(); });
-}
-
-function copyLoyaltyCode(code) {
-  navigator.clipboard.writeText(code).then(function(){
-    showToast('✅ 优惠码已复制：' + code, 'success');
-  }).catch(function(){
-    // fallback
-    var el = document.createElement('textarea');
-    el.value = code;
-    document.body.appendChild(el);
-    el.select();
-    document.execCommand('copy');
-    el.remove();
-    showToast('✅ 优惠码已复制：' + code, 'success');
-  });
 }
 
 async function cancelBk(id) {
@@ -1283,7 +1199,7 @@ function openCoachForm(coachId) {
   initSchedule();
   buildScheduleEditor();
 
-  var fields = ['cf-name','cf-badge','cf-sub','cf-location','cf-bio','cf-utr','cf-ranking','cf-achievements','cf-courts','cf-photo-url'];
+  var fields = ['cf-name','cf-badge','cf-sub','cf-location','cf-bio','cf-bio-en','cf-utr','cf-ranking','cf-achievements','cf-achievements-en','cf-courts','cf-photo-url'];
 
   if(coachId) {
     var c = allCoaches.find(function(x){ return x.id===coachId; });
@@ -1298,6 +1214,7 @@ function openCoachForm(coachId) {
     document.getElementById('cf-location').value = c.location||'';
     document.getElementById('cf-price').value = c.price||75;
     document.getElementById('cf-bio').value = c.bio||'';
+    document.getElementById('cf-bio-en').value = c.bio_en||'';
     document.getElementById('cf-utr').value = c.utr||'';
     document.getElementById('cf-ranking').value = c.ranking||'';
     // Photo
@@ -1321,6 +1238,7 @@ function openCoachForm(coachId) {
     buildScheduleEditor();
     // Achievements: array → textarea (one per line)
     document.getElementById("cf-achievements").value = (c.achievements||[]).join("\n");
+    document.getElementById("cf-achievements-en").value = (c.achievements_en||[]).join("\n");
     // Courts: array of {name,addr} → textarea (name | addr)
     document.getElementById('cf-courts').value = (c.courts||[]).map(function(ct){
       return (ct.name||"") + " | " + (ct.addr||"");
@@ -1424,6 +1342,9 @@ async function saveCoach() {
   var achRaw = document.getElementById("cf-achievements").value.trim();
   var achievements = achRaw ? achRaw.split(NL).map(function(s){return s.trim();}).filter(Boolean) : [];
 
+  var achEnRaw = document.getElementById("cf-achievements-en").value.trim();
+  var achievements_en = achEnRaw ? achEnRaw.split(NL).map(function(s){return s.trim();}).filter(Boolean) : [];
+
   // Parse courts (name | addr per line) → jsonb array
   var courtsRaw = document.getElementById("cf-courts").value.trim();
   var courts = courtsRaw ? courtsRaw.split(NL).map(function(line){
@@ -1451,6 +1372,7 @@ async function saveCoach() {
     location:       document.getElementById('cf-location').value.trim() || null,
     price:          price,
     bio:            document.getElementById('cf-bio').value.trim() || null,
+    bio_en:         document.getElementById('cf-bio-en').value.trim() || null,
     tags:           cfTags,
     specs:          cfTags,
     available_days: availDays,
@@ -1458,6 +1380,7 @@ async function saveCoach() {
     utr:            document.getElementById('cf-utr').value.trim() || null,
     ranking:        document.getElementById('cf-ranking').value.trim() || null,
     achievements:   achievements,
+    achievements_en: achievements_en,
     courts:         courts,
     gradient:         gradient,
     photo_url:        photoUrl,
@@ -1547,43 +1470,13 @@ async function loadUsers() {
   var emails = [...new Set(allBookings.map(b=>b.student_email))];
   document.getElementById('s-users').textContent = emails.length;
   var tbody = document.getElementById('users-tbody');
-  if(emails.length===0){ tbody.innerHTML='<tr><td colspan="5"><div class="empty-st"><div class="empty-st-icon">👥</div><div>暂无用户数据</div></div></td></tr>'; return; }
+  if(emails.length===0){ tbody.innerHTML='<tr><td colspan="4"><div class="empty-st"><div class="empty-st-icon">👥</div><div>暂无用户数据</div></div></td></tr>'; return; }
   tbody.innerHTML = emails.map(email => {
     var userBks = allBookings.filter(b=>b.student_email===email);
-    var confirmedBks = userBks.filter(b=>b.status==='confirmed');
     var name = userBks[0]?.student_name||'—';
     var created = new Date(userBks[userBks.length-1]?.created_at||'').toLocaleDateString('zh-CN');
-    var cnt = confirmedBks.length;
-    var pct = Math.min(100, Math.round(cnt / LOYALTY_THRESHOLD * 100));
-    var unlocked = cnt >= LOYALTY_THRESHOLD;
-    var progressBar = unlocked
-      ? '<div style="display:flex;align-items:center;gap:6px;"><span style="font-size:14px;">🏆</span><span style="font-size:11px;font-weight:800;color:#1a6b3a;">已解锁优惠码</span></div>'
-      : '<div style="margin-top:4px;">'
-        +'<div style="display:flex;justify-content:space-between;font-size:10px;color:var(--mute);margin-bottom:3px;">'
-        +'<span>累计 '+cnt+'/'+LOYALTY_THRESHOLD+' 次</span><span>差 '+(LOYALTY_THRESHOLD-cnt)+' 次解锁</span></div>'
-        +'<div style="height:5px;background:#f0f0f0;border-radius:3px;overflow:hidden;">'
-        +'<div style="height:100%;width:'+pct+'%;background:linear-gradient(90deg,#1a6b3a,#2d9a57);border-radius:3px;transition:width 0.4s;"></div>'
-        +'</div></div>';
-    var manualBtn = unlocked
-      ? '<button onclick="manualSendLoyalty(\''+email+'\',\''+name+'\')" style="padding:4px 10px;font-size:11px;background:#e8f5e9;color:#1a6b3a;border:none;border-radius:6px;cursor:pointer;font-weight:700;">📧 重发优惠码</button>'
-      : '';
-    return '<tr>'
-      +'<td><div style="font-weight:600;font-size:13px;">'+email+'</div>'+(manualBtn?'<div style="margin-top:4px;">'+manualBtn+'</div>':'')+'</td>'
-      +'<td>'+name+'</td>'
-      +'<td style="font-size:12px;color:var(--mute);">'+created+'</td>'
-      +'<td style="font-weight:700;color:var(--green);">'+userBks.length+'</td>'
-      +'<td style="min-width:160px;">'+progressBar+'</td>'
-      +'</tr>';
+    return '<tr><td>'+email+'</td><td>'+name+'</td><td style="font-size:12px;color:var(--mute);">'+created+'</td><td style="font-weight:700;color:var(--green);">'+userBks.length+'</td></tr>';
   }).join('');
-}
-
-// 手动弹出提醒（用于学员未收到的情况）
-async function manualSendLoyalty(email, name) {
-  var userBks = allBookings.filter(function(b){ return b.student_email===email && b.status==='confirmed'; });
-  var count = userBks.length;
-  var wechat = (userBks[0] && userBks[0].student_wechat) || '未填写';
-  var phone  = (userBks[0] && userBks[0].student_phone)  || '未填写';
-  showLoyaltyAlert(name, email, wechat, phone, count);
 }
 
 // ═══════════════════════════
