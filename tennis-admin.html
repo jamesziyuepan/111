@@ -615,6 +615,12 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);height:100vh;ove
             <input id="cf-tag-inp" placeholder="例：网球入门、技术提升… (回车确认)" onkeydown="handleTagInput(event)">
           </div>
 
+          <!-- 英文课程类型标签 -->
+          <div class="cf-sec" style="color:#1d4ed8;">🇺🇸 English Tags（英文课程标签，供英文页面显示）</div>
+          <div class="tags-input" id="cf-tags-en-input" onclick="document.getElementById('cf-tag-en-inp').focus()">
+            <input id="cf-tag-en-inp" placeholder="e.g. Beginner, Skill Development, Youth Tennis… (Enter to add)" onkeydown="handleTagEnInput(event)">
+          </div>
+
           <!-- 可约时间 -->
           <div class="cf-sec">每日可约时间（点击天数展开，选择每天的上课时间段）</div>
           <div class="schedule-wrap" id="cf-schedule-wrap">
@@ -1156,6 +1162,7 @@ function scheduleFromDb(dbVal) {
 var allCoaches = [];
 var editingCoachId = null;
 var cfTags = [];
+var cfTagsEn = [];
 var cfAvail = [0,0,0,0,0,0,0];
 var cfSchedule = {}; // {dayIdx: ['9:00','10:00',...], ...} // Sun-Sat
 
@@ -1210,7 +1217,7 @@ var dayNames = ['周日','周一','周二','周三','周四','周五','周六'];
 function openCoachForm(coachId) {
   editingCoachId = coachId;
   cfTags = [];
-  cfAvail = [0,0,0,0,0,0,0];
+  cfTagsEn = [];
 
   // Schedule editor replaces avail grid
   // Reset schedule
@@ -1271,7 +1278,9 @@ function openCoachForm(coachId) {
     document.getElementById('cf-color2').value = cols[1]||'#2d9a57';
     // Tags
     cfTags = c.tags||[];
+    cfTagsEn = c.tags_en||[];
     renderTagChips();
+    renderTagEnChips();
     // available_days is now handled by schedule editor above
   } else {
     document.getElementById('cf-title').textContent = '添加新教练';
@@ -1283,8 +1292,10 @@ function openCoachForm(coachId) {
     document.getElementById('cf-color1').value = '#0d3b23';
     document.getElementById('cf-color2').value = '#2d9a57';
     cfTags = [];
+    cfTagsEn = [];
     cfHours = [];
     renderTagChips();
+    renderTagEnChips();
   }
 
   document.getElementById('cf-err').style.display = 'none';
@@ -1321,7 +1332,44 @@ function handleTagInput(e) {
   }
 }
 
-function removeTag(idx) {
+function handleTagEnInput(e) {
+  if(e.key==='Enter' || e.key===',') {
+    e.preventDefault();
+    var val = e.target.value.trim().replace(',','');
+    if(val && !cfTagsEn.includes(val)) {
+      cfTagsEn.push(val);
+      renderTagEnChips();
+    }
+    e.target.value = '';
+  } else if(e.key==='Backspace' && e.target.value==='' && cfTagsEn.length>0) {
+    cfTagsEn.pop();
+    renderTagEnChips();
+  }
+}
+
+function removeTagEn(idx) {
+  cfTagsEn.splice(idx,1);
+  renderTagEnChips();
+}
+
+function renderTagEnChips() {
+  var container = document.getElementById('cf-tags-en-input');
+  var existingInput = document.getElementById('cf-tag-en-inp');
+  container.innerHTML = '';
+  cfTagsEn.forEach(function(t,i){
+    var chip = document.createElement('div');
+    chip.className = 'tag-chip';
+    chip.style.background = '#dbeafe';
+    chip.style.color = '#1d4ed8';
+    chip.innerHTML = t+'<span class="tag-chip-x" onclick="removeTagEn('+i+')">×</span>';
+    container.appendChild(chip);
+  });
+  var inp = document.createElement('input');
+  inp.id = 'cf-tag-en-inp';
+  inp.placeholder = cfTagsEn.length===0 ? 'e.g. Beginner, Youth Tennis… (Enter to add)' : '';
+  inp.onkeydown = handleTagEnInput;
+  container.appendChild(inp);
+}
   cfTags.splice(idx,1);
   renderTagChips();
 }
@@ -1397,6 +1445,7 @@ async function saveCoach() {
     bio:            document.getElementById('cf-bio').value.trim() || null,
     bio_en:         document.getElementById('cf-bio-en').value.trim() || null,
     tags:           cfTags,
+    tags_en:        cfTagsEn.length > 0 ? cfTagsEn : null,
     specs:          cfTags,
     available_days: availDays,
     avail:          availArr,

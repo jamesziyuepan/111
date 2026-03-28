@@ -3848,6 +3848,7 @@ function dbCoachToLocal(row) {
     location:        row.location        || '',
     region:          row.region          || 'dc',
     tags:            row.tags            || [],
+    tags_en:         row.tags_en         || null,
     gradient:        row.gradient        || 'linear-gradient(135deg,#0d3b23,#2d9a57)',
     photo:           false,
     photo_url:       row.photo_url       || null,
@@ -3910,7 +3911,7 @@ function coachCardHTML(c) {
     : isJames
       ? '<img src="'+JAMES_PHOTO+'" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 10%;">'
       : '<div class="coach-img-ph">🎾</div>';
-  var tags = (c.tags||[]).slice(0,2).map(function(t){
+  var tags = (c.tags_en||c.tags||[]).slice(0,2).map(function(t){
     return '<span class="ctag">'+t+'</span>';
   }).join('');
   return '<div class="coach-card" onclick="openCoachProfile(\''+c.id+'\')" style="cursor:pointer;">'
@@ -4485,7 +4486,7 @@ function openCoachProfile(coachId) {
       +'<div style="font-size:13px;color:var(--sub);line-height:1.8;">'+bioText+'</div></div>'
     : '';
 
-  var specHtml = (c.specs||[]).map(function(s){
+  var specHtml = (c.tags_en||c.specs||c.tags||[]).map(function(s){
     return '<span class="spec-tag">'+s+'</span>';
   }).join('');
 
