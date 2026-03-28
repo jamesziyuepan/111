@@ -1370,6 +1370,8 @@ function renderTagEnChips() {
   inp.onkeydown = handleTagEnInput;
   container.appendChild(inp);
 }
+
+function removeTag(idx) {
   cfTags.splice(idx,1);
   renderTagChips();
 }
