@@ -576,6 +576,12 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);height:100vh;ove
               <input class="cf-inp" id="cf-ranking" placeholder="例：151 或 —">
             </div>
           </div>
+          <div class="cf-row">
+            <div class="cf-grp" style="grid-column:1/-1;">
+              <label class="cf-lbl" style="color:#1d4ed8;">🇺🇸 English Ranking（英文排名，如：French Junior Top 20）</label>
+              <input class="cf-inp" id="cf-ranking-en" placeholder="e.g. French Junior Top 20 / USTA 4.5">
+            </div>
+          </div>
 
           <!-- 个人简介 -->
           <div class="cf-sec">个人简介（显示在详情页"关于我"）</div>
@@ -1211,7 +1217,7 @@ function openCoachForm(coachId) {
   initSchedule();
   buildScheduleEditor();
 
-  var fields = ['cf-name','cf-badge','cf-badge-en','cf-sub','cf-sub-en','cf-location','cf-bio','cf-bio-en','cf-utr','cf-ranking','cf-achievements','cf-achievements-en','cf-courts','cf-photo-url'];
+  var fields = ['cf-name','cf-badge','cf-badge-en','cf-sub','cf-sub-en','cf-location','cf-bio','cf-bio-en','cf-utr','cf-ranking','cf-ranking-en','cf-achievements','cf-achievements-en','cf-courts','cf-photo-url'];
 
   if(coachId) {
     var c = allCoaches.find(function(x){ return x.id===coachId; });
@@ -1231,6 +1237,7 @@ function openCoachForm(coachId) {
     document.getElementById('cf-bio-en').value = c.bio_en||'';
     document.getElementById('cf-utr').value = c.utr||'';
     document.getElementById('cf-ranking').value = c.ranking||'';
+    document.getElementById('cf-ranking-en').value = c.ranking_en||'';
     // Photo
     document.getElementById('cf-photo-url').value = c.photo_url||'';
     if(c.photo_url) setPhotoPreview(c.photo_url);
@@ -1395,6 +1402,7 @@ async function saveCoach() {
     avail:          availArr,
     utr:            document.getElementById('cf-utr').value.trim() || null,
     ranking:        document.getElementById('cf-ranking').value.trim() || null,
+    ranking_en:     document.getElementById('cf-ranking-en').value.trim() || null,
     achievements:   achievements,
     achievements_en: achievements_en,
     courts:         courts,

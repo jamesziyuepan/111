@@ -3853,6 +3853,7 @@ function dbCoachToLocal(row) {
     photo_url:       row.photo_url       || null,
     utr:             row.utr             || '—',
     ranking:         row.ranking         || '—',
+    ranking_en:      row.Ranking_eng     || row.ranking_en || null,
     cert:            row.badge           || '—',
     bio:             row.bio             || '',
     bio_en:          row.bio_en          || null,
@@ -4447,15 +4448,16 @@ function openCoachProfile(coachId) {
 
   var displayName = (c.name||'').replace(/\s*教练\s*/g,'').trim();
   var displayPrice = (c.price||'').toString().replace('/时','/hr').replace('/小时','/hr');
-  var displayBadge = c.badge_en || c.badge || '';
-  var displaySub   = c.sub_en   || c.sub   || '';
+  var displayBadge   = c.badge_en   || c.badge   || '';
+  var displaySub     = c.sub_en     || c.sub     || '';
+  var displayRanking = c.ranking_en || c.ranking  || '—';
 
   document.getElementById('profile-side-card').innerHTML =
     '<div class="profile-hero-img" style="background:'+c.gradient+';">'+imgHtml+'</div>'
     +'<div class="profile-stats-row">'
     +'<div class="profile-stat"><div class="profile-stat-val">'+c.utr+'</div><div class="profile-stat-lbl">Peak UTR</div></div>'
     +'<div class="profile-stat-div"></div>'
-    +'<div class="profile-stat"><div class="profile-stat-val">'+(c.ranking||'—')+'</div><div class="profile-stat-lbl">Ranking</div></div>'
+    +'<div class="profile-stat"><div class="profile-stat-val">'+displayRanking+'</div><div class="profile-stat-lbl">Ranking</div></div>'
     +'<div class="profile-stat-div"></div>'
     +'<div class="profile-stat"><div class="profile-stat-val">'+displayBadge+'</div><div class="profile-stat-lbl">Certified</div></div>'
     +'</div>'
@@ -4501,7 +4503,7 @@ function openCoachProfile(coachId) {
 
     +'<div class="pcard"><div class="pcard-title">💰 Pricing</div>'
     +'<div class="price-row"><div><div class="price-name">Single Lesson</div><div class="price-desc">1-on-1 private lesson, 60 min</div></div>'
-    +'<div class="price-val">'+c.price+'</div></div></div>'
+    +'<div class="price-val">$'+(c.priceNum||75)+'/hr</div></div></div>'
 
     +'<div class="pcard"><div class="pcard-title">📅 Availability</div>'
     +'<div class="avail-row">'+availHtml+'</div></div>'
