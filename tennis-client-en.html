@@ -3866,7 +3866,7 @@ function dbCoachToLocal(row) {
 async function loadCoachesFromDB() {
   try {
     var r = await fetch(
-      SB_URL + '/rest/v1/coaches?select=*&order=created_at.asc&limit=100',
+      SB_URL + '/rest/v1/coaches?select=*&order=created_at.asc&limit=100&_=' + Date.now(),
       { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY } }
     );
     if (!r.ok) throw new Error('HTTP ' + r.status);
