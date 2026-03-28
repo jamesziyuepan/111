@@ -3841,7 +3841,7 @@ function dbCoachToLocal(row) {
     name:            row.name            || '',
     badge:           row.badge           || '',
     sub:             row.sub             || '',
-    price:           '$' + (row.price || 75) + '/时',
+    price:           '$' + (row.price || 75) + '/hr',
     priceNum:        row.price           || 75,
     location:        row.location        || '',
     region:          row.region          || 'dc',
@@ -3853,12 +3853,14 @@ function dbCoachToLocal(row) {
     ranking:         row.ranking         || '—',
     cert:            row.badge           || '—',
     bio:             row.bio             || '',
+    bio_en:          row.bio_en          || null,
     achievements:    row.achievements    || [],
+    achievements_en: row.achievements_en || null,
     specs:           row.specs           || row.tags || [],
     courts:          courts,
     avail:           avail,
     available_hours: row.available_hours || [],
-    schedule:        row.schedule || null  // {dayIdx: ['9:00',...], ...}
+    schedule:        row.schedule || null
   };
 }
 
