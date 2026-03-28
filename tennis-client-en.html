@@ -2749,7 +2749,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
           <span class="sec-link" onclick="showPanel('coaches',null)">View All ›</span>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
-          <div class="fchip active" onclick="filterHomeRegion(this,'all')">全部</div>
+          <div class="fchip active" onclick="filterHomeRegion(this,'all')">All</div>
           <div class="fchip" onclick="filterHomeRegion(this,'dc')">DC</div>
           <div class="fchip" onclick="filterHomeRegion(this,'md')">Maryland</div>
           <div class="fchip" onclick="filterHomeRegion(this,'arlington')">Arlington</div>
@@ -2806,7 +2806,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
               <span style="font-size:24px;" id="loyalty-icon">🎾</span>
               <div>
                 <div style="font-size:14px;font-weight:800;color:#1a1a1a;" id="loyalty-title">Tennis Warehouse Exclusive Discount</div>
-                <div style="font-size:11px;color:#92400e;font-weight:600;" id="loyalty-sub">累计约课满 10 more to unlock 30% 优惠码</div>
+                <div style="font-size:11px;color:#92400e;font-weight:600;" id="loyalty-sub">Book 10 sessions to unlock 30% off</div>
               </div>
             </div>
             <div id="loyalty-badge" style="font-size:11px;background:#fbbf24;color:white;padding:3px 10px;border-radius:20px;font-weight:800;white-space:nowrap;">Loyal Member Exclusive</div>
@@ -2854,10 +2854,10 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
             <div style="font-size:11px;font-weight:700;color:var(--mute);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">Single Lesson</div>
             <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:14px;">
               <span style="font-size:32px;font-weight:900;">$75</span>
-              <span style="font-size:12px;color:var(--mute);">/ 节</span>
+              <span style="font-size:12px;color:var(--mute);">/ session</span>
             </div>
             <div style="font-size:12px;color:var(--sub);margin-bottom:16px;">Pay per session, maximum flexibility</div>
-            <button onclick="showPanel('coaches',document.querySelectorAll('.nav-item')[1])" style="width:100%;padding:10px;background:var(--green-light);color:var(--green);border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">立即Find Coaches</button>
+            <button onclick="showPanel('coaches',document.querySelectorAll('.nav-item')[1])" style="width:100%;padding:10px;background:var(--green-light);color:var(--green);border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">Find a Coach</button>
           </div>
 
           <!-- 5节 -->
@@ -2871,7 +2871,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
               <span style="font-size:11px;color:var(--mute);text-decoration:line-through;">$375</span>
               <span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;">Save $10</span>
             </div>
-            <div style="font-size:11px;color:var(--mute);margin-bottom:14px;">$75/节 × 5 节</div>
+            <div style="font-size:11px;color:var(--mute);margin-bottom:14px;">$75/session × 5 sessions</div>
             <button onclick="openPackageModal('5节套餐（标准$75教练）','$365','共5节，省$10')" style="width:100%;padding:10px;background:linear-gradient(135deg,#d97706,#f59e0b);color:white;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">Buy 5 Sessions</button>
           </div>
 
@@ -2887,7 +2887,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
               <span style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:line-through;">$750</span>
               <span style="background:rgba(245,158,11,0.25);color:#fbbf24;font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;">Save $30</span>
             </div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:6px;">$75/节 × 10 节</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:6px;">$75/session × 10 sessions</div>
             <div style="font-size:11px;color:#52b788;margin-bottom:14px;">🎁 🎁 Unlocks TW 30% discount</div>
             <button onclick="openPackageModal('10节套餐（标准$75教练）','$720','共10节，省$30')" style="width:100%;padding:10px;background:linear-gradient(135deg,#2d9a57,#52b788);color:white;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">Buy 10 Sessions</button>
           </div>
@@ -2903,10 +2903,10 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
             <div style="font-size:11px;font-weight:700;color:var(--mute);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">Single Lesson</div>
             <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:14px;">
               <span style="font-size:32px;font-weight:900;">$100</span>
-              <span style="font-size:12px;color:var(--mute);">/ 节</span>
+              <span style="font-size:12px;color:var(--mute);">/ session</span>
             </div>
             <div style="font-size:12px;color:var(--sub);margin-bottom:16px;">Pay per session, maximum flexibility</div>
-            <button onclick="showPanel('coaches',document.querySelectorAll('.nav-item')[1])" style="width:100%;padding:10px;background:var(--green-light);color:var(--green);border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">立即Find Coaches</button>
+            <button onclick="showPanel('coaches',document.querySelectorAll('.nav-item')[1])" style="width:100%;padding:10px;background:var(--green-light);color:var(--green);border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">Find a Coach</button>
           </div>
 
           <!-- 5节 -->
@@ -2920,7 +2920,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
               <span style="font-size:11px;color:var(--mute);text-decoration:line-through;">$500</span>
               <span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;">Save $10</span>
             </div>
-            <div style="font-size:11px;color:var(--mute);margin-bottom:14px;">$90/节 × 5 节</div>
+            <div style="font-size:11px;color:var(--mute);margin-bottom:14px;">$90/session × 5 sessions</div>
             <button onclick="openPackageModal('5节套餐（高级$100教练）','$450','共5节，$90/节，省$10')" style="width:100%;padding:10px;background:linear-gradient(135deg,#d97706,#f59e0b);color:white;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">Buy 5 Sessions</button>
           </div>
 
@@ -2936,7 +2936,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
               <span style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:line-through;">$1,000</span>
               <span style="background:rgba(245,158,11,0.25);color:#fbbf24;font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;">Save $30</span>
             </div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:6px;">$85/节 × 10 节</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:6px;">$85/session × 10 sessions</div>
             <div style="font-size:11px;color:#a5b4fc;margin-bottom:14px;">🎁 🎁 Unlocks TW 30% discount</div>
             <button onclick="openPackageModal('10节套餐（高级$100教练）','$850','共10节，$85/节，省$30')" style="width:100%;padding:10px;background:linear-gradient(135deg,#4f46e5,#6366f1);color:white;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">Buy 10 Sessions</button>
           </div>
@@ -2972,7 +2972,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
           <div style="position:relative;z-index:1;">
             <div style="display:inline-block;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.9);font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:1px;margin-bottom:14px;">DC · MD · VA Chinese Tennis Community</div>
             <div style="color:white;font-size:clamp(20px,3vw,28px);font-weight:900;line-height:1.3;margin-bottom:8px;">Join the Platform & Enjoy Exclusive Benefits</div>
-            <div style="color:rgba(255,255,255,0.7);font-size:13px;line-height:1.7;">透明定价 · 灵活约课 · 本地教练 · Loyal Member Exclusive福利</div>
+            <div style="color:rgba(255,255,255,0.7);font-size:13px;line-height:1.7;">Transparent pricing · Flexible booking · Local coaches · Loyal Member perks</div>
           </div>
         </div>
 
@@ -2991,7 +2991,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
             <div style="font-size:11px;color:var(--mute);margin-top:2px;">Avg Rating</div>
           </div>
           <div style="background:white;border-radius:14px;padding:16px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.06);">
-            <div style="font-size:24px;font-weight:900;color:var(--green);">3州</div>
+            <div style="font-size:24px;font-weight:900;color:var(--green);">3 States</div>
             <div style="font-size:11px;color:var(--mute);margin-top:2px;">DC·MD·VA</div>
           </div>
         </div>
@@ -3016,7 +3016,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
             <div style="background:white;border-radius:16px;padding:22px;box-shadow:0 1px 8px rgba(0,0,0,0.06);border:1.5px solid transparent;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--green-light)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='transparent';this.style.transform='none'">
               <div style="width:46px;height:46px;border-radius:12px;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;">📅</div>
               <div style="font-size:14px;font-weight:800;margin-bottom:6px;">Flexible Scheduling</div>
-              <div style="font-size:12px;color:var(--sub);line-height:1.7;">实时查看教练可用时间，按自己的程安排上课，周末、工作均可。</div>
+              <div style="font-size:12px;color:var(--sub);line-height:1.7;">View real-time coach availability and book on your schedule — weekdays or weekends.</div>
             </div>
 
             <div style="background:white;border-radius:16px;padding:22px;box-shadow:0 1px 8px rgba(0,0,0,0.06);border:1.5px solid transparent;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--green-light)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='transparent';this.style.transform='none'">
@@ -3068,7 +3068,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
               <span style="color:#e11d48;font-weight:800;">✓</span> <strong>More bookings = more chances</strong>——Each booking adds one entry to the draw
             </div>
             <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);">
-              <span style="color:#e11d48;font-weight:800;">✓</span> <strong>每年 8 /公布结果</strong>——Winners notified via registered email
+              <span style="color:#e11d48;font-weight:800;">✓</span> <strong>Winners announced every August</strong>——Notified via registered email
             </div>
           </div>
 
@@ -3085,15 +3085,15 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
             <span style="font-size:28px;">🏆</span>
             <div>
               <div style="font-size:15px;font-weight:800;">Tennis Warehouse Exclusive Discount</div>
-              <div style="font-size:11px;color:#92400e;font-weight:600;margin-top:2px;">Loyal Member Exclusive · 累计约课满 10 次自动解锁</div>
+              <div style="font-size:11px;color:#92400e;font-weight:600;margin-top:2px;">Loyal member exclusive · Unlocks after 10 confirmed bookings</div>
             </div>
-            <div style="margin-left:auto;font-size:11px;background:#fbbf24;color:white;padding:3px 10px;border-radius:20px;font-weight:800;white-space:nowrap;">忠实会员</div>
+            <div style="margin-left:auto;font-size:11px;background:#fbbf24;color:white;padding:3px 10px;border-radius:20px;font-weight:800;white-space:nowrap;">Loyal Member</div>
           </div>
           <div style="background:#fef3c7;border-radius:10px;padding:16px 18px;display:flex;align-items:center;gap:14px;">
             <div style="font-size:32px;font-weight:900;font-family:monospace;letter-spacing:3px;color:#92400e;">30% OFF</div>
             <div>
-              <div style="font-size:13px;font-weight:700;color:#1a1a1a;">Tennis Warehouse 全场折扣</div>
-              <div style="font-size:12px;color:#92400e;margin-top:3px;">🔒 约满 10 次后优惠码自动发放，前往「My Bookings」查看进度</div>
+              <div style="font-size:13px;font-weight:700;color:#1a1a1a;">Tennis Warehouse — All Items</div>
+              <div style="font-size:12px;color:#92400e;margin-top:3px;">🔒 Code sent after 10 bookings · Check My Bookings for progress</div>
             </div>
           </div>
           <div style="margin-top:12px;text-align:center;">
@@ -3106,7 +3106,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
             <span style="font-size:28px;">🎯</span>
             <div>
-              <div style="font-size:15px;font-weight:800;">专业穿线服务</div>
+              <div style="font-size:15px;font-weight:800;">Professional Stringing Service</div>
               <div style="font-size:11px;color:#1d4ed8;font-weight:600;margin-top:2px;">Drop-off at Arlington VA · 3-day turnaround · DC/MD/VA 覆盖</div>
             </div>
             <div style="margin-left:auto;font-size:11px;background:#3b82f6;color:white;padding:3px 10px;border-radius:20px;font-weight:800;white-space:nowrap;">New</div>
@@ -3119,7 +3119,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
               <div style="font-size:10px;color:var(--mute);margin-top:3px;font-weight:600;">Labor fee</div>
             </div>
             <div style="background:white;border-radius:12px;padding:14px;text-align:center;box-shadow:0 1px 6px rgba(0,0,0,0.06);">
-              <div style="font-size:20px;font-weight:900;color:#1d4ed8;">+线费</div>
+              <div style="font-size:20px;font-weight:900;color:#1d4ed8;">+String</div>
               <div style="font-size:10px;color:var(--mute);margin-top:3px;font-weight:600;">String extra</div>
             </div>
             <div style="background:#eff6ff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 1px 6px rgba(0,0,0,0.06);">
@@ -3131,21 +3131,21 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
           <!-- 特点 -->
           <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;">
             <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);">
-              <span style="color:#3b82f6;font-weight:800;">✓</span> <strong>Drop-off at Arlington VA</strong>——送到 1600 S Hayes St 指定地点，方便快捷
+              <span style="color:#3b82f6;font-weight:800;">✓</span> <strong>Drop-off at Arlington VA</strong>——Drop off at 1600 S Hayes St, Arlington VA
             </div>
             <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);">
-              <span style="color:#3b82f6;font-weight:800;">✓</span> <strong>三天内返还</strong>——穿好后通知你取回
+              <span style="color:#3b82f6;font-weight:800;">✓</span> <strong>3-day turnaround</strong>——Notified when ready for pickup
             </div>
             <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);">
-              <span style="color:#3b82f6;font-weight:800;">✓</span> <strong>多种线材可选</strong>——尼龙、聚酯、天然肠线均有
+              <span style="color:#3b82f6;font-weight:800;">✓</span> <strong>Multiple string options</strong>——Nylon, polyester, natural gut available
             </div>
             <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);">
-              <span style="color:#3b82f6;font-weight:800;">✓</span> <strong>BYO string</strong>——$25 labor only，省心省钱
+              <span style="color:#3b82f6;font-weight:800;">✓</span> <strong>BYO string</strong>——$25 labor only, hassle-free
             </div>
           </div>
 
           <button onclick="openStringingModal()" style="width:100%;padding:14px;background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:white;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(59,130,246,0.35);">
-            🎯 Book Now穿线服务
+            🎯 Book Stringing Service
           </button>
         </div>
 
@@ -3180,7 +3180,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
           </div>
 
           <div style="background:#f3e8ff;border-radius:10px;padding:12px 16px;text-align:center;margin-bottom:14px;">
-            <div style="font-size:12px;color:#5b21b6;font-weight:700;margin-bottom:4px;">🔔 功能Coming Soon</div>
+            <div style="font-size:12px;color:#5b21b6;font-weight:700;margin-bottom:4px;">🔔 Feature Coming Soon</div>
             <div style="font-size:11px;color:#7c3aed;">Register interest — be the first to know when it launches</div>
           </div>
 
@@ -3919,7 +3919,7 @@ function coachCardHTML(c) {
     +'<div class="coach-price-tag">$'+(c.priceNum||c.price||75)+'/hr</div></div>'
     +'<div class="coach-body">'
     +'<div class="coach-name">'+(c.name||'').replace(/\s*教练\s*/g,'').trim()+'</div>'
-    +'<div class="coach-sub-txt">'+(c.sub||'')+'</div>'
+    +'<div class="coach-sub-txt">'+(c.sub_en||c.sub||'')+'</div>'
     +'<div class="coach-tags"><span class="lang-tag">🗣 '+(c.lang||'')+'</span>'+tags+'</div>'
     +'<button class="coach-book-btn" onclick="event.stopPropagation();openCoachProfile(\''+c.id+'\')">View Profile →</button>'
     +'</div></div>';
@@ -4819,7 +4819,7 @@ function updateLoyaltyCard(bookings) {
     document.getElementById('loyalty-icon').textContent = '🏆';
     document.getElementById('loyalty-title').textContent = 'Tennis Warehouse 30% 优惠码已解锁！';
     document.getElementById('loyalty-sub').textContent = '优惠码已发送至 ' + currentUser.email;
-    document.getElementById('loyalty-badge').textContent = '✅ 忠实会员';
+    document.getElementById('loyalty-badge').textContent = '✅ Loyal Member';
     document.getElementById('loyalty-badge').style.background = '#1a6b3a';
     document.getElementById('loyalty-progress-wrap').style.display = 'none';
     document.getElementById('loyalty-unlocked').style.display = 'block';
