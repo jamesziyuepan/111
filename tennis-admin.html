@@ -523,6 +523,18 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);height:100vh;ove
           </div>
           <div class="cf-row">
             <div class="cf-grp">
+              <label class="cf-lbl" style="color:#1d4ed8;">🇺🇸 English Badge（英文认证标签）</label>
+              <input class="cf-inp" id="cf-badge-en" placeholder="e.g. NCAA D1 Coach">
+            </div>
+          </div>
+          <div class="cf-row">
+            <div class="cf-grp" style="grid-column:1/-1;">
+              <label class="cf-lbl" style="color:#1d4ed8;">🇺🇸 English Subtitle（英文副标题）</label>
+              <input class="cf-inp" id="cf-sub-en" placeholder="e.g. NCAA D1 Assistant Coach · Exercise Science">
+            </div>
+          </div>
+          <div class="cf-row">
+            <div class="cf-grp">
               <label class="cf-lbl">授课语言</label>
               <select class="cf-sel" id="cf-lang">
                 <option value="中文 · English">🗣 中文 · English</option>
@@ -1199,7 +1211,7 @@ function openCoachForm(coachId) {
   initSchedule();
   buildScheduleEditor();
 
-  var fields = ['cf-name','cf-badge','cf-sub','cf-location','cf-bio','cf-bio-en','cf-utr','cf-ranking','cf-achievements','cf-achievements-en','cf-courts','cf-photo-url'];
+  var fields = ['cf-name','cf-badge','cf-badge-en','cf-sub','cf-sub-en','cf-location','cf-bio','cf-bio-en','cf-utr','cf-ranking','cf-achievements','cf-achievements-en','cf-courts','cf-photo-url'];
 
   if(coachId) {
     var c = allCoaches.find(function(x){ return x.id===coachId; });
@@ -1208,7 +1220,9 @@ function openCoachForm(coachId) {
     document.getElementById('cf-delete-btn').style.display = 'block';
     document.getElementById('cf-name').value = c.name||'';
     document.getElementById('cf-badge').value = c.badge||'';
+    document.getElementById('cf-badge-en').value = c.badge_en||'';
     document.getElementById('cf-sub').value = c.sub||'';
+    document.getElementById('cf-sub-en').value = c.sub_en||'';
     document.getElementById('cf-lang').value = c.lang||'中文 · English';
     document.getElementById('cf-region').value = c.region||'dc';
     document.getElementById('cf-location').value = c.location||'';
@@ -1366,7 +1380,9 @@ async function saveCoach() {
   var data = {
     name:           name,
     badge:          badge,
+    badge_en:       document.getElementById('cf-badge-en').value.trim() || null,
     sub:            sub,
+    sub_en:         document.getElementById('cf-sub-en').value.trim() || null,
     lang:           document.getElementById('cf-lang').value,
     region:         document.getElementById('cf-region').value,
     location:       document.getElementById('cf-location').value.trim() || null,

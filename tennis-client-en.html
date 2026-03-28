@@ -3840,7 +3840,9 @@ function dbCoachToLocal(row) {
     lang:            row.lang            || '中文 · English',
     name:            row.name            || '',
     badge:           row.badge           || '',
+    badge_en:        row.badge_en        || null,
     sub:             row.sub             || '',
+    sub_en:          row.sub_en          || null,
     price:           '$' + (row.price || 75) + '/hr',
     priceNum:        row.price           || 75,
     location:        row.location        || '',
@@ -3912,7 +3914,7 @@ function coachCardHTML(c) {
   }).join('');
   return '<div class="coach-card" onclick="openCoachProfile(\''+c.id+'\')" style="cursor:pointer;">'
     +'<div class="coach-img" style="background:'+(c.gradient||'linear-gradient(135deg,#0d3b23,#2d9a57)')+';">'+img
-    +'<div class="coach-badge-tag">'+(c.badge||'')+'</div>'
+    +'<div class="coach-badge-tag">'+(c.badge_en||c.badge||'')+'</div>'
     +'<div class="coach-price-tag">$'+(c.priceNum||c.price||75)+'/hr</div></div>'
     +'<div class="coach-body">'
     +'<div class="coach-name">'+(c.name||'').replace(/\s*教练\s*/g,'').trim()+'</div>'
@@ -4443,9 +4445,10 @@ function openCoachProfile(coachId) {
       +'<div class="avail-dot '+(on?'avail-on':'avail-off')+'">'+(on?'✓':'✕')+'</div></div>';
   }).join('');
 
-  // Strip Chinese from name/sub (e.g. "James 教练" → "James", "$100/时" → "$100/hr")
   var displayName = (c.name||'').replace(/\s*教练\s*/g,'').trim();
   var displayPrice = (c.price||'').toString().replace('/时','/hr').replace('/小时','/hr');
+  var displayBadge = c.badge_en || c.badge || '';
+  var displaySub   = c.sub_en   || c.sub   || '';
 
   document.getElementById('profile-side-card').innerHTML =
     '<div class="profile-hero-img" style="background:'+c.gradient+';">'+imgHtml+'</div>'
@@ -4454,11 +4457,11 @@ function openCoachProfile(coachId) {
     +'<div class="profile-stat-div"></div>'
     +'<div class="profile-stat"><div class="profile-stat-val">'+(c.ranking||'—')+'</div><div class="profile-stat-lbl">Ranking</div></div>'
     +'<div class="profile-stat-div"></div>'
-    +'<div class="profile-stat"><div class="profile-stat-val">'+c.cert+'</div><div class="profile-stat-lbl">Certified</div></div>'
+    +'<div class="profile-stat"><div class="profile-stat-val">'+displayBadge+'</div><div class="profile-stat-lbl">Certified</div></div>'
     +'</div>'
     +'<div class="profile-info">'
     +'<div class="profile-name">'+displayName+'</div>'
-    +'<div class="profile-sub-txt">'+c.sub+'</div>'
+    +'<div class="profile-sub-txt">'+displaySub+'</div>'
     +'<div class="profile-price">'+displayPrice+'</div>'
     +'<div class="profile-meta">'
     +'<div class="profile-meta-row">📍 '+c.location+'</div>'
