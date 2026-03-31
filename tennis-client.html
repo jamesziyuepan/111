@@ -4456,8 +4456,18 @@ function openCoachProfile(coachId) {
     : '<div class="profile-hero-ph" style="background:'+c.gradient+';">🎾</div>';
 
   var dayNames = ['一','二','三','四','五','六','日'];
+  // 优先从 schedule 推导可用天（schedule key 是 JS getDay(): 0=周日,1=周一,...）
+  // dayNames index: 0=一,1=二,...,5=六,6=日 → 对应 getDay: 1,2,3,4,5,6,0
+  var dowMap = [1,2,3,4,5,6,0]; // dayNames[i] → getDay value
   var availHtml = dayNames.map(function(d,i){
-    var on = c.avail && c.avail[i];
+    var on = false;
+    if(c.schedule) {
+      var sch = typeof c.schedule === 'string' ? JSON.parse(c.schedule) : c.schedule;
+      var dow = dowMap[i];
+      on = (sch[dow] && sch[dow].length > 0) || (sch[String(dow)] && sch[String(dow)].length > 0);
+    } else {
+      on = c.avail && c.avail[i];
+    }
     return '<div class="avail-day"><span class="avail-lbl">'+d+'</span>'
       +'<div class="avail-dot '+(on?'avail-on':'avail-off')+'">'+(on?'✓':'✕')+'</div></div>';
   }).join('');

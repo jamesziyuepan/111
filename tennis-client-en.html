@@ -4462,8 +4462,17 @@ function openCoachProfile(coachId) {
     : '<div class="profile-hero-ph" style="background:'+c.gradient+';">🎾</div>';
 
   var dayNames = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  // dowMap: dayNames[i] → JS getDay() value (Mon=1,...,Sat=6,Sun=0)
+  var dowMap = [1,2,3,4,5,6,0];
   var availHtml = dayNames.map(function(d,i){
-    var on = c.avail && c.avail[i];
+    var on = false;
+    if(c.schedule) {
+      var sch = typeof c.schedule === 'string' ? JSON.parse(c.schedule) : c.schedule;
+      var dow = dowMap[i];
+      on = (sch[dow] && sch[dow].length > 0) || (sch[String(dow)] && sch[String(dow)].length > 0);
+    } else {
+      on = c.avail && c.avail[i];
+    }
     return '<div class="avail-day"><span class="avail-lbl">'+d+'</span>'
       +'<div class="avail-dot '+(on?'avail-on':'avail-off')+'">'+(on?'✓':'✕')+'</div></div>';
   }).join('');
