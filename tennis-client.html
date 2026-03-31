@@ -3967,10 +3967,17 @@ function openBM(coachId) {
 
   // Coach avatar
   var ava = document.getElementById('bk-coach-ava');
-  var isJames = c.name && c.name.indexOf('James') > -1;
+  var isJames = c.name && (c.name.indexOf('James') > -1 || c.name.indexOf('Jimmy') > -1);
   if(c.photo_url) ava.innerHTML = '<img src="'+c.photo_url+'" alt="">';
   else if(isJames) ava.innerHTML = '<img src="'+JAMES_PHOTO+'" alt="">';
   else ava.innerHTML = '🎾';
+
+  // 只有 Jimmy/James 才显示「运动表现 & 体能」课程类型
+  var typeCard2 = document.getElementById('bk-type-price2');
+  if(typeCard2) {
+    var strengthCard = typeCard2.closest('.type-card');
+    if(strengthCard) strengthCard.style.display = isJames ? '' : 'none';
+  }
 
   // Update type card prices
   var p = '$'+(c.priceNum||75);
