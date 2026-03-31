@@ -3973,12 +3973,12 @@ function openBM(coachId) {
 
   // Coach avatar
   var ava = document.getElementById('bk-coach-ava');
-  var isJames = c.name && (c.name.indexOf('James') > -1 || c.name.indexOf('Jimmy') > -1);
+  var isJames = c.name && /\bJames\b/i.test(c.name);
   if(c.photo_url) ava.innerHTML = '<img src="'+c.photo_url+'" alt="">';
   else if(isJames) ava.innerHTML = '<img src="'+JAMES_PHOTO+'" alt="">';
   else ava.innerHTML = '🎾';
 
-  // Only Jimmy/James shows the Strength & Conditioning type card
+  // Only coaches named James show the Strength & Conditioning card
   var typeCard2 = document.getElementById('bk-type-price2');
   if(typeCard2) {
     var strengthCard = typeCard2.closest('.type-card');
