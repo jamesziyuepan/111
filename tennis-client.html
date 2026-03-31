@@ -4042,6 +4042,9 @@ function bkRenderCalendar() {
   var firstDay = new Date(bkCalState.year, bkCalState.month, 1).getDay();
   var daysInMonth = new Date(bkCalState.year, bkCalState.month+1, 0).getDate();
   var today = new Date(); today.setHours(0,0,0,0);
+  var now = new Date();
+  // 最早可约时间 = 当前时间 + 24小时
+  var minBookable = new Date(now.getTime() + 24 * 60 * 60 * 1000);
 
   var html = '';
   for(var i=0; i<firstDay; i++) html += '<div class="cal-day other-month"></div>';
@@ -4050,7 +4053,9 @@ function bkRenderCalendar() {
     var date = new Date(bkCalState.year, bkCalState.month, d);
     date.setHours(0,0,0,0);
     var dow = date.getDay();
-    var isPast = date < today;
+    // 如果这一天21:00也在24小时内，则整天禁用
+    var dayEnd = new Date(bkCalState.year, bkCalState.month, d, 21, 0, 0);
+    var isPast = date < today || dayEnd <= minBookable;
     var isToday = date.getTime() === today.getTime();
     // Check availability: schedule takes priority over avail array
     var isAvail = false;
@@ -4141,6 +4146,22 @@ async function bkRenderTimeSlots(dateStr) {
   } else if(coach && coach.available_hours && coach.available_hours.length > 0) {
     // Fallback: use old available_hours field
     slots = coach.available_hours;
+  }
+
+  // 过滤掉24小时内的时间段
+  var now24 = new Date();
+  now24.setTime(now24.getTime() + 24 * 60 * 60 * 1000);
+  slots = slots.filter(function(s) {
+    var parts = s.split(':');
+    var slotDT = new Date(dateStr + 'T00:00:00');
+    slotDT.setHours(parseInt(parts[0]), parseInt(parts[1]||0), 0, 0);
+    return slotDT > now24;
+  });
+
+  if(slots.length === 0) {
+    notice.textContent = '⚠️ 该日暂无可约时段（需提前24小时预约）';
+    slotsEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--mute);font-size:13px;">约课需至少提前24小时，<br>请选择更晚的日期。</div>';
+    return;
   }
 
   notice.textContent = '⏰ 请选择上课时间';

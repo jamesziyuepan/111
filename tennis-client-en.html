@@ -4048,6 +4048,9 @@ function bkRenderCalendar() {
   var firstDay = new Date(bkCalState.year, bkCalState.month, 1).getDay();
   var daysInMonth = new Date(bkCalState.year, bkCalState.month+1, 0).getDate();
   var today = new Date(); today.setHours(0,0,0,0);
+  var now = new Date();
+  // Min bookable datetime = now + 24 hours
+  var minBookable = new Date(now.getTime() + 24 * 60 * 60 * 1000);
 
   var html = '';
   for(var i=0; i<firstDay; i++) html += '<div class="cal-day other-month"></div>';
@@ -4056,7 +4059,9 @@ function bkRenderCalendar() {
     var date = new Date(bkCalState.year, bkCalState.month, d);
     date.setHours(0,0,0,0);
     var dow = date.getDay();
-    var isPast = date < today;
+    // A day is "past" if it's before today, OR if its last possible slot (21:00) is within 24h
+    var dayEnd = new Date(bkCalState.year, bkCalState.month, d, 21, 0, 0);
+    var isPast = date < today || dayEnd <= minBookable;
     var isToday = date.getTime() === today.getTime();
     // Check availability: schedule takes priority over avail array
     var isAvail = false;
@@ -4147,6 +4152,22 @@ async function bkRenderTimeSlots(dateStr) {
   } else if(coach && coach.available_hours && coach.available_hours.length > 0) {
     // Fallback: use old available_hours field
     slots = coach.available_hours;
+  }
+
+  // Filter out slots within 24 hours from now
+  var now24 = new Date();
+  now24.setTime(now24.getTime() + 24 * 60 * 60 * 1000);
+  slots = slots.filter(function(s) {
+    var parts = s.split(':');
+    var slotDT = new Date(dateStr + 'T00:00:00');
+    slotDT.setHours(parseInt(parts[0]), parseInt(parts[1]||0), 0, 0);
+    return slotDT > now24;
+  });
+
+  if(slots.length === 0) {
+    notice.textContent = '⚠️ No available slots (bookings require 24h advance notice)';
+    slotsEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--mute);font-size:13px;">Bookings must be made at least 24 hours in advance.<br>Please select a later date.</div>';
+    return;
   }
 
   notice.textContent = '⏰ 请选择上课时间';
