@@ -364,6 +364,7 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);height:100vh;ove
       <div class="nav-item" onclick="showPanel('coaches',this)"><span class="nav-icon">🎾</span> 教练管理</div>
       <div class="nav-item" onclick="showPanel('users',this)"><span class="nav-icon">👥</span> 用户列表</div>
       <div class="nav-item" onclick="showPanel('revenue',this)"><span class="nav-icon">💰</span> 收入统计</div>
+      <div class="nav-item" onclick="showPanel('announcement',this)"><span class="nav-icon">📢</span> 公告管理</div>
     </div>
 
     <div class="sb-footer">
@@ -705,6 +706,47 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);height:100vh;ove
       </div>
 
     </div><!-- end page-body -->
+
+      <!-- ANNOUNCEMENT PANEL -->
+      <div id="panel-announcement" class="panel" style="padding:24px 28px;">
+        <div class="card" style="max-width:720px;">
+          <div class="card-title" style="margin-bottom:20px;">📢 当前公告</div>
+          <div id="ann-current" style="margin-bottom:24px;">
+            <div style="color:#999;font-size:13px;">加载中…</div>
+          </div>
+
+          <div style="border-top:1px solid #f0f0f0;padding-top:20px;">
+            <div class="card-title" style="margin-bottom:16px;font-size:14px;">✏️ 发布新公告</div>
+
+            <div style="margin-bottom:12px;">
+              <label style="font-size:12px;font-weight:600;color:#555;display:block;margin-bottom:5px;">标题</label>
+              <input id="ann-title" type="text" placeholder="例：平台维护通知" style="width:100%;height:42px;border:1.5px solid #e8e8e8;border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;">
+            </div>
+
+            <div style="margin-bottom:12px;">
+              <label style="font-size:12px;font-weight:600;color:#555;display:block;margin-bottom:5px;">正文内容</label>
+              <textarea id="ann-body" rows="4" placeholder="公告正文，支持换行" style="width:100%;border:1.5px solid #e8e8e8;border-radius:10px;padding:10px 14px;font-size:13px;font-family:inherit;outline:none;resize:vertical;"></textarea>
+            </div>
+
+            <div style="margin-bottom:20px;">
+              <label style="font-size:12px;font-weight:600;color:#555;display:block;margin-bottom:5px;">类型</label>
+              <select id="ann-type" style="height:42px;border:1.5px solid #e8e8e8;border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;background:white;">
+                <option value="info">📘 信息（蓝色）</option>
+                <option value="warning">⚠️ 警告（橙色）</option>
+                <option value="success">✅ 好消息（绿色）</option>
+                <option value="error">🚨 重要（红色）</option>
+              </select>
+            </div>
+
+            <div style="display:flex;gap:10px;">
+              <button onclick="publishAnnouncement()" style="height:44px;padding:0 28px;background:linear-gradient(135deg,#1a6b3a,#2d9a57);color:white;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">发布公告</button>
+              <button onclick="clearAnnouncement()" style="height:44px;padding:0 20px;background:#fdecea;color:#e53935;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;">关闭当前公告</button>
+            </div>
+            <div id="ann-err" style="display:none;margin-top:10px;background:#fdecea;border-radius:8px;padding:10px 14px;font-size:12px;color:#e53935;"></div>
+          </div>
+        </div>
+      </div>
+
   </div><!-- end main -->
 </div><!-- end app -->
 
@@ -1584,7 +1626,8 @@ var panelTitles = {
   calendar: ['日历视图','按日期查看课程安排'],
   coaches: ['教练管理','查看教练信息和收入'],
   users: ['用户列表','注册学员管理'],
-  revenue: ['收入统计','预约收入分析']
+  revenue: ['收入统计','预约收入分析'],
+  announcement: ['公告管理','向所有学员发布平台公告']
 };
 
 function showPanel(id, navEl) {
@@ -1600,11 +1643,89 @@ function showPanel(id, navEl) {
   if(id==='calendar') renderCalendar();
   if(id==='coaches') loadCoaches();
   if(id==='users') loadUsers();
+  if(id==='announcement') loadAnnouncement();
 }
 
 // ═══════════════════════════
-// TOAST
+// ANNOUNCEMENT
 // ═══════════════════════════
+async function loadAnnouncement() {
+  var el = document.getElementById('ann-current');
+  el.innerHTML = '<div style="color:#999;font-size:13px;">加载中…</div>';
+  try {
+    var r = await fetch(SB_URL+'/rest/v1/announcements?active=eq.true&order=created_at.desc&limit=1', { headers: sbHeaders() });
+    var data = await r.json();
+    if(data && data.length > 0) {
+      var a = data[0];
+      var colors = { info:'#dbeafe', warning:'#fef3c7', success:'#d1fae5', error:'#fdecea' };
+      var icons  = { info:'📘', warning:'⚠️', success:'✅', error:'🚨' };
+      var bg = colors[a.type] || colors.info;
+      var icon = icons[a.type] || '📢';
+      el.innerHTML = '<div style="background:'+bg+';border-radius:12px;padding:16px 20px;">'
+        +'<div style="font-size:13px;font-weight:800;margin-bottom:6px;">'+icon+' '+escHtml(a.title)+'</div>'
+        +'<div style="font-size:13px;color:#444;white-space:pre-wrap;">'+escHtml(a.body)+'</div>'
+        +'<div style="font-size:11px;color:#999;margin-top:8px;">发布于 '+a.created_at.slice(0,16).replace('T',' ')+'</div>'
+        +'</div>';
+    } else {
+      el.innerHTML = '<div style="color:#999;font-size:13px;padding:12px 0;">暂无active公告</div>';
+    }
+  } catch(e) {
+    el.innerHTML = '<div style="color:#e53935;font-size:13px;">加载失败：'+e.message+'</div>';
+  }
+}
+
+async function publishAnnouncement() {
+  var title = document.getElementById('ann-title').value.trim();
+  var body  = document.getElementById('ann-body').value.trim();
+  var type  = document.getElementById('ann-type').value;
+  var errEl = document.getElementById('ann-err');
+  errEl.style.display = 'none';
+
+  if(!title) { errEl.textContent = '请填写公告标题'; errEl.style.display='block'; return; }
+  if(!body)  { errEl.textContent = '请填写公告内容'; errEl.style.display='block'; return; }
+
+  // 先关闭所有旧公告
+  await fetch(SB_URL+'/rest/v1/announcements?active=eq.true', {
+    method:'PATCH',
+    headers: Object.assign({},sbHeaders(),{'Prefer':'return=minimal'}),
+    body: JSON.stringify({ active: false })
+  });
+
+  // 发布新公告
+  var r = await fetch(SB_URL+'/rest/v1/announcements', {
+    method:'POST',
+    headers: Object.assign({},sbHeaders(),{'Prefer':'return=minimal'}),
+    body: JSON.stringify({ title, body, type, active: true })
+  });
+
+  if(r.ok || r.status===201) {
+    showToast('✅ 公告已发布', 'success');
+    document.getElementById('ann-title').value = '';
+    document.getElementById('ann-body').value = '';
+    loadAnnouncement();
+  } else {
+    var e = await r.json().catch(()=>({}));
+    errEl.textContent = '发布失败：'+(e.message||e.hint||r.status);
+    errEl.style.display = 'block';
+  }
+}
+
+async function clearAnnouncement() {
+  if(!confirm('确认关闭当前所有公告？学员端将不再显示弹窗。')) return;
+  await fetch(SB_URL+'/rest/v1/announcements?active=eq.true', {
+    method:'PATCH',
+    headers: Object.assign({},sbHeaders(),{'Prefer':'return=minimal'}),
+    body: JSON.stringify({ active: false })
+  });
+  showToast('公告已关闭', '');
+  loadAnnouncement();
+}
+
+function escHtml(str) {
+  return (str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+
 function showToast(msg, type) {
   var t = document.createElement('div');
   t.className = 'toast '+(type||'');
