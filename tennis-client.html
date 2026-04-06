@@ -3399,7 +3399,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
               <div class="type-card selected" onclick="bkSelectType(this,'网球入门 & 提升',75)">
                 <span class="type-icon">🎾</span>
                 <span class="type-name">网球入门 & 提升</span>
-                <span class="type-desc">1对1私教，60分钟起</span>
+                <span class="type-desc">1对1私教，60分钟</span>
                 <span class="type-price" id="bk-type-price1">$75</span>
               </div>
               <div class="type-card" onclick="bkSelectType(this,'运动表现 & 体能',75)">
@@ -3407,29 +3407,6 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
                 <span class="type-name">运动表现 & 体能</span>
                 <span class="type-desc">Strength & Conditioning</span>
                 <span class="type-price" id="bk-type-price2">$75</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Step 1.5: Duration — always visible -->
-          <div class="bk-step-card" id="bk-duration-card">
-            <div class="bk-step-head">
-              <div class="step-num">⏱</div>
-              <div class="step-lbl">选择课程时长</div>
-            </div>
-            <div style="font-size:12px;color:var(--mute);margin-bottom:10px;">最少1小时，可按半小时递增</div>
-            <div style="display:flex;gap:10px;flex-wrap:wrap;" id="bk-duration-slots">
-              <div class="t-slot-bk selected" data-dur="60" onclick="bkSelectDuration(this,60)" style="min-width:80px;">
-                <span>1 小时</span><span id="bk-dur-price-60"></span>
-              </div>
-              <div class="t-slot-bk" data-dur="90" onclick="bkSelectDuration(this,90)" style="min-width:80px;">
-                <span>1.5 小时</span><span id="bk-dur-price-90"></span>
-              </div>
-              <div class="t-slot-bk" data-dur="120" onclick="bkSelectDuration(this,120)" style="min-width:80px;">
-                <span>2 小时</span><span id="bk-dur-price-120"></span>
-              </div>
-              <div class="t-slot-bk" data-dur="150" onclick="bkSelectDuration(this,150)" style="min-width:80px;">
-                <span>2.5 小时</span><span id="bk-dur-price-150"></span>
               </div>
             </div>
           </div>
@@ -3493,7 +3470,6 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
             </div>
           </div>
           <div class="os-row"><span class="os-lbl">课程类型</span><span class="os-val" id="bk-os-type">网球入门 & 提升</span></div>
-          <div class="os-row"><span class="os-lbl">课程时长</span><span class="os-val" id="bk-os-duration">1 小时</span></div>
           <div class="os-row"><span class="os-lbl">日期时间</span><span class="os-val" id="bk-os-datetime">—</span></div>
           <div class="os-row"><span class="os-lbl">球场</span><span class="os-val" id="bk-os-court">—</span></div>
           <div class="total-row">
@@ -3979,12 +3955,7 @@ function openBM(coachId) {
 
   bmState = { coachId:c.id, coachName:c.name, price:c.priceNum||75,
     date:null, dateLabel:null, time:null, court:null, availDays:availDays,
-    coachRef:c, duration:60 };
-
-  // 重置时长选择为默认1小时
-  document.querySelectorAll('#bk-duration-slots .t-slot-bk').forEach(function(s){ s.classList.remove('selected'); });
-  var defaultDur = document.querySelector('#bk-duration-slots .t-slot-bk[data-dur="60"]');
-  if(defaultDur) defaultDur.classList.add('selected');
+    coachRef:c };  // store full coach for available_hours lookup
 
   // Coach info in summary panel
   document.getElementById('bk-coach-name').textContent = c.name;
@@ -4014,14 +3985,6 @@ function openBM(coachId) {
   var p2 = document.getElementById('bk-type-price2');
   if(p1) p1.textContent = p;
   if(p2) p2.textContent = p;
-
-  // Update duration card prices
-  var base = c.priceNum || 75;
-  var durPrices = {60:base, 90:Math.round(base*1.5), 120:base*2, 150:Math.round(base*2.5)};
-  Object.keys(durPrices).forEach(function(dur) {
-    var el = document.getElementById('bk-dur-price-'+dur);
-    if(el) el.textContent = '$'+durPrices[dur];
-  });
 
   // Reset type selection
   document.querySelectorAll('.type-card').forEach(function(el){ el.classList.remove('selected'); });
@@ -4246,17 +4209,9 @@ function bkSlotClick(el) {
 }
 
 function bkSelectTime(el, time) {
-  document.querySelectorAll('#bk-time-slots .t-slot-bk').forEach(function(s){ s.classList.remove('selected'); });
+  document.querySelectorAll('.t-slot-bk').forEach(function(s){ s.classList.remove('selected'); });
   el.classList.add('selected');
   bmState.time = time;
-  bkUpdateSummary();
-}
-
-// ── Duration selection ──
-function bkSelectDuration(el, minutes) {
-  document.querySelectorAll('#bk-duration-slots .t-slot-bk').forEach(function(s){ s.classList.remove('selected'); });
-  el.classList.add('selected');
-  bmState.duration = minutes;
   bkUpdateSummary();
 }
 
@@ -4285,24 +4240,11 @@ function bkSelectType(el, name, price) {
 function bkUpdateSummary() {
   var dtEl = document.getElementById('bk-os-datetime');
   var courtEl = document.getElementById('bk-os-court');
-  var durEl = document.getElementById('bk-os-duration');
   var btn = document.getElementById('bk-confirm-btn');
 
-  var timeStr = bmState.time || '';
-  if(bmState.dateLabel && bmState.time) dtEl.textContent = bmState.dateLabel+' '+timeStr;
-  else if(bmState.date && bmState.time) dtEl.textContent = bmState.date+' '+timeStr;
+  if(bmState.dateLabel && bmState.time) dtEl.textContent = bmState.dateLabel+' '+bmState.time;
+  else if(bmState.date && bmState.time) dtEl.textContent = bmState.date+' '+bmState.time;
   if(bmState.court) courtEl.textContent = bmState.court;
-
-  // 时长显示
-  var dur = bmState.duration || 60;
-  var durLabel = dur === 60 ? '1 小时' : dur === 90 ? '1.5 小时' : dur === 120 ? '2 小时' : dur === 150 ? '2.5 小时' : (dur/60)+'小时';
-  if(durEl) durEl.textContent = durLabel;
-
-  // 价格按时长比例计算
-  var basePrice = bmState.price || 75;
-  var hours = dur / 60;
-  var totalPrice = Math.round(basePrice * hours);
-  document.getElementById('bk-total-price').textContent = '$'+totalPrice;
 
   if(bmState.date && bmState.time && bmState.court) btn.classList.remove('disabled');
   else btn.classList.add('disabled');
@@ -4321,9 +4263,7 @@ async function submitBM() {
   if(!bmState.date||!bmState.time||!bmState.court) return;
   var btn = document.getElementById('bk-confirm-btn');
   if(btn.classList.contains('disabled')) return;
-  var basePrice = bmState.price || 75;
-  var hours = (bmState.duration || 60) / 60;
-  var price = Math.round(basePrice * hours);
+  var price = bmState.price || 75;
   payState.usd = price;
   document.getElementById('pay-usd').textContent = '$' + price.toFixed(2);
   document.getElementById('pay-cny').textContent = '¥—';
@@ -4401,8 +4341,7 @@ async function doPayConfirm() {
     booking_date:bmState.date, booking_time:bmState.time,
     lesson_type:typeName, court:bmState.court||null, status:'pending',
     deposit_amount:payState.usd, deposit_cny:payState.cny,
-    exchange_rate:payState.rate, payment_method:payState.m==='w'?'wechat':'alipay',
-    duration_minutes: bmState.duration || 60
+    exchange_rate:payState.rate, payment_method:payState.m==='w'?'wechat':'alipay'
   };
 
   var token = currentUser.token||SB_KEY;
