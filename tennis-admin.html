@@ -953,13 +953,24 @@ async function confirmBk(id) {
 }
 
 async function cancelBk(id) {
-  if(!confirm('确定要取消这条预约吗？')) return;
+  var b = allBookings.find(x=>x.id===id);
+  var msg = '确定要取消这条预约吗？\n\n';
+  if(b) {
+    msg += '学员：' + (b.student_name||b.student_email||'—') + '\n';
+    msg += '日期：' + b.booking_date + ' ' + b.booking_time + '\n';
+    if(b.status === 'confirmed' && b.deposit_amount) {
+      msg += '\n⚠️ 该预约已确认且已支付 $' + parseFloat(b.deposit_amount).toFixed(2) + '，取消后请前往 Stripe 后台手动退款。';
+    } else if(b.status === 'pending_payment') {
+      msg += '\n💳 该预约处于待支付状态，取消后 Stripe 链接失效，无需退款。';
+    }
+    msg += '\n\n取消后该时间段将自动恢复可预约。';
+  }
+  if(!confirm(msg)) return;
   var res = await sbPatch('bookings', id, { status:'cancelled' });
   if(res.error){ showToast('操作失败', 'error'); return; }
-  var b = allBookings.find(x=>x.id===id);
   if(b) b.status = 'cancelled';
   updateStats(); renderBookingsTable(); renderDashPending(); renderDashRecent(); updateRevenuePanel();
-  showToast('预约已取消', 'success');
+  showToast('✅ 预约已取消，时间段已恢复', 'success');
 }
 
 // ═══════════════════════════
