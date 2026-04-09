@@ -2538,7 +2538,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 /* 
 
 
-/* ══ PAY ══ */
+/* ══ PAY (Stripe) ══ */
 .pay-overlay{position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,0.6);display:none;align-items:flex-end;justify-content:center}
 .pay-overlay.open{display:flex}
 .pay-sheet{background:white;width:100%;max-width:520px;border-radius:24px 24px 0 0;padding:28px 24px 36px;max-height:95dvh;overflow-y:auto;animation:slideUp .3s cubic-bezier(.16,1,.3,1)}
@@ -2551,38 +2551,34 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 .pay-amt-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
 .pay-amt-lbl{font-size:12px;opacity:.75}
 .pay-amt-usd{font-size:28px;font-weight:900}
-.pay-amt-cny{font-size:24px;font-weight:800;color:#7dffb3}
+.pay-amt-cny{font-size:20px;font-weight:700;color:#7dffb3;opacity:.85}
 .pay-rate{font-size:11px;opacity:.6;margin-top:6px;display:flex;align-items:center;gap:6px}
 .pay-rspin{display:inline-block;width:10px;height:10px;border:1.5px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite}
-.pay-methods{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:16px}
-.pay-mcard{border:2px solid var(--border);border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;transition:all .15s}
-.pay-mcard.sel-w{border-color:#07c160;background:#f0faf4}
-.pay-mcard.sel-a{border-color:#1677ff;background:#eff6ff}
-.pay-mcard-icon{font-size:28px;margin-bottom:5px}
-.pay-mcard-name{font-size:13px;font-weight:700}
-.pay-qr-box{background:#f9f9f9;border-radius:16px;padding:20px;text-align:center;margin-bottom:16px}
-.pay-qr-ttl{font-size:13px;font-weight:700;color:var(--sub);margin-bottom:10px}
-.pay-qr-badge{display:inline-block;padding:6px 18px;border-radius:20px;font-size:15px;font-weight:900;margin-bottom:12px}
-.pay-qr-badge.w{background:#07c160;color:white}
-.pay-qr-badge.a{background:#1677ff;color:white}
-.pay-qr-img{width:200px;height:200px;margin:0 auto 10px;border-radius:12px;overflow:hidden;background:white;border:1px solid var(--border)}
-.pay-qr-img img{width:100%;height:100%;object-fit:contain}
-.pay-qr-memo{font-size:11px;color:var(--mute);line-height:1.6}
+/* Stripe Payment Element container */
+.pay-stripe-wrap{background:#f8faf9;border-radius:14px;padding:16px;margin-bottom:16px;border:1.5px solid var(--border)}
+.pay-stripe-label{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.pay-stripe-label svg{flex-shrink:0}
+#stripe-payment-element{min-height:60px}
+.pay-stripe-loading{text-align:center;padding:24px 0;color:var(--mute);font-size:13px}
+.pay-stripe-loading .spin{border-color:rgba(26,107,58,.2);border-top-color:var(--green);width:20px;height:20px}
+/* Contact info */
 .pay-inp-grp{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
 .pay-inp-lbl{font-size:12px;font-weight:700;color:var(--sub)}
 .pay-inp{height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:14px;font-family:inherit;outline:none;transition:border-color .15s;width:100%;box-sizing:border-box}
 .pay-inp:focus{border-color:var(--green)}
-.pay-btn{width:100%;padding:15px;border:none;border-radius:14px;font-size:15px;font-weight:900;cursor:pointer;font-family:inherit;color:white;margin-bottom:10px}
-.pay-btn.w{background:linear-gradient(135deg,#07c160,#0aad50);box-shadow:0 4px 16px rgba(7,193,96,.35)}
-.pay-btn.a{background:linear-gradient(135deg,#1677ff,#0d5ed9);box-shadow:0 4px 16px rgba(22,119,255,.35)}
-.pay-btn:disabled{background:#e0e0e0;color:#aaa;box-shadow:none;cursor:not-allowed}
+/* Pay button */
+.pay-btn{width:100%;padding:15px;border:none;border-radius:14px;font-size:15px;font-weight:900;cursor:pointer;font-family:inherit;color:white;margin-bottom:10px;background:linear-gradient(135deg,var(--green),var(--green2));box-shadow:0 4px 16px rgba(26,107,58,.35);transition:opacity .15s}
+.pay-btn:hover{opacity:.9}
+.pay-btn:disabled{background:#e0e0e0;color:#aaa;box-shadow:none;cursor:not-allowed;opacity:1}
 .pay-back-btn{width:100%;padding:12px;border:1.5px solid var(--border);border-radius:14px;background:white;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;color:var(--sub)}
 .pay-err{background:#fdecea;border-radius:8px;padding:10px 14px;font-size:12px;color:var(--red);display:none;margin-bottom:10px}
 .pay-policy{background:#fff8e1;border-radius:10px;padding:12px 14px;margin:12px 0;border-left:3px solid #f59e0b}
 .pay-policy-t{font-size:12px;font-weight:700;color:#92400e;margin-bottom:5px}
 .pay-policy-b{font-size:12px;color:#78350f;line-height:1.8}
 .pay-note{font-size:11px;color:var(--mute);text-align:center;margin-top:8px;line-height:1.6}
-@media(max-width:768px){.pay-sheet{max-height:96dvh;padding:20px 16px 40px}.pay-qr-img{width:180px!important;height:180px!important}}
+/* Stripe secure badge */
+.pay-secure{display:flex;align-items:center;justify-content:center;gap:5px;font-size:11px;color:var(--mute);margin-top:8px}
+@media(max-width:768px){.pay-sheet{max-height:96dvh;padding:20px 16px 40px}}
 </style>
 </head>
 <body>
@@ -3548,6 +3544,11 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 // ═══════════════════════════
 const SB_URL = 'https://kbllubfoxwbcmcgrklgh.supabase.co';
 const SB_KEY = 'sb_publishable_xDL0OkqVVBhRFuYm2GrqZg_o6wBlKCM';
+// Stripe Payment Link base URL
+// 在 Stripe 后台创建 Payment Link 后，把链接填到这里（格式：https://buy.stripe.com/xxxx）
+// Payment Link 设置：1. 启用 "customer adjusts quantity" → 关闭  2. 启用 custom fields → 可选
+// 重定向 URL 设置为本页面地址 + ?booking_success=1
+const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/REPLACE_WITH_YOUR_PAYMENT_LINK';
 let currentUser = null;
 let authMode = 'login';
 var currentPanel = 'home';
@@ -4265,21 +4266,21 @@ async function submitBM() {
   if(btn.classList.contains('disabled')) return;
   var price = bmState.price || 75;
   payState.usd = price;
+
+  // Show overlay with Stripe info
   document.getElementById('pay-usd').textContent = '$' + price.toFixed(2);
   document.getElementById('pay-cny').textContent = '¥—';
-  document.getElementById('pay-qr-badge').textContent = '¥—';
   document.getElementById('pay-spin').style.display = 'inline-block';
   document.getElementById('pay-rate-txt').textContent = '正在获取实时汇率…';
-  document.getElementById('pay-memo').textContent = (currentUser.name||'')+ ' '+(bmState.dateLabel||bmState.date)+' '+bmState.time;
   document.getElementById('pay-wechat').value = '';
   document.getElementById('pay-phone').value = '';
   document.getElementById('pay-err').style.display = 'none';
   document.getElementById('pay-confirm').disabled = false;
-  document.getElementById('pay-confirm').innerHTML = '✅ 我已完成支付，完成预约';
-  selPayM('w');
+  document.getElementById('pay-confirm').innerHTML = '💳 前往 Stripe 完成支付';
   document.getElementById('pay-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
-  // fetch rate
+
+  // Fetch live exchange rate for display only
   try {
     var r = await fetch('https://open.er-api.com/v6/latest/USD');
     var d = await r.json();
@@ -4287,10 +4288,9 @@ async function submitBM() {
   } catch(e){ payState.rate=7.25; }
   var cny = Math.ceil(payState.usd * payState.rate);
   payState.cny = cny;
-  document.getElementById('pay-cny').textContent = '¥'+cny;
-  document.getElementById('pay-qr-badge').textContent = '¥'+cny;
+  document.getElementById('pay-cny').textContent = '¥'+cny+' 参考';
   document.getElementById('pay-spin').style.display = 'none';
-  document.getElementById('pay-rate-txt').textContent = '1 USD = '+payState.rate+' CNY（实时汇率）';
+  document.getElementById('pay-rate-txt').textContent = '以 USD 实际收费，人民币仅供参考';
 }
 
 function selPayM(m) {
@@ -4314,71 +4314,96 @@ async function doPayConfirm() {
   var ph = document.getElementById('pay-phone').value.trim();
   var errEl = document.getElementById('pay-err');
   errEl.style.display = 'none';
-  if(!wx){errEl.textContent='⚠️ 请填写微信号';errEl.style.display='block';return;}
+  if(!wx){errEl.textContent='⚠️ 请填写微信号（客服联系用）';errEl.style.display='block';return;}
   if(!ph){errEl.textContent='⚠️ 请填写手机号';errEl.style.display='block';return;}
+
   var btn = document.getElementById('pay-confirm');
-  btn.disabled=true; btn.innerHTML='<span class="spin"></span>提交中…';
+  btn.disabled=true; btn.innerHTML='<span class="spin"></span>保存预约信息…';
 
   var typeName = document.getElementById('bk-os-type').textContent||'网球入门 & 提升';
   var coachObj = bmState.coachRef||COACHES.find(function(c){return String(c.id)===String(bmState.coachId);});
   var coachDbId = (coachObj&&coachObj.id&&String(coachObj.id).includes('-'))?coachObj.id:null;
 
-  // Check slot
+  // Check slot availability
   try {
     var chk = await fetch(SB_URL+'/rest/v1/bookings?booking_date=eq.'+bmState.date
       +'&booking_time=eq.'+encodeURIComponent(bmState.time)+'&status=neq.cancelled'
       +(coachDbId?'&coach_id=eq.'+coachDbId:'')+'&limit=1',
       {headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}});
     if(chk.ok){var ex=await chk.json();if(ex&&ex.length>0){
-      btn.disabled=false;btn.innerHTML='✅ 我已完成支付，完成预约';
+      btn.disabled=false;btn.innerHTML='💳 前往 Stripe 完成支付';
       errEl.textContent='⚠️ 该时间段刚被预约，请返回重新选择';errEl.style.display='block';return;
     }}
   } catch(e){}
 
+  // Save booking with status 'pending_payment'
   var row = {
     student_name:currentUser.name, student_email:currentUser.email,
     student_wechat:wx, student_phone:ph, coach_id:coachDbId,
     booking_date:bmState.date, booking_time:bmState.time,
-    lesson_type:typeName, court:bmState.court||null, status:'pending',
+    lesson_type:typeName, court:bmState.court||null,
+    status:'pending_payment',
     deposit_amount:payState.usd, deposit_cny:payState.cny,
-    exchange_rate:payState.rate, payment_method:payState.m==='w'?'wechat':'alipay'
+    exchange_rate:payState.rate, payment_method:'stripe'
   };
 
   var token = currentUser.token||SB_KEY;
-  var doPost = function(tk){
-    return fetch(SB_URL+'/rest/v1/bookings',{
+  var bookingId = null;
+
+  try {
+    var r = await fetch(SB_URL+'/rest/v1/bookings',{
       method:'POST',
-      headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+tk,'Prefer':'return=minimal'},
+      headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+token,'Prefer':'return=representation'},
       body:JSON.stringify(row)
     });
-  };
-  try {
-    var r = await doPost(token);
     if(!r.ok){
       var eb=await r.json().catch(function(){return{};});
       if(r.status===401||(eb.message||'').toLowerCase().includes('jwt')){
-        var ok=await tryRefreshToken(); r=await doPost(ok?currentUser.token:SB_KEY);
+        var ok=await tryRefreshToken();
+        r = await fetch(SB_URL+'/rest/v1/bookings',{
+          method:'POST',
+          headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+(ok?currentUser.token:SB_KEY),'Prefer':'return=representation'},
+          body:JSON.stringify(row)
+        });
       }
       if(!r.ok){
         var eb2=await r.json().catch(function(){return{};});
-        btn.disabled=false;btn.innerHTML='✅ 我已完成支付，完成预约';
-        errEl.textContent='❌ 提交失败：'+(eb2.message||r.status);errEl.style.display='block';return;
+        btn.disabled=false;btn.innerHTML='💳 前往 Stripe 完成支付';
+        errEl.textContent='❌ 保存失败：'+(eb2.message||r.status);errEl.style.display='block';return;
       }
     }
+    var saved = await r.json();
+    bookingId = (Array.isArray(saved)?saved[0]:saved).id;
   } catch(e){
-    btn.disabled=false;btn.innerHTML='✅ 我已完成支付，完成预约';
+    btn.disabled=false;btn.innerHTML='💳 前往 Stripe 完成支付';
     errEl.textContent='❌ '+e.message;errEl.style.display='block';return;
   }
 
-  closePayOverlay();
-  document.getElementById('suc-coach').textContent  = bmState.coachName;
-  document.getElementById('suc-date').textContent   = bmState.dateLabel||bmState.date;
-  document.getElementById('suc-time').textContent   = bmState.time;
-  document.getElementById('suc-court').textContent  = bmState.court||'待定';
-  document.querySelector('.bk-modal-hd').style.display='none';
-  document.getElementById('bm-form').style.display='none';
-  document.getElementById('bm-success').style.display='block';
-  loadMyBookings();
+  // Build Stripe Payment Link URL with metadata
+  var returnUrl = window.location.href.split('?')[0]
+    + '?booking_success=1&booking_id='+encodeURIComponent(bookingId);
+
+  // Append client_reference_id so we can match the booking in webhooks (optional)
+  var stripeUrl = STRIPE_PAYMENT_LINK
+    + '?client_reference_id=' + encodeURIComponent(bookingId)
+    + '&prefilled_email=' + encodeURIComponent(currentUser.email||'');
+
+  btn.innerHTML = '🚀 跳转 Stripe…';
+
+  // Store booking info in sessionStorage so we can restore after redirect
+  try {
+    sessionStorage.setItem('stripe_pending', JSON.stringify({
+      bookingId: bookingId,
+      coachName: bmState.coachName,
+      date: bmState.date,
+      dateLabel: bmState.dateLabel||bmState.date,
+      time: bmState.time,
+      court: bmState.court
+    }));
+  } catch(e){}
+
+  // Redirect to Stripe Checkout
+  window.location.href = stripeUrl;
 }
 
 
@@ -5308,6 +5333,61 @@ fetchAnnouncement();
 document.addEventListener('DOMContentLoaded', function(){
   var so = document.getElementById('stringing-overlay');
   if(so) so.addEventListener('click', function(e){ if(e.target===this) closeStringingModal(); });
+
+  // ── Stripe Checkout 回跳处理 ──
+  (async function checkStripeReturn(){
+    var params = new URLSearchParams(window.location.search);
+    if(!params.get('booking_success')) return;
+
+    var bookingId = params.get('booking_id');
+    // Clean URL
+    window.history.replaceState({}, '', window.location.pathname);
+
+    // Restore booking info from sessionStorage
+    var pending = null;
+    try { pending = JSON.parse(sessionStorage.getItem('stripe_pending')||'null'); } catch(e){}
+    if(pending && pending.bookingId) bookingId = bookingId || pending.bookingId;
+    try { sessionStorage.removeItem('stripe_pending'); } catch(e){}
+
+    if(!bookingId) {
+      // Just show a generic success if no booking ID
+      alert('✅ 支付成功！预约已确认，请查看"我的预约"。');
+      return;
+    }
+
+    // Update booking status to 'confirmed'
+    try {
+      var token = (currentUser&&currentUser.token)||SB_KEY;
+      await fetch(SB_URL+'/rest/v1/bookings?id=eq.'+encodeURIComponent(bookingId),{
+        method:'PATCH',
+        headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+token},
+        body:JSON.stringify({status:'confirmed',payment_method:'stripe'})
+      });
+    } catch(e){ console.error('Update booking status failed',e); }
+
+    // Show success screen in booking modal
+    if(pending) {
+      document.getElementById('suc-coach').textContent  = pending.coachName||'';
+      document.getElementById('suc-date').textContent   = pending.dateLabel||pending.date||'';
+      document.getElementById('suc-time').textContent   = pending.time||'';
+      document.getElementById('suc-court').textContent  = pending.court||'待定';
+    }
+
+    // Open the booking modal at success state
+    var modal = document.getElementById('bk-overlay');
+    if(modal){
+      modal.style.display='flex';
+      var hd = document.querySelector('.bk-modal-hd');
+      var form = document.getElementById('bm-form');
+      var suc = document.getElementById('bm-success');
+      if(hd) hd.style.display='none';
+      if(form) form.style.display='none';
+      if(suc) suc.style.display='block';
+    }
+
+    // Reload bookings list
+    if(typeof loadMyBookings==='function') loadMyBookings();
+  })();
 });
 
 
@@ -5379,33 +5459,53 @@ async function sendResetEmail() {
 }
 </script>
 
-<!-- PAY OVERLAY -->
+<!-- PAY OVERLAY (Stripe Checkout) -->
 <div class="pay-overlay" id="pay-overlay">
   <div class="pay-sheet">
     <div class="pay-handle"></div>
     <div class="pay-title">💳 支付课程费用</div>
-    <div class="pay-sub">完成支付后即完成预约</div>
+    <div class="pay-sub">通过 Stripe 安全支付，支持信用卡 / 借记卡 / Apple Pay / Google Pay</div>
+
+    <!-- Amount display -->
     <div class="pay-amt-box">
       <div class="pay-amt-row">
-        <div><div class="pay-amt-lbl">课程全款</div><div class="pay-amt-usd" id="pay-usd">$—</div></div>
-        <div style="text-align:right"><div class="pay-amt-lbl">人民币等值</div><div class="pay-amt-cny" id="pay-cny">¥—</div></div>
+        <div>
+          <div class="pay-amt-lbl">课程押金</div>
+          <div class="pay-amt-usd" id="pay-usd">$—</div>
+        </div>
+        <div style="text-align:right">
+          <div class="pay-amt-lbl">人民币参考</div>
+          <div class="pay-amt-cny" id="pay-cny" style="font-size:14px;color:var(--mute)">¥—</div>
+        </div>
       </div>
-      <div class="pay-rate"><div class="pay-rspin" id="pay-spin"></div><span id="pay-rate-txt">正在获取实时汇率…</span></div>
+      <div class="pay-rate"><div class="pay-rspin" id="pay-spin" style="display:none"></div><span id="pay-rate-txt">以 USD 实际收费，人民币仅供参考</span></div>
     </div>
-    <div class="pay-methods">
-      <div class="pay-mcard sel-w" id="pmw" onclick="selPayM('w')"><div class="pay-mcard-icon">💚</div><div class="pay-mcard-name">微信支付</div></div>
-    </div>
-    <div class="pay-qr-box">
-      <div class="pay-qr-ttl" id="pay-qr-ttl">扫码支付</div>
-      <div class="pay-qr-badge w" id="pay-qr-badge">¥—</div>
-      <div class="pay-qr-img"><img id="pay-qr-img" src="" alt="收款码"></div>
-      <div class="pay-qr-memo">转账备注：<strong id="pay-memo">—</strong><br>扫码后请务必填写备注</div>
-    </div>
+
+    <!-- Contact info -->
     <div class="pay-inp-grp">
-      <div class="pay-inp-lbl">📱 留下联系方式（客服 8 小时内联系您确认场地）</div>
+      <div class="pay-inp-lbl">📱 留下联系方式（客服确认场地用）</div>
       <input class="pay-inp" id="pay-wechat" type="text" placeholder="微信号 *">
       <input class="pay-inp" id="pay-phone" type="tel" placeholder="手机号（含国家区号，如 +1）*">
     </div>
+
+    <!-- Stripe payment methods info -->
+    <div class="pay-stripe-wrap">
+      <div class="pay-stripe-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Stripe 安全结账 · 支持多种支付方式
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
+        <span style="background:#f0f4ff;border:1px solid #c7d2fe;border-radius:6px;padding:4px 10px;font-size:12px;color:#4338ca;font-weight:600;">💳 信用卡</span>
+        <span style="background:#f0f4ff;border:1px solid #c7d2fe;border-radius:6px;padding:4px 10px;font-size:12px;color:#4338ca;font-weight:600;"> Apple Pay</span>
+        <span style="background:#f0f4ff;border:1px solid #c7d2fe;border-radius:6px;padding:4px 10px;font-size:12px;color:#4338ca;font-weight:600;">G Google Pay</span>
+        <span style="background:#f0f4ff;border:1px solid #c7d2fe;border-radius:6px;padding:4px 10px;font-size:12px;color:#4338ca;font-weight:600;">🏦 借记卡</span>
+      </div>
+      <p style="margin-top:10px;font-size:12px;color:var(--mute);line-height:1.5;">
+        点击按钮后将跳转至 Stripe 安全结账页面，支付完成后自动回到本页并确认预约。
+      </p>
+    </div>
+
+    <!-- Policy -->
     <div class="pay-policy">
       <div class="pay-policy-t">📋 取消与退款政策</div>
       <div class="pay-policy-b">
@@ -5414,10 +5514,14 @@ async function sendResetEmail() {
         ⚠️ 上课 <strong>48小时内</strong>取消 → 费用不予退还
       </div>
     </div>
+
     <div class="pay-err" id="pay-err"></div>
-    <button class="pay-btn w" id="pay-confirm" onclick="doPayConfirm()">✅ 我已完成支付，完成预约</button>
+    <button class="pay-btn" id="pay-confirm" onclick="doPayConfirm()" style="background:linear-gradient(135deg,#635bff,#5145cd);box-shadow:0 4px 18px rgba(99,91,255,0.35);">💳 前往 Stripe 完成支付</button>
     <button class="pay-back-btn" onclick="closePayOverlay()">← 返回修改</button>
-    <div class="pay-note">点击后即确认已扫码付款，并已阅读取消政策</div>
+    <div class="pay-secure">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      支付由 Stripe 加密保护，我们不储存您的卡号信息
+    </div>
   </div>
 </div>
 <!-- ANNOUNCEMENT MODAL -->
