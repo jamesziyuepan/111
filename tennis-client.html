@@ -4337,46 +4337,58 @@ async function doPayConfirm() {
   } catch(e){}
 
   // Save booking with status 'pending_payment'
+  // 只插入核心字段，避免因列不存在导致 400 错误
   var row = {
-    student_name:currentUser.name, student_email:currentUser.email,
-    student_wechat:wx, student_phone:ph, coach_id:coachDbId,
-    booking_date:bmState.date, booking_time:bmState.time,
-    lesson_type:typeName, court:bmState.court||null,
+    student_name:currentUser.name,
+    student_email:currentUser.email,
+    student_wechat:wx,
+    student_phone:ph,
+    coach_id:coachDbId,
+    booking_date:bmState.date,
+    booking_time:bmState.time,
+    lesson_type:typeName,
+    court:bmState.court||null,
     status:'pending_payment',
-    deposit_amount:payState.usd, deposit_cny:payState.cny,
-    exchange_rate:payState.rate, payment_method:'stripe'
+    deposit_amount:payState.usd
   };
 
   var token = currentUser.token||SB_KEY;
   var bookingId = null;
 
-  try {
-    var r = await fetch(SB_URL+'/rest/v1/bookings',{
+  var doPost = async function(tk) {
+    return fetch(SB_URL+'/rest/v1/bookings',{
       method:'POST',
-      headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+token,'Prefer':'return=representation'},
+      headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+tk,'Prefer':'return=representation'},
       body:JSON.stringify(row)
     });
-    if(!r.ok){
-      var eb=await r.json().catch(function(){return{};});
-      if(r.status===401||(eb.message||'').toLowerCase().includes('jwt')){
-        var ok=await tryRefreshToken();
-        r = await fetch(SB_URL+'/rest/v1/bookings',{
-          method:'POST',
-          headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+(ok?currentUser.token:SB_KEY),'Prefer':'return=representation'},
-          body:JSON.stringify(row)
-        });
-      }
-      if(!r.ok){
-        var eb2=await r.json().catch(function(){return{};});
-        btn.disabled=false;btn.innerHTML='💳 前往 Stripe 完成支付';
-        errEl.textContent='❌ 保存失败：'+(eb2.message||r.status);errEl.style.display='block';return;
-      }
+  };
+
+  try {
+    var r = await doPost(token);
+
+    // 如果 401 / JWT 过期，刷新 token 重试
+    if(r.status===401) {
+      var ok = await tryRefreshToken();
+      r = await doPost(ok ? currentUser.token : SB_KEY);
     }
+
+    if(!r.ok){
+      var eb = await r.json().catch(function(){return{};});
+      btn.disabled=false; btn.innerHTML='💳 前往 Stripe 完成支付';
+      var errMsg = eb.message || eb.hint || eb.details || ('HTTP '+r.status);
+      errEl.textContent='❌ 保存失败：'+errMsg;
+      errEl.style.display='block';
+      console.error('Booking save error:', r.status, eb);
+      return;
+    }
+
     var saved = await r.json();
     bookingId = (Array.isArray(saved)?saved[0]:saved).id;
   } catch(e){
-    btn.disabled=false;btn.innerHTML='💳 前往 Stripe 完成支付';
-    errEl.textContent='❌ '+e.message;errEl.style.display='block';return;
+    btn.disabled=false; btn.innerHTML='💳 前往 Stripe 完成支付';
+    errEl.textContent='❌ 网络错误：'+e.message;
+    errEl.style.display='block';
+    return;
   }
 
   // Build Stripe Payment Link URL with metadata
