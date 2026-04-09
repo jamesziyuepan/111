@@ -101,6 +101,7 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);height:100vh;ove
 
 .sbadge{display:inline-block;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;}
 .s-pending{background:#fff3cd;color:#856404;}
+.s-amber{background:#fef3c7;color:#92400e;}
 .s-confirmed{background:var(--green-light);color:var(--green);}
 .s-cancelled{background:#fdecea;color:var(--red);}
 
@@ -435,6 +436,7 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);height:100vh;ove
       <div id="panel-bookings" class="panel">
         <div class="filter-bar" id="status-filter-bar">
           <div class="fchip active" onclick="filterStatus('all',this)">全部</div>
+          <div class="fchip" onclick="filterStatus('pending_payment',this)">💳 待支付</div>
           <div class="fchip" onclick="filterStatus('pending',this)">⏳ 待确认</div>
           <div class="fchip" onclick="filterStatus('confirmed',this)">✅ 已确认</div>
           <div class="fchip" onclick="filterStatus('cancelled',this)">❌ 已取消</div>
@@ -900,12 +902,15 @@ function renderDashRecent() {
 function bookingRowHTML(b, full) {
   var d = new Date(b.booking_date+'T00:00:00');
   var dateStr = (d.getMonth()+1)+'月'+d.getDate()+'日';
-  var sc = {pending:'s-pending',confirmed:'s-confirmed',cancelled:'s-cancelled'}[b.status]||'s-pending';
-  var sl = {pending:'⏳ 待确认',confirmed:'✅ 已确认',cancelled:'❌ 已取消'}[b.status]||b.status;
+  var sc = {pending:'s-pending',pending_payment:'s-amber',confirmed:'s-confirmed',cancelled:'s-cancelled'}[b.status]||'s-pending';
+  var sl = {pending:'⏳ 待确认',pending_payment:'💳 待支付',confirmed:'✅ 已确认',cancelled:'❌ 已取消'}[b.status]||b.status;
   var created = new Date(b.created_at).toLocaleDateString('zh-CN');
-  var acts = b.status==='pending'
-    ? '<button class="act-btn confirm-btn" onclick="confirmBk(\''+b.id+'\')">✅ 确认</button> <button class="act-btn cancel-btn" onclick="cancelBk(\''+b.id+'\')">取消</button>'
-    : (b.status==='confirmed' ? '<button class="act-btn cancel-btn" onclick="cancelBk(\''+b.id+'\')">取消</button>' : '—');
+  // 所有未取消的状态都显示取消按钮
+  var acts = b.status === 'cancelled'
+    ? '—'
+    : (b.status === 'pending'
+        ? '<button class="act-btn confirm-btn" onclick="confirmBk(\'' + b.id + '\')">✅ 确认</button> <button class="act-btn cancel-btn" onclick="cancelBk(\'' + b.id + '\')">取消</button>'
+        : '<button class="act-btn cancel-btn" onclick="cancelBk(\'' + b.id + '\')">取消</button>');
 
   var depositStr = b.deposit_amount
     ? '$'+parseFloat(b.deposit_amount).toFixed(2)+(b.deposit_cny?' / ¥'+b.deposit_cny:'')
