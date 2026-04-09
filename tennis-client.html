@@ -3398,13 +3398,13 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
                 <span class="type-desc">1对1私教，60分钟</span>
                 <span class="type-price" id="bk-type-price1">$75</span>
               </div>
-              <div class="type-card" onclick="bkSelectType(this,'网球入门 & 提升 1v2')">
+              <div class="type-card" onclick="bkSelectType(this,'网球入门 & 提升 1v2')" id="bk-1v2-card">
                 <span class="type-icon">👥</span>
                 <span class="type-name">网球入门 & 提升</span>
                 <span class="type-desc">1对2双人，60分钟</span>
                 <span class="type-price" id="bk-type-price2">$120</span>
               </div>
-              <div class="type-card" onclick="bkSelectType(this,'运动表现 & 体能 1v1')" id="bk-strength-card">
+              <div class="type-card" onclick="bkSelectType(this,'运动表现 & 体能 1v1')" id="bk-strength-card" style="display:none">
                 <span class="type-icon">💪</span>
                 <span class="type-name">运动表现 & 体能</span>
                 <span class="type-desc">Strength & Conditioning</span>
@@ -3995,24 +3995,12 @@ function openBM(coachId) {
   else if(isJames) ava.innerHTML = '<img src="'+JAMES_PHOTO+'" alt="">';
   else ava.innerHTML = '🎾';
 
-  // 只有名字包含 James 的教练才显示「运动表现 & 体能」
-  var typeCard2 = document.getElementById('bk-type-price2');
-  if(typeCard2) {
-    var strengthCard = typeCard2.closest('.type-card');
-    if(strengthCard) strengthCard.style.display = isJames ? '' : 'none';
-  }
+  // 1v2 卡片所有教练都显示；运动表现只有 James 显示
+  var strengthCard = document.getElementById('bk-strength-card');
+  if(strengthCard) strengthCard.style.display = isJames ? '' : 'none';
 
-  // Update type card prices
-  var p = '$'+(c.priceNum||75);
-  var p1 = document.getElementById('bk-type-price1');
-  var p2 = document.getElementById('bk-type-price2');
-  if(p1) p1.textContent = p;
-  if(p2) p2.textContent = p;
-
-  // Reset type selection
-  document.querySelectorAll('.type-card').forEach(function(el){ el.classList.remove('selected'); });
-  var firstType = document.querySelector('.type-card');
-  if(firstType) firstType.classList.add('selected');
+  // Update type card prices and reset selection
+  bkRefreshTypePrices();
 
   // Build courts from coach data
   var courtsEl = document.getElementById('bk-courts-list');
@@ -4273,16 +4261,15 @@ function bkRefreshTypePrices() {
   if(el1) el1.textContent = '$'+p1;
   if(el2) el2.textContent = '$'+p2;
   if(el3) el3.textContent = '$'+p3;
-  // Reset to first card selected and update price
+  // Reset to first card selected
   var cards = document.querySelectorAll('#bk-type-grid .type-card');
-  if(cards.length) {
-    cards.forEach(function(c){ c.classList.remove('selected'); });
-    cards[0].classList.add('selected');
-    bmState.typeName = '网球入门 & 提升 1v1';
-    document.getElementById('bk-os-type').textContent = '网球入门 & 提升 1v1';
-    bmState.price = p1;
-    document.getElementById('bk-total-price').textContent = '$'+p1;
-  }
+  cards.forEach(function(c){ c.classList.remove('selected'); });
+  var first = document.querySelector('#bk-type-grid .type-card');
+  if(first) first.classList.add('selected');
+  bmState.typeName = '网球入门 & 提升 1v1';
+  document.getElementById('bk-os-type').textContent = '网球入门 & 提升 1v1';
+  bmState.price = p1;
+  document.getElementById('bk-total-price').textContent = '$'+p1;
 }
 
 // ── Summary update ──
