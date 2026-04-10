@@ -450,7 +450,7 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);height:100vh;ove
             <table class="tbl">
               <thead>
                 <tr>
-                  <th>学员</th><th>微信号</th><th>手机号</th><th>日期</th><th>时间</th>
+                  <th>学员</th><th>教练</th><th>微信号</th><th>手机号</th><th>日期</th><th>时间</th>
                   <th>订金</th><th>课程</th><th>状态</th><th>操作</th>
                 </tr>
               </thead>
@@ -916,9 +916,12 @@ function bookingRowHTML(b, full) {
   var payIcon = {wechat:'💚',alipay:'💙'}[b.payment_method]||'';
 
   if(full) {
+    var coachObj = allCoaches.find(function(c){return c.id===b.coach_id;});
+    var coachName = coachObj ? coachObj.name : (b.coach_id ? '未知教练' : '—');
     return '<tr>'
       +'<td><div style="font-weight:600;">'+b.student_name+'</div>'
       +'<div style="font-size:11px;color:var(--mute);">'+b.student_email+'</div></td>'
+      +'<td style="font-weight:600;white-space:nowrap;">'+coachName+'</td>'
       +'<td>'+(b.student_wechat?'<div style="font-size:13px;font-weight:600;">'+b.student_wechat+'</div>':'<span style="color:#ccc;">—</span>')+'</td>'
       +'<td>'+(b.student_phone?'<div style="font-size:12px;">'+b.student_phone+'</div>':'<span style="color:#ccc;">—</span>')+'</td>'
       +'<td style="font-weight:600;white-space:nowrap;">'+dateStr+'</td>'
@@ -929,8 +932,11 @@ function bookingRowHTML(b, full) {
       +'<td style="white-space:nowrap;">'+acts+'</td>'
       +'</tr>';
   } else {
+    var coachObj2 = allCoaches.find(function(c){return c.id===b.coach_id;});
+    var coachName2 = coachObj2 ? coachObj2.name : '—';
     return '<tr>'
       +'<td><div style="font-weight:600;">'+b.student_name+'</div>'
+      +'<div style="font-size:11px;color:var(--green);font-weight:600;">🎾 '+coachName2+'</div>'
       +(b.student_wechat?'<div style="font-size:11px;color:var(--green);">💚 '+b.student_wechat+'</div>':'')
       +(b.student_phone?'<div style="font-size:11px;color:var(--mute);">📱 '+b.student_phone+'</div>':'')+'</td>'
       +'<td style="white-space:nowrap;font-weight:600;">'+dateStr+' '+b.booking_time+'</td>'
