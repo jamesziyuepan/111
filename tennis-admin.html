@@ -905,12 +905,10 @@ function bookingRowHTML(b, full) {
   var sc = {pending:'s-pending',pending_payment:'s-amber',confirmed:'s-confirmed',cancelled:'s-cancelled'}[b.status]||'s-pending';
   var sl = {pending:'⏳ 待确认',pending_payment:'💳 待支付',confirmed:'✅ 已确认',cancelled:'❌ 已取消'}[b.status]||b.status;
   var created = new Date(b.created_at).toLocaleDateString('zh-CN');
-  // 所有未取消的状态都显示取消按钮
+  // 所有未取消的状态都显示确认和取消按钮
   var acts = b.status === 'cancelled'
     ? '—'
-    : (b.status === 'pending'
-        ? '<button class="act-btn confirm-btn" onclick="confirmBk(\'' + b.id + '\')">✅ 确认</button> <button class="act-btn cancel-btn" onclick="cancelBk(\'' + b.id + '\')">取消</button>'
-        : '<button class="act-btn cancel-btn" onclick="cancelBk(\'' + b.id + '\')">取消</button>');
+    : '<button class="act-btn confirm-btn" onclick="confirmBk(\'' + b.id + '\')">✅ 确认</button> <button class="act-btn cancel-btn" onclick="cancelBk(\'' + b.id + '\')">取消</button>';
 
   var depositStr = b.deposit_amount
     ? '$'+parseFloat(b.deposit_amount).toFixed(2)+(b.deposit_cny?' / ¥'+b.deposit_cny:'')
