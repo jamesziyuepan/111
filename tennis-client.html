@@ -4343,7 +4343,7 @@ async function submitBM() {
   document.getElementById('pay-phone').value = '';
   document.getElementById('pay-err').style.display = 'none';
   document.getElementById('pay-confirm').disabled = false;
-  document.getElementById('pay-confirm').innerHTML = '💳 前往 Stripe 完成支付';
+  document.getElementById('pay-confirm').innerHTML = '✅ 我已付款，确认预约';
   document.getElementById('pay-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
   // Set QR images
@@ -4404,7 +4404,7 @@ async function doPayConfirmQR() {
       +(coachDbId?'&coach_id=eq.'+coachDbId:'')+'&limit=1',
       {headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}});
     if(chk.ok){var ex=await chk.json();if(ex&&ex.length>0){
-      btn.disabled=false;btn.innerHTML='✅ 我已完成扫码支付';
+      btn.disabled=false;btn.innerHTML='✅ 我已付款，确认预约';
       errEl.textContent='⚠️ 该时间段刚被预约，请返回重新选择';errEl.style.display='block';return;
     }}
   } catch(e){}
@@ -4433,11 +4433,11 @@ async function doPayConfirmQR() {
     if(r.status===401){ var ok=await tryRefreshToken(); r=await doPost(ok?currentUser.token:SB_KEY); }
     if(!r.ok){
       var eb=await r.json().catch(function(){return{};});
-      btn.disabled=false;btn.innerHTML='✅ 我已完成扫码支付';
+      btn.disabled=false;btn.innerHTML='✅ 我已付款，确认预约';
       errEl.textContent='❌ 提交失败：'+(eb.message||r.status);errEl.style.display='block';return;
     }
   } catch(e){
-    btn.disabled=false;btn.innerHTML='✅ 我已完成扫码支付';
+    btn.disabled=false;btn.innerHTML='✅ 我已付款，确认预约';
     errEl.textContent='❌ '+e.message;errEl.style.display='block';return;
   }
 
@@ -5668,7 +5668,7 @@ async function sendResetEmail() {
         </div>
       </div>
       <div style="margin-top:10px;background:#f0fdf4;border-radius:10px;padding:10px 12px;font-size:12px;color:#15803d;line-height:1.6;">
-        扫码付款后点击下方「✅ 我已完成扫码支付」按钮，客服将核实后确认预约。
+        扫码付款后点击下方 <strong>「✅ 我已付款，确认预约」</strong> 按钮，客服将核实后确认预约。
       </div>
     </div>
 
@@ -5702,7 +5702,7 @@ async function sendResetEmail() {
     </div>
 
     <div class="pay-err" id="pay-err"></div>
-    <button class="pay-btn" id="pay-confirm" onclick="doPayConfirmQR()" style="background:linear-gradient(135deg,var(--green),var(--green2));">✅ 我已完成扫码支付</button>
+    <button class="pay-btn" id="pay-confirm" onclick="doPayConfirmQR()" style="background:linear-gradient(135deg,var(--green),var(--green2));">✅ 我已付款，确认预约</button>
     <button class="pay-back-btn" onclick="closePayOverlay()">← 返回修改</button>
     <div class="pay-secure">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
