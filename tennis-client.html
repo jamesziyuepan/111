@@ -3507,7 +3507,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
           </div>
           <button class="bk-confirm-btn disabled" id="bk-confirm-btn" onclick="submitBM()">确认预约</button>
           <div class="bk-err-band" id="bm-err"></div>
-          <div style="font-size:11px;color:var(--mute);text-align:center;margin-top:10px;">预约后24小时内可免费取消</div>
+          <div style="font-size:11px;color:var(--mute);text-align:center;margin-top:10px;">请提前72小时（3天）预约</div>
         </div>
       </div>
     </div>
@@ -4091,8 +4091,8 @@ function bkRenderCalendar() {
   var daysInMonth = new Date(bkCalState.year, bkCalState.month+1, 0).getDate();
   var today = new Date(); today.setHours(0,0,0,0);
   var now = new Date();
-  // 最早可约时间 = 当前时间 + 24小时
-  var minBookable = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+  // 最早可约时间 = 当前时间 + 72小时
+  var minBookable = new Date(now.getTime() + 72 * 60 * 60 * 1000);
 
   var html = '';
   for(var i=0; i<firstDay; i++) html += '<div class="cal-day other-month"></div>';
@@ -4101,7 +4101,7 @@ function bkRenderCalendar() {
     var date = new Date(bkCalState.year, bkCalState.month, d);
     date.setHours(0,0,0,0);
     var dow = date.getDay();
-    // 如果这一天21:00也在24小时内，则整天禁用
+    // 如果这一天21:00也在72小时内，则整天禁用
     var dayEnd = new Date(bkCalState.year, bkCalState.month, d, 21, 0, 0);
     var isPast = date < today || dayEnd <= minBookable;
     var isToday = date.getTime() === today.getTime();
@@ -4196,9 +4196,9 @@ async function bkRenderTimeSlots(dateStr) {
     slots = coach.available_hours;
   }
 
-  // 过滤掉24小时内的时间段
+  // 过滤掉72小时内的时间段
   var now24 = new Date();
-  now24.setTime(now24.getTime() + 24 * 60 * 60 * 1000);
+  now24.setTime(now24.getTime() + 72 * 60 * 60 * 1000);
   slots = slots.filter(function(s) {
     var parts = s.split(':');
     var slotDT = new Date(dateStr + 'T00:00:00');
@@ -4207,8 +4207,8 @@ async function bkRenderTimeSlots(dateStr) {
   });
 
   if(slots.length === 0) {
-    notice.textContent = '⚠️ 该日暂无可约时段（需提前24小时预约）';
-    slotsEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--mute);font-size:13px;">约课需至少提前24小时，<br>请选择更晚的日期。</div>';
+    notice.textContent = '⚠️ 该日暂无可约时段（需提前72小时预约）';
+    slotsEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--mute);font-size:13px;">约课需至少提前72小时（3天），<br>请选择更晚的日期。</div>';
     return;
   }
 
