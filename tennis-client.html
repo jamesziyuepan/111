@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎾 网球教练平台 · DC/MD/VA</title>
+<title id="page-title">🎾 网球教练平台 · DC/MD/VA</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -2590,42 +2590,42 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
   <div class="auth-card">
     <div class="auth-logo">
       <div class="auth-logo-icon">🎾</div>
-      <div class="auth-logo-title">网球教练平台</div>
-      <div class="auth-logo-sub">DC · MD · VA 华人网球社区</div>
+      <div class="auth-logo-title" data-i18n="site_name">网球教练平台</div>
+      <div class="auth-logo-sub" data-i18n="site_sub">DC · MD · VA 华人网球社区</div>
     </div>
 
     <!-- Welcome text -->
     <div style="text-align:center;margin-bottom:20px;">
       <div style="font-size:13px;color:var(--mute);line-height:1.6;">
-        DC/MD/VA 华人网球教练预约平台<br>注册后即可在线预约课程
+        <span data-i18n="auth_tagline">DC/MD/VA 华人网球教练预约平台<br>注册后即可在线预约课程</span>
       </div>
     </div>
 
     <!-- Tabs -->
     <div class="auth-tabs">
-      <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">登录账号</div>
-      <div class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">新用户注册</div>
+      <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')" data-i18n="tab_login">登录账号</div>
+      <div class="auth-tab" id="tab-register" onclick="switchAuthTab('register')" data-i18n="tab_register">新用户注册</div>
     </div>
 
     <!-- Email form -->
     <div id="register-name-field" style="display:none;">
       <div class="auth-field">
-        <label class="auth-label">你的姓名</label>
-        <input class="auth-input" id="auth-name" type="text" placeholder="中文或英文名">
+        <label class="auth-label" data-i18n="lbl_name">你的姓名</label>
+        <input class="auth-input" id="auth-name" type="text" data-i18n-placeholder="ph_name" placeholder="中文或英文名">
       </div>
     </div>
 
     <div class="auth-field">
-      <label class="auth-label">邮箱地址</label>
+      <label class="auth-label" data-i18n="lbl_email">邮箱地址</label>
       <input class="auth-input" id="auth-email" type="email" placeholder="your@email.com" onkeydown="if(event.key==='Enter')submitAuth()">
     </div>
     <div class="auth-field">
-      <label class="auth-label">密码</label>
-      <input class="auth-input" id="auth-password" type="password" placeholder="至少 6 位" onkeydown="if(event.key==='Enter')submitAuth()">
+      <label class="auth-label" data-i18n="lbl_password">密码</label>
+      <input class="auth-input" id="auth-password" type="password" data-i18n-placeholder="ph_password" placeholder="至少 6 位" onkeydown="if(event.key==='Enter')submitAuth()">
     </div>
 
     <div style="text-align:right;margin:-4px 0 10px;">
-      <span onclick="showForgotPwd()" style="font-size:12px;color:var(--green);cursor:pointer;font-weight:600;text-decoration:underline;">忘记密码？</span>
+      <span onclick="showForgotPwd()" style="font-size:12px;color:var(--green);cursor:pointer;font-weight:600;text-decoration:underline;"><span data-i18n="forgot_pwd">忘记密码？</span></span>
     </div>
 
     <div class="auth-err" id="auth-err"></div>
@@ -2633,7 +2633,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
     <button class="auth-submit-btn" id="auth-submit-btn" onclick="submitAuth()"><span data-i18n="btn_login">登录账号</span></button>
 
     <div class="auth-note" id="auth-note">
-      还没有账号？点上方「新用户注册」免费创建
+      <span data-i18n="auth_no_account">还没有账号？点上方「新用户注册」免费创建</span>
     </div>
 
 <!-- Email confirmation not required -->
@@ -2645,11 +2645,11 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
   <div style="background:white;border-radius:20px;padding:32px 28px;width:360px;max-width:92vw;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
     <div style="text-align:center;margin-bottom:20px;">
       <div style="font-size:36px;margin-bottom:10px;">🔑</div>
-      <div style="font-size:20px;font-weight:900;margin-bottom:6px;">重置密码</div>
-      <div style="font-size:13px;color:#888;line-height:1.6;">输入注册邮箱，我们会发送<br>重置密码链接到您的邮箱</div>
+      <div style="font-size:20px;font-weight:900;margin-bottom:6px;" data-i18n="reset_title">重置密码</div>
+      <div style="font-size:13px;color:#888;line-height:1.6;" data-i18n="reset_sub">输入注册邮箱，我们会发送<br>重置密码链接到您的邮箱</div>
     </div>
     <div style="margin-bottom:14px;">
-      <label style="font-size:12px;font-weight:700;color:#555;display:block;margin-bottom:6px;">邮箱地址</label>
+      <label style="font-size:12px;font-weight:700;color:#555;display:block;margin-bottom:6px;" data-i18n="lbl_email">邮箱地址</label>
       <input id="forgot-email" type="email" placeholder="your@email.com"
         style="width:100%;height:46px;border:1.5px solid #e0e0e0;border-radius:10px;padding:0 14px;font-size:14px;font-family:inherit;outline:none;box-sizing:border-box;"
         onfocus="this.style.borderColor='#1a6b3a'" onblur="this.style.borderColor='#e0e0e0'">
@@ -2675,7 +2675,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
   <div class="sidebar">
     <div class="sidebar-logo">
       <div class="logo-icon">🎾</div>
-      <div class="logo-title">网球教练平台</div>
+      <div class="logo-title" data-i18n="site_name">网球教练平台</div>
       <div class="logo-sub">DC · MD · VA</div>
     </div>
     <div class="sidebar-nav">
@@ -2758,7 +2758,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
       <!-- COACHES PANEL -->
       <div id="panel-coaches" class="panel">
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;" id="region-chips">
-          <div class="fchip active" onclick="setRegion('all',this)">全部地区</div>
+          <div class="fchip active" onclick="setRegion('all',this)" data-i18n="all_regions">全部地区</div>
           <div class="fchip" onclick="setRegion('dc',this)">Washington DC</div>
           <div class="fchip" onclick="setRegion('md',this)">Maryland</div>
           <div class="fchip" onclick="setRegion('arlington',this)">Arlington</div>
@@ -2766,12 +2766,12 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
           <div class="fchip" onclick="setRegion('fairfax',this)">Fairfax</div>
           <div style="margin-left:auto;display:flex;align-items:center;gap:6px;background:white;border:1.5px solid var(--border);border-radius:10px;padding:6px 12px;">
             <span>🔍</span>
-            <input type="text" id="coach-search" placeholder="搜索教练…" oninput="renderCoaches()" style="border:none;outline:none;font-size:13px;min-width:140px;font-family:inherit;">
+            <input type="text" id="coach-search" data-i18n-placeholder="search_placeholder" placeholder="搜索教练…" oninput="renderCoaches()" style="border:none;outline:none;font-size:13px;min-width:140px;font-family:inherit;">
           </div>
         </div>
         <div style="display:flex;gap:8px;margin-bottom:14px;">
-          <div class="fchip active" onclick="setLang('all',this)">全部语言</div>
-          <div class="fchip" onclick="setLang('zh',this)">🗣 中文</div>
+          <div class="fchip active" onclick="setLang('all',this)" data-i18n="all_langs">全部语言</div>
+          <div class="fchip" onclick="setLang('zh',this)" data-i18n="lang_chinese">🗣 中文</div>
           <div class="fchip" onclick="setLang('en',this)">🗣 English</div>
         </div>
         <div style="font-size:13px;color:var(--mute);margin-bottom:12px;" id="coach-count">共 11 位教练</div>
@@ -2780,7 +2780,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 
       <!-- COACH PROFILE PANEL -->
       <div id="panel-coach-profile" class="panel">
-        <div class="breadcrumb" onclick="goBackFromProfile()">‹ 返回教练列表</div>
+        <div class="breadcrumb" onclick="goBackFromProfile()" data-i18n="back_coaches">‹ 返回教练列表</div>
         <div class="profile-layout">
           <!-- Left sidebar card -->
           <div class="profile-side-card" id="profile-side-card"></div>
@@ -2802,11 +2802,11 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
             <div style="display:flex;align-items:center;gap:10px;">
               <span style="font-size:24px;" id="loyalty-icon">🎾</span>
               <div>
-                <div style="font-size:14px;font-weight:800;color:#1a1a1a;" id="loyalty-title">Tennis Warehouse 专属折扣</div>
-                <div style="font-size:11px;color:#92400e;font-weight:600;" id="loyalty-sub">累计约课满 10 次解锁 30% 优惠码</div>
+                <div style="font-size:14px;font-weight:800;color:#1a1a1a;" id="loyalty-title" data-i18n="loyalty_title">Tennis Warehouse Exclusive Discount</div>
+                <div style="font-size:11px;color:#92400e;font-weight:600;" id="loyalty-sub" data-i18n="loyalty_sub">累计约课满 10 次解锁 30% 优惠码</div>
               </div>
             </div>
-            <div id="loyalty-badge" style="font-size:11px;background:#fbbf24;color:white;padding:3px 10px;border-radius:20px;font-weight:800;white-space:nowrap;">忠实会员专享</div>
+            <div id="loyalty-badge" data-i18n="loyalty_badge" style="font-size:11px;background:#fbbf24;color:white;padding:3px 10px;border-radius:20px;font-weight:800;white-space:nowrap;">Loyal Member</div>
           </div>
           <div id="loyalty-progress-wrap">
             <div style="display:flex;justify-content:space-between;font-size:11px;color:#92400e;font-weight:600;margin-bottom:6px;">
@@ -2818,8 +2818,8 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
             </div>
           </div>
           <div id="loyalty-unlocked" style="display:none;text-align:center;padding:8px 0 4px;">
-            <div style="font-size:13px;font-weight:700;color:#1a6b3a;margin-bottom:4px;">🎉 恭喜！优惠码已发送至你的注册邮箱</div>
-            <div style="font-size:12px;color:#555;">如未收到请检查垃圾邮件，或联系我们重发</div>
+            <div style="font-size:13px;font-weight:700;color:#1a6b3a;margin-bottom:4px;"><span data-i18n="loyalty_code_sent">🎉 恭喜！优惠码已发送至你的注册邮箱</span></div>
+            <div style="font-size:12px;color:#555;"><span data-i18n="loyalty_code_check">如未收到请检查垃圾邮件，或联系我们重发</span></div>
           </div>
         </div>
 
@@ -2848,45 +2848,45 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 
           <!-- 单次 -->
           <div style="background:white;border-radius:16px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border:1.5px solid var(--border);">
-            <div style="font-size:11px;font-weight:700;color:var(--mute);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">单次课</div>
+            <div style="font-size:11px;font-weight:700;color:var(--mute);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;" data-i18n="pkg_single">单次课</div>
             <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:14px;">
               <span style="font-size:32px;font-weight:900;">$75</span>
-              <span style="font-size:12px;color:var(--mute);">/ 节</span>
+              <span style="font-size:12px;color:var(--mute);" data-i18n="pkg_per_lesson">/ 节</span>
             </div>
-            <div style="font-size:12px;color:var(--sub);margin-bottom:16px;">按次付款，灵活无压力</div>
-            <button onclick="showPanel('coaches',document.querySelectorAll('.nav-item')[1])" style="width:100%;padding:10px;background:var(--green-light);color:var(--green);border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">立即找教练</button>
+            <div style="font-size:12px;color:var(--sub);margin-bottom:16px;" data-i18n="pkg_flexible">按次付款，灵活无压力</div>
+            <button onclick="showPanel('coaches',document.querySelectorAll('.nav-item')[1])" style="width:100%;padding:10px;background:var(--green-light);color:var(--green);border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;" data-i18n="btn_find_coach">立即找教练</button>
           </div>
 
           <!-- 5节 -->
           <div style="background:white;border-radius:16px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border:1.5px solid #fde68a;">
-            <div style="font-size:11px;font-weight:700;color:#92400e;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">5 节套餐</div>
+            <div style="font-size:11px;font-weight:700;color:#92400e;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">5-Lesson Package</div>
             <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:2px;">
               <span style="font-size:32px;font-weight:900;">$365</span>
-              <span style="font-size:12px;color:var(--mute);">总价</span>
+              <span style="font-size:12px;color:var(--mute);">Total</span>
             </div>
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
               <span style="font-size:11px;color:var(--mute);text-decoration:line-through;">$375</span>
-              <span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;">省 $10</span>
+              <span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;">Save $10</span>
             </div>
-            <div style="font-size:11px;color:var(--mute);margin-bottom:14px;">$75/节 × 5 节</div>
-            <button onclick="openPackageModal('5节套餐（标准$75教练）','$365','共5节，省$10')" style="width:100%;padding:10px;background:linear-gradient(135deg,#d97706,#f59e0b);color:white;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">购买 5 节</button>
+            <div style="font-size:11px;color:var(--mute);margin-bottom:14px;">$75/lesson × 5</div>
+            <button onclick="openPackageModal('5节套餐（标准$75教练）','$365','共5节，省$10')" style="width:100%;padding:10px;background:linear-gradient(135deg,#d97706,#f59e0b);color:white;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">Buy 5 Lessons</button>
           </div>
 
           <!-- 10节 -->
           <div style="background:linear-gradient(135deg,#0d3b23,#1a6b3a);border-radius:16px;padding:22px;box-shadow:0 6px 20px rgba(13,59,35,0.2);border:1.5px solid #2d9a57;position:relative;">
-            <div style="position:absolute;top:-1px;right:16px;background:linear-gradient(135deg,#f59e0b,#fbbf24);color:white;font-size:10px;font-weight:900;padding:3px 12px;border-radius:0 0 8px 8px;">最划算</div>
-            <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">10 节套餐</div>
+            <div style="position:absolute;top:-1px;right:16px;background:linear-gradient(135deg,#f59e0b,#fbbf24);color:white;font-size:10px;font-weight:900;padding:3px 12px;border-radius:0 0 8px 8px;">Best Value</div>
+            <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">10-Lesson Package</div>
             <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:2px;">
               <span style="font-size:32px;font-weight:900;color:white;">$720</span>
-              <span style="font-size:12px;color:rgba(255,255,255,0.5);">总价</span>
+              <span style="font-size:12px;color:rgba(255,255,255,0.5);">Total</span>
             </div>
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
               <span style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:line-through;">$750</span>
-              <span style="background:rgba(245,158,11,0.25);color:#fbbf24;font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;">省 $30</span>
+              <span style="background:rgba(245,158,11,0.25);color:#fbbf24;font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;">Save $30</span>
             </div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:6px;">$75/节 × 10 节</div>
-            <div style="font-size:11px;color:#52b788;margin-bottom:14px;">🎁 自动解锁 TW 30% 折扣</div>
-            <button onclick="openPackageModal('10节套餐（标准$75教练）','$720','共10节，省$30')" style="width:100%;padding:10px;background:linear-gradient(135deg,#2d9a57,#52b788);color:white;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">购买 10 节</button>
+            <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:6px;">$75/lesson × 10</div>
+            <div style="font-size:11px;color:#52b788;margin-bottom:14px;">🎁 Unlocks TW 30% Discount</div>
+            <button onclick="openPackageModal('10节套餐（标准$75教练）','$720','共10节，省$30')" style="width:100%;padding:10px;background:linear-gradient(135deg,#2d9a57,#52b788);color:white;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">Buy 10 Lessons</button>
           </div>
         </div>
 
@@ -2897,63 +2897,63 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 
           <!-- 单次 -->
           <div style="background:white;border-radius:16px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border:1.5px solid var(--border);">
-            <div style="font-size:11px;font-weight:700;color:var(--mute);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">单次课</div>
+            <div style="font-size:11px;font-weight:700;color:var(--mute);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;" data-i18n="pkg_single">单次课</div>
             <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:14px;">
               <span style="font-size:32px;font-weight:900;">$100</span>
-              <span style="font-size:12px;color:var(--mute);">/ 节</span>
+              <span style="font-size:12px;color:var(--mute);" data-i18n="pkg_per_lesson">/ 节</span>
             </div>
-            <div style="font-size:12px;color:var(--sub);margin-bottom:16px;">按次付款，灵活无压力</div>
-            <button onclick="showPanel('coaches',document.querySelectorAll('.nav-item')[1])" style="width:100%;padding:10px;background:var(--green-light);color:var(--green);border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">立即找教练</button>
+            <div style="font-size:12px;color:var(--sub);margin-bottom:16px;" data-i18n="pkg_flexible">按次付款，灵活无压力</div>
+            <button onclick="showPanel('coaches',document.querySelectorAll('.nav-item')[1])" style="width:100%;padding:10px;background:var(--green-light);color:var(--green);border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;" data-i18n="btn_find_coach">立即找教练</button>
           </div>
 
           <!-- 5节 -->
           <div style="background:white;border-radius:16px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border:1.5px solid #fde68a;">
-            <div style="font-size:11px;font-weight:700;color:#92400e;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">5 节套餐</div>
+            <div style="font-size:11px;font-weight:700;color:#92400e;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">5-Lesson Package</div>
             <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:2px;">
               <span style="font-size:32px;font-weight:900;">$450</span>
-              <span style="font-size:12px;color:var(--mute);">总价</span>
+              <span style="font-size:12px;color:var(--mute);">Total</span>
             </div>
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
               <span style="font-size:11px;color:var(--mute);text-decoration:line-through;">$500</span>
-              <span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;">省 $10</span>
+              <span style="background:#fef3c7;color:#92400e;font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;">Save $10</span>
             </div>
-            <div style="font-size:11px;color:var(--mute);margin-bottom:14px;">$90/节 × 5 节</div>
-            <button onclick="openPackageModal('5节套餐（高级$100教练）','$450','共5节，$90/节，省$10')" style="width:100%;padding:10px;background:linear-gradient(135deg,#d97706,#f59e0b);color:white;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">购买 5 节</button>
+            <div style="font-size:11px;color:var(--mute);margin-bottom:14px;">$90/lesson × 5</div>
+            <button onclick="openPackageModal('5节套餐（高级$100教练）','$450','共5节，$90/节，省$10')" style="width:100%;padding:10px;background:linear-gradient(135deg,#d97706,#f59e0b);color:white;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">Buy 5 Lessons</button>
           </div>
 
           <!-- 10节 -->
           <div style="background:linear-gradient(135deg,#1e1b4b,#3730a3);border-radius:16px;padding:22px;box-shadow:0 6px 20px rgba(55,48,163,0.2);border:1.5px solid #6366f1;position:relative;">
-            <div style="position:absolute;top:-1px;right:16px;background:linear-gradient(135deg,#f59e0b,#fbbf24);color:white;font-size:10px;font-weight:900;padding:3px 12px;border-radius:0 0 8px 8px;">最划算</div>
-            <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">10 节套餐</div>
+            <div style="position:absolute;top:-1px;right:16px;background:linear-gradient(135deg,#f59e0b,#fbbf24);color:white;font-size:10px;font-weight:900;padding:3px 12px;border-radius:0 0 8px 8px;">Best Value</div>
+            <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;">10-Lesson Package</div>
             <div style="display:flex;align-items:baseline;gap:4px;margin-bottom:2px;">
               <span style="font-size:32px;font-weight:900;color:white;">$850</span>
-              <span style="font-size:12px;color:rgba(255,255,255,0.5);">总价</span>
+              <span style="font-size:12px;color:rgba(255,255,255,0.5);">Total</span>
             </div>
             <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
               <span style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:line-through;">$1,000</span>
-              <span style="background:rgba(245,158,11,0.25);color:#fbbf24;font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;">省 $30</span>
+              <span style="background:rgba(245,158,11,0.25);color:#fbbf24;font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;">Save $30</span>
             </div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:6px;">$85/节 × 10 节</div>
-            <div style="font-size:11px;color:#a5b4fc;margin-bottom:14px;">🎁 自动解锁 TW 30% 折扣</div>
-            <button onclick="openPackageModal('10节套餐（高级$100教练）','$850','共10节，$85/节，省$30')" style="width:100%;padding:10px;background:linear-gradient(135deg,#4f46e5,#6366f1);color:white;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">购买 10 节</button>
+            <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:6px;">$85/lesson × 10</div>
+            <div style="font-size:11px;color:#a5b4fc;margin-bottom:14px;">🎁 Unlocks TW 30% Discount</div>
+            <button onclick="openPackageModal('10节套餐（高级$100教练）','$850','共10节，$85/节，省$30')" style="width:100%;padding:10px;background:linear-gradient(135deg,#4f46e5,#6366f1);color:white;border:none;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">Buy 10 Lessons</button>
           </div>
         </div>
 
         <!-- 含场地费标注 -->
         <div style="display:flex;align-items:center;gap:8px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px 14px;margin-bottom:28px;">
           <span style="font-size:16px;">📍</span>
-          <span style="font-size:12px;color:#166534;font-weight:600;">以上所有套餐价格均<strong>含场地费</strong>，无需额外支付任何场地费用</span>
+          <span style="font-size:12px;color:#166534;font-weight:600;">All package prices include <strong>court fees</strong>. No additional fees.</span>
         </div>
 
         <!-- 说明 -->
         <div class="content-card" style="font-size:13px;color:var(--sub);line-height:1.9;">
-          <div class="cc-title">📋 购买说明</div>
+          <div class="cc-title">📋 Purchase Info</div>
           <div style="display:flex;flex-direction:column;gap:6px;">
-            <div>💳 <strong>付款方式：</strong>微信支付</div>
-            <div>📅 <strong>课时有效期：</strong>永久有效，无需担心过期</div>
-            <div>🔄 <strong>同价位通用：</strong>套餐课时可用于同价位任意教练</div>
-            <div>❌ <strong>退款政策：</strong>未使用课时可申请退款，已使用不退</div>
-            <div>📩 <strong>购买流程：</strong>点击购买后填写信息，客服在 8 小时内联系你完成付款和激活</div>
+            <div>💳 <strong>Payment:</strong> Zelle / WeChat</div>
+            <div>📅 <strong>Expiry:</strong> Credits never expire</div>
+            <div>🔄 <strong>Flexible:</strong> Credits work with any coach at the same tier</div>
+            <div>❌ <strong>Refunds:</strong> Unused credits refundable; used credits non-refundable</div>
+            <div>📩 <strong>Process:</strong> Submit info; our team contacts you within 8 hours</div>
           </div>
         </div>
 
@@ -2977,61 +2977,61 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;">
           <div style="background:white;border-radius:14px;padding:16px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.06);">
             <div style="font-size:24px;font-weight:900;color:var(--green);">10+</div>
-            <div style="font-size:11px;color:var(--mute);margin-top:2px;">认证教练</div>
+            <div style="font-size:11px;color:var(--mute);margin-top:2px;" data-i18n="stat_coaches">认证教练</div>
           </div>
           <div style="background:white;border-radius:14px;padding:16px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.06);">
             <div style="font-size:24px;font-weight:900;color:var(--green);">100+</div>
-            <div style="font-size:11px;color:var(--mute);margin-top:2px;">成功约课</div>
+            <div style="font-size:11px;color:var(--mute);margin-top:2px;" data-i18n="stat_bookings_done">成功约课</div>
           </div>
           <div style="background:white;border-radius:14px;padding:16px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.06);">
             <div style="font-size:24px;font-weight:900;color:var(--green);">4.9</div>
-            <div style="font-size:11px;color:var(--mute);margin-top:2px;">平均评分</div>
+            <div style="font-size:11px;color:var(--mute);margin-top:2px;" data-i18n="stat_rating">平均评分</div>
           </div>
           <div style="background:white;border-radius:14px;padding:16px;text-align:center;box-shadow:0 1px 8px rgba(0,0,0,0.06);">
-            <div style="font-size:24px;font-weight:900;color:var(--green);">3州</div>
+            <div style="font-size:24px;font-weight:900;color:var(--green);" data-i18n="stat_states">3州</div>
             <div style="font-size:11px;color:var(--mute);margin-top:2px;">DC·MD·VA</div>
           </div>
         </div>
 
         <!-- Benefits Grid -->
         <div style="margin-bottom:8px;">
-          <div style="font-size:16px;font-weight:800;margin-bottom:16px;">🎯 平台好处</div>
+          <div style="font-size:16px;font-weight:800;margin-bottom:16px;" data-i18n="benefit_features_title">🎯 平台好处</div>
           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;">
 
             <div style="background:white;border-radius:16px;padding:22px;box-shadow:0 1px 8px rgba(0,0,0,0.06);border:1.5px solid transparent;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--green-light)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='transparent';this.style.transform='none'">
               <div style="width:46px;height:46px;border-radius:12px;background:var(--green-light);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;">🈶</div>
-              <div style="font-size:14px;font-weight:800;margin-bottom:6px;">中文平台界面</div>
-              <div style="font-size:12px;color:var(--sub);line-height:1.7;">平台界面、教练简介、约课流程全部中文显示。部分教练提供中文教学，可在筛选时选择。</div>
+              <div style="font-size:14px;font-weight:800;margin-bottom:6px;" data-i18n="benefit_f1_title">中文平台界面</div>
+              <div style="font-size:12px;color:var(--sub);line-height:1.7;" data-i18n="benefit_f1_desc">平台界面、教练简介、约课流程全部中文显示。部分教练提供中文教学，可在筛选时选择。</div>
             </div>
 
             <div style="background:white;border-radius:16px;padding:22px;box-shadow:0 1px 8px rgba(0,0,0,0.06);border:1.5px solid transparent;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--green-light)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='transparent';this.style.transform='none'">
               <div style="width:46px;height:46px;border-radius:12px;background:#fef3c7;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;">💰</div>
-              <div style="font-size:14px;font-weight:800;margin-bottom:6px;">透明公开定价</div>
-              <div style="font-size:12px;color:var(--sub);line-height:1.7;">每位教练的课时费一目了然，无隐藏费用，无中间商差价。你看到的价格就是你付的价格。</div>
+              <div style="font-size:14px;font-weight:800;margin-bottom:6px;" data-i18n="benefit_f2_title">透明公开定价</div>
+              <div style="font-size:12px;color:var(--sub);line-height:1.7;" data-i18n="benefit_f2_desc">每位教练的课时费一目了然，无隐藏费用，无中间商差价。你看到的价格就是你付的价格。</div>
             </div>
 
             <div style="background:white;border-radius:16px;padding:22px;box-shadow:0 1px 8px rgba(0,0,0,0.06);border:1.5px solid transparent;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--green-light)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='transparent';this.style.transform='none'">
               <div style="width:46px;height:46px;border-radius:12px;background:#dbeafe;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;">📅</div>
-              <div style="font-size:14px;font-weight:800;margin-bottom:6px;">灵活约课时间</div>
-              <div style="font-size:12px;color:var(--sub);line-height:1.7;">实时查看教练可用时间，按自己的日程安排上课，周末、工作日均可。</div>
+              <div style="font-size:14px;font-weight:800;margin-bottom:6px;" data-i18n="benefit_f3_title">灵活约课时间</div>
+              <div style="font-size:12px;color:var(--sub);line-height:1.7;" data-i18n="benefit_f3_desc">实时查看教练可用时间，按自己的日程安排上课，周末、工作日均可。</div>
             </div>
 
             <div style="background:white;border-radius:16px;padding:22px;box-shadow:0 1px 8px rgba(0,0,0,0.06);border:1.5px solid transparent;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--green-light)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='transparent';this.style.transform='none'">
               <div style="width:46px;height:46px;border-radius:12px;background:#ede9fe;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;">🎯</div>
-              <div style="font-size:14px;font-weight:800;margin-bottom:6px;">按需匹配教练</div>
-              <div style="font-size:12px;color:var(--sub);line-height:1.7;">按技术水平、训练目标、上课地点筛选教练。入门、进阶、儿童训练均有对应教练。</div>
+              <div style="font-size:14px;font-weight:800;margin-bottom:6px;" data-i18n="benefit_f4_title">按需匹配教练</div>
+              <div style="font-size:12px;color:var(--sub);line-height:1.7;" data-i18n="benefit_f4_desc">按技术水平、训练目标、上课地点筛选教练。入门、进阶、儿童训练均有对应教练。</div>
             </div>
 
             <div style="background:white;border-radius:16px;padding:22px;box-shadow:0 1px 8px rgba(0,0,0,0.06);border:1.5px solid transparent;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--green-light)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='transparent';this.style.transform='none'">
               <div style="width:46px;height:46px;border-radius:12px;background:#ccfbf1;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;">📍</div>
-              <div style="font-size:14px;font-weight:800;margin-bottom:6px;">DC/MD/VA 本地覆盖</div>
-              <div style="font-size:12px;color:var(--sub);line-height:1.7;">平台聚焦大华盛顿地区，教练均在本地，上课地点近、接送方便，真正的社区平台。</div>
+              <div style="font-size:14px;font-weight:800;margin-bottom:6px;" data-i18n="benefit_f5_title">DC/MD/VA 本地覆盖</div>
+              <div style="font-size:12px;color:var(--sub);line-height:1.7;" data-i18n="benefit_f5_desc">平台聚焦大华盛顿地区，教练均在本地，上课地点近、接送方便，真正的社区平台。</div>
             </div>
 
             <div style="background:white;border-radius:16px;padding:22px;box-shadow:0 1px 8px rgba(0,0,0,0.06);border:1.5px solid transparent;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--green-light)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='transparent';this.style.transform='none'">
               <div style="width:46px;height:46px;border-radius:12px;background:#fef3c7;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;">⏰</div>
-              <div style="font-size:14px;font-weight:800;margin-bottom:6px;">提前 48 小时取消</div>
-              <div style="font-size:12px;color:var(--sub);line-height:1.7;">只需提前 48 小时取消预约，无需支付任何费用，灵活应对临时变化，零压力约课。</div>
+              <div style="font-size:14px;font-weight:800;margin-bottom:6px;" data-i18n="benefit_f6_title">提前 48 小时取消</div>
+              <div style="font-size:12px;color:var(--sub);line-height:1.7;" data-i18n="benefit_f6_desc">只需提前 48 小时取消预约，无需支付任何费用，灵活应对临时变化，零压力约课。</div>
             </div>
 
           </div>
@@ -3042,8 +3042,8 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
             <span style="font-size:28px;">🏆</span>
             <div>
-              <div style="font-size:15px;font-weight:800;">美网公开赛门票抽奖</div>
-              <div style="font-size:11px;color:#e11d48;font-weight:600;margin-top:2px;">每年抽取 3 位幸运学员 · 免费送门票</div>
+              <div style="font-size:15px;font-weight:800;">US Open Ticket Giveaway</div>
+              <div style="font-size:11px;color:#e11d48;font-weight:600;margin-top:2px;">3 lucky students win free tickets each year</div>
             </div>
             <div style="margin-left:auto;font-size:11px;background:#e11d48;color:white;padding:3px 10px;border-radius:20px;font-weight:800;white-space:nowrap;">年度福利</div>
           </div>
@@ -3051,28 +3051,28 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
           <div style="background:#fff1f2;border-radius:12px;padding:16px 18px;margin-bottom:16px;display:flex;align-items:center;gap:16px;">
             <div style="font-size:48px;line-height:1;">🎾</div>
             <div>
-              <div style="font-size:14px;font-weight:900;color:#1a1a1a;margin-bottom:4px;">US Open 门票 × 3 张</div>
-              <div style="font-size:12px;color:#e11d48;font-weight:600;">每年从所有学员中随机抽取 3 位</div>
-              <div style="font-size:12px;color:var(--sub);margin-top:3px;">在平台完成过约课即有资格参与</div>
+              <div style="font-size:14px;font-weight:900;color:#1a1a1a;margin-bottom:4px;">US Open Tickets × 3</div>
+              <div style="font-size:12px;color:#e11d48;font-weight:600;">3 randomly selected from all students each year</div>
+              <div style="font-size:12px;color:var(--sub);margin-top:3px;">Any student who has booked a lesson is eligible</div>
             </div>
           </div>
 
           <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
             <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);">
-              <span style="color:#e11d48;font-weight:800;">✓</span> <strong>无需额外报名</strong>——只要在平台约过课自动参与
+              <span style="color:#e11d48;font-weight:800;">✓</span> <strong>No sign-up needed</strong> — Automatic entry after your first booking
             </div>
             <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);">
-              <span style="color:#e11d48;font-weight:800;">✓</span> <strong>约课越多机会越大</strong>——每次约课增加一次抽奖资格
+              <span style="color:#e11d48;font-weight:800;">✓</span> <strong>More bookings = more chances</strong> — Each booking adds one entry
             </div>
             <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);">
-              <span style="color:#e11d48;font-weight:800;">✓</span> <strong>每年 8 月公布结果</strong>——通过注册邮箱通知中奖学员
+              <span style="color:#e11d48;font-weight:800;">✓</span> <strong>Winners announced every August</strong> — Notified by registered email
             </div>
           </div>
 
           <div style="background:white;border:1px solid #fecdd3;border-radius:10px;padding:12px 16px;text-align:center;">
-            <div style="font-size:12px;color:#e11d48;font-weight:700;">🎯 你当前的抽奖资格</div>
-            <div style="font-size:22px;font-weight:900;color:#1a1a1a;margin:6px 0;" id="raffle-count">登录后查看</div>
-            <div style="font-size:11px;color:var(--mute);">累计约课次数 = 抽奖票数</div>
+            <div style="font-size:12px;color:#e11d48;font-weight:700;">🎯 Your Current Entries</div>
+            <div style="font-size:22px;font-weight:900;color:#1a1a1a;margin:6px 0;" id="raffle-count">Log in to view</div>
+            <div style="font-size:11px;color:var(--mute);">Total bookings = raffle entries</div>
           </div>
         </div>
 
@@ -3081,20 +3081,20 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
             <span style="font-size:28px;">🏆</span>
             <div>
-              <div style="font-size:15px;font-weight:800;">Tennis Warehouse 专属折扣</div>
-              <div style="font-size:11px;color:#92400e;font-weight:600;margin-top:2px;">忠实会员专享 · 累计约课满 10 次自动解锁</div>
+              <div style="font-size:15px;font-weight:800;">Tennis Warehouse Exclusive Discount</div>
+              <div style="font-size:11px;color:#92400e;font-weight:600;margin-top:2px;">Loyal member perk · Unlocks after 10 bookings</div>
             </div>
             <div style="margin-left:auto;font-size:11px;background:#fbbf24;color:white;padding:3px 10px;border-radius:20px;font-weight:800;white-space:nowrap;">忠实会员</div>
           </div>
           <div style="background:#fef3c7;border-radius:10px;padding:16px 18px;display:flex;align-items:center;gap:14px;">
             <div style="font-size:32px;font-weight:900;font-family:monospace;letter-spacing:3px;color:#92400e;">30% OFF</div>
             <div>
-              <div style="font-size:13px;font-weight:700;color:#1a1a1a;">Tennis Warehouse 全场折扣</div>
-              <div style="font-size:12px;color:#92400e;margin-top:3px;">🔒 约满 10 次后优惠码自动发放，前往「我的预约」查看进度</div>
+              <div style="font-size:13px;font-weight:700;color:#1a1a1a;">Tennis Warehouse Sitewide Discount</div>
+              <div style="font-size:12px;color:#92400e;margin-top:3px;">🔒 Promo code sent after 10 bookings. Check "My Bookings" for progress.</div>
             </div>
           </div>
           <div style="margin-top:12px;text-align:center;">
-            <button onclick="showPanel('my-bookings', document.querySelector('.nav-item:nth-child(3)'))" style="padding:10px 24px;background:linear-gradient(135deg,var(--green),var(--green2));color:white;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">📅 查看我的约课进度 →</button>
+            <button onclick="showPanel('my-bookings', document.querySelector('.nav-item:nth-child(3)'))" style="padding:10px 24px;background:linear-gradient(135deg,var(--green),var(--green2));color:white;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">📅 Track My Progress →</button>
           </div>
         </div>
 
@@ -3103,8 +3103,8 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
             <span style="font-size:28px;">🎯</span>
             <div>
-              <div style="font-size:15px;font-weight:800;">专业穿线服务</div>
-              <div style="font-size:11px;color:#1d4ed8;font-weight:600;margin-top:2px;">Arlington VA 集中收拍 · 三天返还 · DC/MD/VA 覆盖</div>
+              <div style="font-size:15px;font-weight:800;">Professional Stringing Service</div>
+              <div style="font-size:11px;color:#1d4ed8;font-weight:600;margin-top:2px;">Drop off in Arlington VA · 3-day turnaround · DC/MD/VA coverage</div>
             </div>
             <div style="margin-left:auto;font-size:11px;background:#3b82f6;color:white;padding:3px 10px;border-radius:20px;font-weight:800;white-space:nowrap;">新服务</div>
           </div>
@@ -3113,31 +3113,31 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;">
             <div style="background:white;border-radius:12px;padding:14px;text-align:center;box-shadow:0 1px 6px rgba(0,0,0,0.06);">
               <div style="font-size:20px;font-weight:900;color:#1d4ed8;">$25</div>
-              <div style="font-size:10px;color:var(--mute);margin-top:3px;font-weight:600;">穿线工费</div>
+              <div style="font-size:10px;color:var(--mute);margin-top:3px;font-weight:600;">Labor Fee</div>
             </div>
             <div style="background:white;border-radius:12px;padding:14px;text-align:center;box-shadow:0 1px 6px rgba(0,0,0,0.06);">
-              <div style="font-size:20px;font-weight:900;color:#1d4ed8;">+线费</div>
-              <div style="font-size:10px;color:var(--mute);margin-top:3px;font-weight:600;">单独选购</div>
+              <div style="font-size:20px;font-weight:900;color:#1d4ed8;">+ String</div>
+              <div style="font-size:10px;color:var(--mute);margin-top:3px;font-weight:600;">Add-on</div>
             </div>
             <div style="background:#eff6ff;border-radius:12px;padding:14px;text-align:center;box-shadow:0 1px 6px rgba(0,0,0,0.06);">
-              <div style="font-size:18px;font-weight:900;color:#1d4ed8;">✓ 自带</div>
-              <div style="font-size:10px;color:var(--mute);margin-top:3px;font-weight:600;">可自带线</div>
+              <div style="font-size:18px;font-weight:900;color:#1d4ed8;">✓ BYO</div>
+              <div style="font-size:10px;color:var(--mute);margin-top:3px;font-weight:600;">BYO string</div>
             </div>
           </div>
 
           <!-- 特点 -->
           <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;">
             <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);">
-              <span style="color:#3b82f6;font-weight:800;">✓</span> <strong>Arlington VA 集中收拍</strong>——送到 1600 S Hayes St 指定地点，方便快捷
+              <span style="color:#3b82f6;font-weight:800;">✓</span> <strong>Arlington VA 集中收拍</strong> — Drop off at 1600 S Hayes St
             </div>
             <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);">
-              <span style="color:#3b82f6;font-weight:800;">✓</span> <strong>三天内返还</strong>——穿好后通知你取回
+              <span style="color:#3b82f6;font-weight:800;">✓</span> <strong>3-day turnaround</strong> — Notified when ready
             </div>
             <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);">
-              <span style="color:#3b82f6;font-weight:800;">✓</span> <strong>多种线材可选</strong>——尼龙、聚酯、天然肠线均有
+              <span style="color:#3b82f6;font-weight:800;">✓</span> <strong>Multiple string options</strong> — Nylon, polyester, natural gut available
             </div>
             <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);">
-              <span style="color:#3b82f6;font-weight:800;">✓</span> <strong>可自带线</strong>——只收 $25 工费，省心省钱
+              <span style="color:#3b82f6;font-weight:800;">✓</span> <strong>BYO string</strong> — Only $25 labor, save money
             </div>
           </div>
 
@@ -3151,8 +3151,8 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
             <span style="font-size:28px;">🏅</span>
             <div>
-              <div style="font-size:15px;font-weight:800;">DMV 比赛配对</div>
-              <div style="font-size:11px;color:#7c3aed;font-weight:600;margin-top:2px;">单打 · 双打 · 混双 · 帮你找搭档参赛</div>
+              <div style="font-size:15px;font-weight:800;">DMV Match Matchmaking</div>
+              <div style="font-size:11px;color:#7c3aed;font-weight:600;margin-top:2px;">Singles · Doubles · Mixed · Find a partner</div>
             </div>
             <div style="margin-left:auto;font-size:11px;background:#7c3aed;color:white;padding:3px 10px;border-radius:20px;font-weight:800;white-space:nowrap;">即将上线</div>
           </div>
@@ -3177,8 +3177,8 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
           </div>
 
           <div style="background:#f3e8ff;border-radius:10px;padding:12px 16px;text-align:center;margin-bottom:14px;">
-            <div style="font-size:12px;color:#5b21b6;font-weight:700;margin-bottom:4px;">🔔 功能即将上线</div>
-            <div style="font-size:11px;color:#7c3aed;">登记感兴趣，上线第一时间通知你</div>
+            <div style="font-size:12px;color:#5b21b6;font-weight:700;margin-bottom:4px;">🔔 Coming Soon</div>
+            <div style="font-size:11px;color:#7c3aed;">Register interest and be notified when it launches</div>
           </div>
 
           <button onclick="openCompetitionInterest()" style="width:100%;padding:14px;background:linear-gradient(135deg,#6d28d9,#7c3aed);color:white;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(124,58,237,0.35);">
@@ -3199,7 +3199,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
       <div onclick="closePackageModal()" style="font-size:22px;cursor:pointer;color:var(--mute);">✕</div>
     </div>
     <div style="background:var(--green-light);border-radius:12px;padding:14px 16px;margin-bottom:20px;font-size:13px;color:var(--green);line-height:1.7;">
-      📩 提交后客服会在 <strong>8 小时内</strong>通过微信联系你，确认付款方式（微信）并激活套餐。
+      📩 After submitting, our team contacts you within <strong>8 hours</strong> to complete payment and activate your package.
     </div>
     <div style="margin-bottom:14px;">
       <input id="pkg-name" type="text" placeholder="姓名" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;margin-bottom:8px;" onfocus="this.style.borderColor='var(--green)'" onblur="this.style.borderColor='var(--border)'">
@@ -3210,8 +3210,8 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
     <button onclick="submitPackage()" id="pkg-submit-btn" style="width:100%;padding:14px;background:linear-gradient(135deg,var(--green),var(--green2));color:white;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;">✅ 提交购买申请</button>
     <div id="pkg-success" style="display:none;text-align:center;padding:16px 0;">
       <div style="font-size:44px;margin-bottom:10px;">🎉</div>
-      <div style="font-size:17px;font-weight:900;margin-bottom:6px;">申请已提交！</div>
-      <div style="font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:16px;">客服会在 8 小时内通过微信联系你完成付款和套餐激活。</div>
+      <div style="font-size:17px;font-weight:900;margin-bottom:6px;">Request Submitted!</div>
+      <div style="font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:16px;">Our team will contact you within 8 hours to complete payment and activation.</div>
       <button onclick="closePackageModal()" style="padding:10px 28px;background:var(--green-light);color:var(--green);border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">关闭</button>
     </div>
   </div>
@@ -3224,15 +3224,15 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
   <div style="background:white;border-radius:20px;width:460px;max-width:95vw;max-height:90vh;overflow-y:auto;padding:32px;animation:popIn 0.25s cubic-bezier(0.16,1,0.3,1);">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
       <div>
-        <div style="font-size:20px;font-weight:900;">🏅 比赛兴趣登记</div>
-        <div style="font-size:12px;color:var(--mute);margin-top:2px;">功能上线后第一时间通知你</div>
+        <div style="font-size:20px;font-weight:900;">🏅 Register Match Interest</div>
+        <div style="font-size:12px;color:var(--mute);margin-top:2px;">You'll be notified when this feature launches</div>
       </div>
       <div onclick="closeCompetitionInterest()" style="font-size:22px;cursor:pointer;color:var(--mute);padding:4px;">✕</div>
     </div>
 
     <!-- 比赛类型 -->
     <div style="margin-bottom:18px;">
-      <div style="font-size:13px;font-weight:700;color:var(--sub);margin-bottom:8px;">🎾 感兴趣的比赛类型（可多选）</div>
+      <div style="font-size:13px;font-weight:700;color:var(--sub);margin-bottom:8px;">🎾 Match types interested in (select all that apply)</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
         <div class="comp-opt" onclick="toggleCompOpt(this,'单打')" style="border:1.5px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;text-align:center;font-size:13px;font-weight:600;">🎯 单打</div>
         <div class="comp-opt" onclick="toggleCompOpt(this,'双打')" style="border:1.5px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;text-align:center;font-size:13px;font-weight:600;">👥 双打</div>
@@ -3243,7 +3243,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 
     <!-- 水平 -->
     <div style="margin-bottom:18px;">
-      <div style="font-size:13px;font-weight:700;color:var(--sub);margin-bottom:8px;">📊 你的水平（NTRP/UTR）</div>
+      <div style="font-size:13px;font-weight:700;color:var(--sub);margin-bottom:8px;">📊 Your Level (NTRP/UTR)</div>
       <input id="comp-level" type="text" placeholder="如：NTRP 3.5、UTR 5、自评初中高级" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='#7c3aed'" onblur="this.style.borderColor='var(--border)'">
     </div>
 
@@ -3262,8 +3262,8 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 
     <div id="comp-success" style="display:none;text-align:center;padding:20px 0;">
       <div style="font-size:48px;margin-bottom:12px;">🎉</div>
-      <div style="font-size:18px;font-weight:900;margin-bottom:8px;">登记成功！</div>
-      <div style="font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:20px;">功能上线后我们会第一时间通过微信通知你，期待和你一起打比赛！</div>
+      <div style="font-size:18px;font-weight:900;margin-bottom:8px;">Registered!</div>
+      <div style="font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:20px;">We'll notify you when this feature goes live!</div>
       <button onclick="closeCompetitionInterest()" style="padding:12px 32px;background:var(--green-light);color:var(--green);border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">关闭</button>
     </div>
   </div>
@@ -3272,30 +3272,30 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
       <div>
-        <div style="font-size:20px;font-weight:900;">🎯 预约穿线服务</div>
-        <div style="font-size:12px;color:var(--mute);margin-top:2px;">上门取送 · 工费 $25 · 可自带线</div>
+        <div style="font-size:20px;font-weight:900;">🎯 Book Stringing Service</div>
+        <div style="font-size:12px;color:var(--mute);margin-top:2px;">Drop-off · $25 labor · BYO string welcome</div>
       </div>
       <div onclick="closeStringingModal()" style="font-size:22px;cursor:pointer;color:var(--mute);padding:4px;">✕</div>
     </div>
 
     <!-- 球拍信息 -->
     <div style="margin-bottom:18px;">
-      <div style="font-size:13px;font-weight:700;color:var(--sub);margin-bottom:8px;">🎾 球拍信息</div>
+      <div style="font-size:13px;font-weight:700;color:var(--sub);margin-bottom:8px;">🎾 Racket Info</div>
       <input id="str-racket" type="text" placeholder="球拍品牌 & 型号（如：Wilson Pro Staff 97）" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;margin-bottom:8px;" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='var(--border)'">
       <input id="str-tension" type="text" placeholder="穿线磅数（如：55 lbs，不确定可留空）" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='var(--border)'">
     </div>
 
     <!-- 线材选择 -->
     <div style="margin-bottom:18px;">
-      <div style="font-size:13px;font-weight:700;color:var(--sub);margin-bottom:8px;">🧵 线材</div>
+      <div style="font-size:13px;font-weight:700;color:var(--sub);margin-bottom:8px;">🧵 String</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;" id="str-string-opts">
         <div class="str-opt selected" onclick="selectStringOpt(this,'own')" style="border:1.5px solid #3b82f6;background:#eff6ff;border-radius:10px;padding:12px;cursor:pointer;text-align:center;">
-          <div style="font-size:13px;font-weight:700;color:#1d4ed8;">自带线</div>
-          <div style="font-size:11px;color:#3b82f6;margin-top:2px;">只收 $25 工费</div>
+          <div style="font-size:13px;font-weight:700;color:#1d4ed8;">BYO String</div>
+          <div style="font-size:11px;color:#3b82f6;margin-top:2px;">$25 labor only</div>
         </div>
         <div class="str-opt" onclick="selectStringOpt(this,'select')" style="border:1.5px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;text-align:center;">
-          <div style="font-size:13px;font-weight:700;">帮我选线</div>
-          <div style="font-size:11px;color:var(--mute);margin-top:2px;">工费 + 线费另计</div>
+          <div style="font-size:13px;font-weight:700;">Help me choose</div>
+          <div style="font-size:11px;color:var(--mute);margin-top:2px;">Labor + string fee</div>
         </div>
       </div>
       <input id="str-string-note" type="text" placeholder="线材备注（如：偏好聚酯线、弹性好的）" style="width:100%;height:40px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:12px;font-family:inherit;outline:none;margin-top:8px;" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='var(--border)'">
@@ -3303,10 +3303,10 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 
     <!-- 取送信息 -->
     <div style="margin-bottom:18px;">
-      <div style="font-size:13px;font-weight:700;color:var(--sub);margin-bottom:8px;">📍 交拍方式</div>
+      <div style="font-size:13px;font-weight:700;color:var(--sub);margin-bottom:8px;">📍 Drop-off</div>
       <div style="background:#eff6ff;border-radius:10px;padding:12px 16px;margin-bottom:10px;font-size:13px;color:#1d4ed8;line-height:1.7;">
-        📌 <strong>集中收拍地点：1600 S Hayes St, Arlington, VA 22202</strong><br>
-        具体交拍时间会由穿线师通过微信确认，三天内穿好通知取回。
+        📌 <strong>Drop-off: 1600 S Hayes St, Arlington, VA 22202</strong><br>
+        Our stringer will confirm pick-up time. Returned within 3 days.
       </div>
       <input id="str-pickup-time" type="text" placeholder="希望送拍的时间（如：周六上午 10:00）" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='var(--border)'">
     </div>
@@ -3326,7 +3326,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 
     <!-- 费用说明 -->
     <div style="background:#eff6ff;border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:#1d4ed8;line-height:1.7;">
-      💡 <strong>费用说明：</strong>工费 $25。如需购线，穿线师确认时会提供线材选择，线费单独结算。付款方式：微信。
+      💡 <strong>Pricing:</strong> $25 labor fee. String options provided if needed. Payment: Zelle / WeChat.
     </div>
 
     <div id="str-err" style="background:#fdecea;border-radius:8px;padding:10px 14px;font-size:12px;color:var(--red);margin-bottom:12px;display:none;"></div>
@@ -3338,8 +3338,8 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
     <!-- 成功提示 -->
     <div id="str-success" style="display:none;text-align:center;padding:20px 0;">
       <div style="font-size:48px;margin-bottom:12px;">✅</div>
-      <div style="font-size:18px;font-weight:900;margin-bottom:8px;">预约已提交！</div>
-      <div style="font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:20px;">穿线师会通过微信联系你确认取球拍时间，请保持微信畅通。</div>
+      <div style="font-size:18px;font-weight:900;margin-bottom:8px;">Booking Submitted!</div>
+      <div style="font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:20px;">Our stringer will contact you to confirm pick-up. Please stay reachable.</div>
       <button onclick="closeStringingModal()" style="padding:12px 32px;background:var(--green-light);color:var(--green);border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">关闭</button>
     </div>
 
@@ -3362,33 +3362,33 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
       <div id="mob-bk-badge" style="display:none;position:absolute;top:4px;right:18px;width:8px;height:8px;background:var(--red);border-radius:50%;"></div>
     </div>
     <div class="mob-nav-item" id="mobnav-packages" onclick="mobileNav('packages',this)">
-      <div class="mob-nav-icon">📦</div><span>套餐</span>
+      <div class="mob-nav-icon">📦</div><span data-i18n="nav_packages_short">套餐</span>
     </div>
     <div class="mob-nav-item" id="mobnav-benefit" onclick="mobileNav('benefit',this)">
-      <div class="mob-nav-icon">🎁</div><span>好处</span>
+      <div class="mob-nav-icon">🎁</div><span data-i18n="nav_benefit_short">好处</span>
     </div>
       <!-- ADMIN PANEL -->
       <div id="panel-admin" class="panel">
         <div style="max-width:900px;margin:0 auto;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
             <div>
-              <div style="font-size:22px;font-weight:900;color:var(--text);">⚙️ 管理后台</div>
-              <div style="font-size:13px;color:var(--mute);margin-top:2px;">所有预约管理</div>
+              <div style="font-size:22px;font-weight:900;color:var(--text);" data-i18n="nav_admin">⚙️ 管理后台</div>
+              <div style="font-size:13px;color:var(--mute);margin-top:2px;" data-i18n="admin_sub">所有预约管理</div>
             </div>
             <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
               <select id="admin-filter-status" onchange="adminLoadBookings()" style="padding:8px 12px;border:1.5px solid var(--border);border-radius:9px;font-size:13px;font-family:inherit;background:white;cursor:pointer;">
-                <option value="">全部状态</option>
-                <option value="pending_payment">待支付</option>
-                <option value="pending">待确认</option>
-                <option value="confirmed">已确认</option>
-                <option value="cancelled">已取消</option>
+                <option value="" data-i18n="all_status">全部状态</option>
+                <option value="pending_payment" data-i18n="status_pending_payment_short">待支付</option>
+                <option value="pending" data-i18n="status_pending_short">待确认</option>
+                <option value="confirmed" data-i18n="status_confirmed_short">已确认</option>
+                <option value="cancelled" data-i18n="status_cancelled_short">已取消</option>
               </select>
-              <input id="admin-search" type="text" placeholder="搜索姓名 / 邮箱…" oninput="adminLoadBookings()" style="padding:8px 12px;border:1.5px solid var(--border);border-radius:9px;font-size:13px;font-family:inherit;width:180px;">
+              <input id="admin-search" type="text" data-i18n-placeholder="admin_search_ph" placeholder="搜索姓名 / 邮箱…" oninput="adminLoadBookings()" style="padding:8px 12px;border:1.5px solid var(--border);border-radius:9px;font-size:13px;font-family:inherit;width:180px;">
               <button onclick="adminLoadBookings()" style="padding:8px 16px;background:var(--green);color:white;border:none;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">🔄 刷新</button>
             </div>
           </div>
           <div id="admin-bookings-list">
-            <div style="text-align:center;padding:60px;color:var(--mute);">加载中…</div>
+            <div style="text-align:center;padding:60px;color:var(--mute);">Loading…</div>
           </div>
         </div>
       </div>
@@ -3534,8 +3534,8 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
   <div style="background:white;border-radius:20px;padding:36px 32px;width:400px;max-width:95vw;animation:popIn 0.25s cubic-bezier(0.16,1,0.3,1);">
     <div style="text-align:center;margin-bottom:22px;">
       <div style="font-size:40px;margin-bottom:10px;">🔐</div>
-      <div style="font-size:20px;font-weight:900;margin-bottom:6px;">登录后才能预约</div>
-      <div style="font-size:13px;color:#999;line-height:1.5;">请先登录或注册账号<br>预约记录将保存到你的账户</div>
+      <div style="font-size:20px;font-weight:900;margin-bottom:6px;" data-i18n="gate_title">登录后才能预约</div>
+      <div style="font-size:13px;color:#999;line-height:1.5;" data-i18n="gate_sub">请先登录或注册账号<br>预约记录将保存到你的账户</div>
     </div>
 
     <div style="display:flex;background:#f0f2f5;border-radius:12px;padding:4px;margin-bottom:20px;">
@@ -3557,7 +3557,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
     </div>
 
     <div style="text-align:right;margin:6px 0 2px;">
-      <span onclick="showForgotPwd()" style="font-size:12px;color:#1a6b3a;cursor:pointer;font-weight:600;text-decoration:underline;">忘记密码？</span>
+      <span onclick="showForgotPwd()" style="font-size:12px;color:#1a6b3a;cursor:pointer;font-weight:600;text-decoration:underline;"><span data-i18n="forgot_pwd">忘记密码？</span></span>
     </div>
     <div id="gate-err" style="display:none;background:#fdecea;border-radius:8px;padding:10px 14px;font-size:12px;color:#e53935;margin-top:10px;"></div>
 
@@ -3565,7 +3565,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
       登录账号
     </button>
     <div style="text-align:center;margin-top:12px;">
-      <span style="font-size:12px;color:#999;cursor:pointer;" onclick="closeLoginGate()">稍后再说，先浏览教练</span>
+      <span style="font-size:12px;color:#999;cursor:pointer;" onclick="closeLoginGate()" data-i18n="gate_skip">稍后再说，先浏览教练</span>
     </div>
   </div>
 </div>
@@ -3670,13 +3670,13 @@ async function submitAuth() {
   var errEl = document.getElementById('auth-err');
   errEl.style.display = 'none';
 
-  if(!email||!email.includes('@')){ showAuthErr('请输入有效的邮箱地址'); return; }
-  if(!password||password.length<6){ showAuthErr('密码至少需要 6 位'); return; }
-  if(authMode==='register'&&!name){ showAuthErr('请填写你的姓名'); return; }
+  if(!email||!email.includes('@')){ showAuthErr(currentLangUI==='en'?'Please enter a valid email':'请输入有效的邮箱地址'); return; }
+  if(!password||password.length<6){ showAuthErr(currentLangUI==='en'?'Password must be at least 6 characters':'密码至少需要 6 位'); return; }
+  if(authMode==='register'&&!name){ showAuthErr(currentLangUI==='en'?'Please enter your name':'请填写你的姓名'); return; }
 
   var btn = document.getElementById('auth-submit-btn');
   btn.disabled = true;
-  btn.innerHTML = '<span class="spin"></span>处理中…';
+  btn.innerHTML = '<span class="spin"></span>'+(currentLangUI==="en"?"Processing…":"处理中…");
 
   var endpoint = authMode==='login' ? '/auth/v1/token?grant_type=password' : '/auth/v1/signup';
   var body = { email, password };
@@ -3690,12 +3690,12 @@ async function submitAuth() {
   var data = await r.json();
 
   btn.disabled = false;
-  btn.textContent = authMode==='login' ? '登录' : '注册账号';
+  btn.textContent = authMode==='login' ? t('btn_login') : t('btn_register');
 
   if(!r.ok || data.error) {
-    var msg = data.error_description || data.msg || data.message || '操作失败，请重试';
-    if(msg.includes('Invalid login')) msg = '邮箱或密码错误';
-    if(msg.includes('already registered')) msg = '该邮箱已注册，请直接登录';
+    var msg = data.error_description || data.msg || data.message || (currentLangUI==='en'?'Operation failed, please try again':'操作失败，请重试');
+    if(msg.includes('Invalid login')) msg = currentLangUI==='en'?'Incorrect email or password':'邮箱或密码错误';
+    if(msg.includes('already registered')) msg = currentLangUI==='en'?'This email is already registered, please log in':'该邮箱已注册，请直接登录';
     showAuthErr(msg); return;
   }
 
@@ -3719,7 +3719,7 @@ async function submitAuth() {
         if(loginData.access_token) {
           onAuthSuccess(loginData);
         } else {
-          showAuthErr('注册成功！请用刚才的邮箱和密码登录');
+          showAuthErr(currentLangUI==='en'?'Registered! Please log in with your email and password.':'注册成功！请用刚才的邮箱和密码登录');
           switchAuthTab('login');
           document.getElementById('auth-email').value = email;
         }
@@ -3822,9 +3822,9 @@ async function doResetPassword() {
   var ok  = document.getElementById('rp-ok');
   var btn = document.getElementById('rp-btn');
   err.style.display='none'; ok.style.display='none';
-  if(!np||np.length<6){ err.textContent='⚠️ 密码至少需要 6 位'; err.style.display='block'; return; }
-  if(np!==cp){ err.textContent='⚠️ 两次输入的密码不一致'; err.style.display='block'; return; }
-  btn.disabled=true; btn.textContent='修改中…';
+  if(!np||np.length<6){ err.textContent=currentLangUI==='en'?'⚠️ Password must be 6+ characters':'⚠️ 密码至少需要 6 位'; err.style.display='block'; return; }
+  if(np!==cp){ err.textContent=currentLangUI==='en'?'⚠️ Passwords do not match':'⚠️ 两次输入的密码不一致'; err.style.display='block'; return; }
+  btn.disabled=true; btn.textContent=currentLangUI==='en'?'Updating…':'修改中…';
   try {
     var r = await fetch(SB_URL+'/auth/v1/user',{
       method:'PUT',
@@ -3832,18 +3832,18 @@ async function doResetPassword() {
       body:JSON.stringify({password:np})
     });
     if(r.ok){
-      ok.innerHTML='✅ 密码修改成功！请用新密码重新登录';
+      ok.innerHTML=currentLangUI==='en'?'✅ Password updated! Please log in with your new password.':'✅ 密码修改成功！请用新密码重新登录';
       ok.style.display='block';
-      btn.textContent='修改成功 ✓'; btn.style.background='#e8f5e9'; btn.style.color='#1a6b3a';
+      btn.textContent=currentLangUI==='en'?'Updated ✓':'修改成功 ✓'; btn.style.background='#e8f5e9'; btn.style.color='#1a6b3a';
       setTimeout(function(){ if(window._rEl) window._rEl.remove(); }, 2500);
     } else {
       var e=await r.json().catch(function(){return{};});
       err.textContent='❌ '+(e.message||'修改失败，请重新发送重置链接');
-      err.style.display='block'; btn.disabled=false; btn.textContent='确认修改密码';
+      err.style.display='block'; btn.disabled=false; btn.textContent=currentLangUI==='en'?'Update Password':'确认修改密码';
     }
   } catch(e){
-    err.textContent='❌ 网络错误，请稍后重试';
-    err.style.display='block'; btn.disabled=false; btn.textContent='确认修改密码';
+    err.textContent=currentLangUI==='en'?'❌ Network error, please try again':'❌ 网络错误，请稍后重试';
+    err.style.display='block'; btn.disabled=false; btn.textContent=currentLangUI==='en'?'Update Password':'确认修改密码';
   }
 }
 
@@ -3861,6 +3861,7 @@ function initApp() {
   setLang(currentLangUI);
   var btn = document.getElementById('lang-btn');
   if(btn) btn.textContent = currentLangUI === 'zh' ? 'EN' : '中文';
+  document.title = currentLangUI==='en' ? '🎾 Tennis Coach Platform · DC/MD/VA' : '🎾 网球教练平台 · DC/MD/VA';
 }
 
 function launchApp() {
@@ -3965,7 +3966,7 @@ function coachCardHTML(c) {
   return '<div class="coach-card" onclick="openCoachProfile(\''+c.id+'\')" style="cursor:pointer;">'
     +'<div class="coach-img" style="background:'+(c.gradient||'linear-gradient(135deg,#0d3b23,#2d9a57)')+';">'+img
     +'<div class="coach-badge-tag">'+(c.badge||'')+'</div>'
-    +'<div class="coach-price-tag">$'+(c.priceNum||c.price||75)+'/时</div></div>'
+    +'<div class="coach-price-tag">$'+(c.priceNum||c.price||75)+(currentLangUI==="en"?"/hr":"/时")+'</div></div>'
     +'<div class="coach-body">'
     +'<div class="coach-name">'+(c.name||'')+'</div>'
     +'<div class="coach-sub-txt">'+(c.sub||'')+'</div>'
@@ -4001,7 +4002,7 @@ function openBM(coachId) {
   } else if(c.avail && c.avail.length === 7) {
     c.avail.forEach(function(v,i){ if(v) availDays.add(i); });
   } else if(c.available_days && c.available_days.length) {
-    var dayMap = {'周日':0,'周一':1,'周二':2,'周三':3,'周四':4,'周五':5,'周六':6};
+    var dayMap = {'周日':0,'周一':1,'周二':2,'周三':3,'周四':4,'周五':5,'周六':6,'Sun':0,'Mon':1,'Tue':2,'Wed':3,'Thu':4,'Fri':5,'Sat':6};
     c.available_days.forEach(function(d){ if(dayMap[d]!==undefined) availDays.add(dayMap[d]); });
   } else {
     availDays.add(6); // fallback Saturday
@@ -4014,7 +4015,7 @@ function openBM(coachId) {
   // Coach info in summary panel
   document.getElementById('bk-coach-name').textContent = c.name;
   document.getElementById('bk-coach-sub').textContent = (c.utr?'UTR '+c.utr+' · ':'')+c.location;
-  document.getElementById('bk-os-type').textContent = '网球入门 & 提升 1v1';
+  document.getElementById('bk-os-type').textContent = currentLangUI==='en' ? 'Tennis Fundamentals 1v1' : '网球入门 & 提升 1v1';
   document.getElementById('bk-os-datetime').textContent = '—';
   document.getElementById('bk-os-court').textContent = '—';
 
@@ -4048,11 +4049,11 @@ function openBM(coachId) {
   }).join('');
 
   // Build available days legend & week header highlights
-  var dayNames = ['周日','周一','周二','周三','周四','周五','周六'];
+  var dayNames = currentLangUI==='en' ? ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'] : ['周日','周一','周二','周三','周四','周五','周六'];
   var availNames = [];
   availDays.forEach(function(i){ availNames.push(dayNames[i]); });
   var legend = document.getElementById('bk-avail-legend');
-  if(legend) legend.textContent = '✅ 教练可约：' + availNames.join(' / ');
+  if(legend) legend.textContent = (currentLangUI==="en" ? '✅ Available: ' : '✅ 教练可约：') + availNames.join(' / ');
 
   // Update week head labels
   var wLabels = t('cal_weeks');
@@ -4090,7 +4091,7 @@ function closeBM() {
 // ── Calendar rendering ──
 function bkRenderCalendar() {
   var monthNames = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
-  document.getElementById('bk-month-label').textContent = bkCalState.year+'年 '+monthNames[bkCalState.month];
+  document.getElementById('bk-month-label').textContent = currentLangUI==='en' ? monthNames[bkCalState.month]+' '+bkCalState.year : bkCalState.year+'年 '+monthNames[bkCalState.month];
 
   var grid = document.getElementById('bk-cal-grid');
   var firstDay = new Date(bkCalState.year, bkCalState.month, 1).getDay();
@@ -4123,7 +4124,7 @@ function bkRenderCalendar() {
     var mm = String(bkCalState.month+1).padStart(2,'0');
     var dd = String(d).padStart(2,'0');
     var dateStr = bkCalState.year+'-'+mm+'-'+dd;
-    var label = bkCalState.year+'年'+(bkCalState.month+1)+'月'+d+'日';
+    var label = currentLangUI==='en' ? monthNames[bkCalState.month]+' '+d+', '+bkCalState.year : bkCalState.year+'年'+(bkCalState.month+1)+'月'+d+'日';
     var isSelected = bmState.date === dateStr;
 
     var cls = 'cal-day';
@@ -4194,7 +4195,7 @@ async function bkRenderTimeSlots(dateStr) {
     } else {
       // Day not in schedule = no slots available
       notice.textContent = t('bk_no_slots');
-      slotsEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--mute);font-size:13px;">教练该日暂无开放时段</div>';
+      slotsEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--mute);font-size:13px;">'+(currentLangUI==="en"?"No available slots for this coach on this day":"教练该日暂无开放时段")+'</div>';
       return;
     }
   } else if(coach && coach.available_hours && coach.available_hours.length > 0) {
@@ -4214,7 +4215,7 @@ async function bkRenderTimeSlots(dateStr) {
 
   if(slots.length === 0) {
     notice.textContent = t('bk_no_slots');
-    slotsEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--mute);font-size:13px);">'+t('bk_slot_too_soon').replace('\n','<br>')+'</div>';
+    slotsEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--mute);font-size:13px;">'+t('bk_slot_too_soon').replace('\n','<br>')+'</div>';
     return;
   }
 
@@ -4244,7 +4245,7 @@ async function bkRenderTimeSlots(dateStr) {
       if(booked.indexOf(t) > -1){
         el.classList.add('taken');
         el.onclick = null;
-        el.querySelector('span:last-child').textContent = '已约';
+        el.querySelector('span:last-child').textContent = currentLangUI==="en" ? "Taken" : "已约";
       }
     });
   } catch(e){ console.warn('Slots load error:', e.message); }
@@ -4305,7 +4306,7 @@ function bkRefreshTypePrices() {
   var first = document.querySelector('#bk-type-grid .type-card');
   if(first) first.classList.add('selected');
   bmState.typeName = '网球入门 & 提升 1v1';
-  document.getElementById('bk-os-type').textContent = '网球入门 & 提升 1v1';
+  document.getElementById('bk-os-type').textContent = currentLangUI==='en' ? 'Tennis Fundamentals 1v1' : '网球入门 & 提升 1v1';
   bmState.price = p1;
   document.getElementById('bk-total-price').textContent = '$'+p1.toFixed(2);
 }
@@ -4346,12 +4347,12 @@ async function submitBM() {
   document.getElementById('pay-usd').textContent = '$' + parseFloat(price).toFixed(2);
   document.getElementById('pay-cny').textContent = '¥—';
   document.getElementById('pay-spin').style.display = 'inline-block';
-  document.getElementById('pay-rate-txt').textContent = '正在获取实时汇率…';
+  document.getElementById('pay-rate-txt').textContent = currentLangUI==='en' ? 'Fetching live rate…' : '正在获取实时汇率…';
   document.getElementById('pay-wechat').value = '';
   document.getElementById('pay-phone').value = '';
   document.getElementById('pay-err').style.display = 'none';
   document.getElementById('pay-confirm').disabled = false;
-  document.getElementById('pay-confirm').innerHTML = '✅ 我已付款，确认预约';
+  document.getElementById('pay-confirm').innerHTML = '<span data-i18n="btn_paid">'+t('btn_paid')+'</span>';
   document.getElementById('pay-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
   // Set QR images
@@ -4366,9 +4367,9 @@ async function submitBM() {
   } catch(e){ payState.rate=7.25; }
   var cny = Math.ceil(payState.usd * payState.rate);
   payState.cny = cny;
-  document.getElementById('pay-cny').textContent = '¥'+cny+' 参考';
+  document.getElementById('pay-cny').textContent = '¥'+cny+(currentLangUI==="en"?' (ref)':' 参考');
   document.getElementById('pay-spin').style.display = 'none';
-  document.getElementById('pay-rate-txt').textContent = '以 USD 实际收费，人民币仅供参考';
+  document.getElementById('pay-rate-txt').textContent = currentLangUI==='en' ? 'Charged in USD, CNY for reference only' : '以 USD 实际收费，人民币仅供参考';
 }
 
 function selPayM(m) {
@@ -4393,11 +4394,11 @@ async function doPayConfirmQR() {
   var ph = document.getElementById('pay-phone').value.trim();
   var errEl = document.getElementById('pay-err');
   errEl.style.display = 'none';
-  if(!wx){errEl.textContent='⚠️ 请填写微信号';errEl.style.display='block';return;}
-  if(!ph){errEl.textContent='⚠️ 请填写手机号';errEl.style.display='block';return;}
+  if(!wx){errEl.textContent=currentLangUI==='en'?'⚠️ Please enter your WeChat ID':'⚠️ 请填写微信号';errEl.style.display='block';return;}
+  if(!ph){errEl.textContent=currentLangUI==='en'?'⚠️ Please enter your phone number':'⚠️ 请填写手机号';errEl.style.display='block';return;}
 
   var btn = document.getElementById('pay-confirm');
-  btn.disabled = true; btn.innerHTML = '<span class="spin"></span>提交中…';
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span>'+(currentLangUI==="en"?"Submitting…":"提交中…");
 
   var typeName = document.getElementById('bk-os-type').textContent||'';
   var coachObj = bmState.coachRef||COACHES.find(function(c){return String(c.id)===String(bmState.coachId);});
@@ -4410,8 +4411,8 @@ async function doPayConfirmQR() {
       +(coachDbId?'&coach_id=eq.'+coachDbId:'')+'&limit=1',
       {headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}});
     if(chk.ok){var ex=await chk.json();if(ex&&ex.length>0){
-      btn.disabled=false;btn.innerHTML='✅ 我已付款，确认预约';
-      errEl.textContent='⚠️ 该时间段刚被预约，请返回重新选择';errEl.style.display='block';return;
+      btn.disabled=false;btn.innerHTML=t('btn_paid');
+      errEl.textContent=currentLangUI==='en'?'⚠️ This slot was just booked. Please go back and choose another.':'⚠️ 该时间段刚被预约，请返回重新选择';errEl.style.display='block';return;
     }}
   } catch(e){}
 
@@ -4439,11 +4440,11 @@ async function doPayConfirmQR() {
     if(r.status===401){ var ok=await tryRefreshToken(); r=await doPost(ok?currentUser.token:SB_KEY); }
     if(!r.ok){
       var eb=await r.json().catch(function(){return{};});
-      btn.disabled=false;btn.innerHTML='✅ 我已付款，确认预约';
-      errEl.textContent='❌ 提交失败：'+(eb.message||r.status);errEl.style.display='block';return;
+      btn.disabled=false;btn.innerHTML=t('btn_paid');
+      errEl.textContent='❌ '+(currentLangUI==='en'?'Submission failed: ':'提交失败：')+(eb.message||r.status);errEl.style.display='block';return;
     }
   } catch(e){
-    btn.disabled=false;btn.innerHTML='✅ 我已付款，确认预约';
+    btn.disabled=false;btn.innerHTML=t('btn_paid');
     errEl.textContent='❌ '+e.message;errEl.style.display='block';return;
   }
 
@@ -4451,7 +4452,7 @@ async function doPayConfirmQR() {
   document.getElementById('suc-coach').textContent  = bmState.coachName;
   document.getElementById('suc-date').textContent   = bmState.dateLabel||bmState.date;
   document.getElementById('suc-time').textContent   = bmState.time;
-  document.getElementById('suc-court').textContent  = bmState.court||'待定';
+  document.getElementById('suc-court').textContent  = bmState.court||(currentLangUI==="en"?"TBD":"待定");
   document.querySelector('.bk-modal-hd').style.display='none';
   document.getElementById('bm-form').style.display='none';
   document.getElementById('bm-success').style.display='block';
@@ -4468,13 +4469,13 @@ async function doPayConfirm() {
   var ph = document.getElementById('pay-phone').value.trim();
   var errEl = document.getElementById('pay-err');
   errEl.style.display = 'none';
-  if(!wx){errEl.textContent='⚠️ 请填写微信号（客服联系用）';errEl.style.display='block';return;}
-  if(!ph){errEl.textContent='⚠️ 请填写手机号';errEl.style.display='block';return;}
+  if(!wx){errEl.textContent=currentLangUI==='en'?'⚠️ Please enter your WeChat ID':'⚠️ 请填写微信号（客服联系用）';errEl.style.display='block';return;}
+  if(!ph){errEl.textContent=currentLangUI==='en'?'⚠️ Please enter your phone number':'⚠️ 请填写手机号';errEl.style.display='block';return;}
 
   var btn = document.getElementById('pay-confirm');
-  btn.disabled=true; btn.innerHTML='<span class="spin"></span>保存预约信息…';
+  btn.disabled=true; btn.innerHTML='<span class="spin"></span>'+(currentLangUI==="en"?"Saving…":"保存预约信息…");
 
-  var typeName = document.getElementById('bk-os-type').textContent||'网球入门 & 提升';
+  var typeName = document.getElementById('bk-os-type').textContent||'网球入门 & 提升 1v1';
   var coachObj = bmState.coachRef||COACHES.find(function(c){return String(c.id)===String(bmState.coachId);});
   var coachDbId = (coachObj&&coachObj.id&&String(coachObj.id).includes('-'))?coachObj.id:null;
 
@@ -4485,8 +4486,8 @@ async function doPayConfirm() {
       +(coachDbId?'&coach_id=eq.'+coachDbId:'')+'&limit=1',
       {headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}});
     if(chk.ok){var ex=await chk.json();if(ex&&ex.length>0){
-      btn.disabled=false;btn.innerHTML='💳 前往 Stripe 完成支付';
-      errEl.textContent='⚠️ 该时间段刚被预约，请返回重新选择';errEl.style.display='block';return;
+      btn.disabled=false;btn.innerHTML=t('btn_stripe');
+      errEl.textContent=currentLangUI==='en'?'⚠️ This slot was just booked. Please go back and choose another.':'⚠️ 该时间段刚被预约，请返回重新选择';errEl.style.display='block';return;
     }}
   } catch(e){}
 
@@ -4528,9 +4529,9 @@ async function doPayConfirm() {
 
     if(!r.ok){
       var eb = await r.json().catch(function(){return{};});
-      btn.disabled=false; btn.innerHTML='💳 前往 Stripe 完成支付';
+      btn.disabled=false; btn.innerHTML=t('btn_stripe');
       var errMsg = eb.message || eb.hint || eb.details || ('HTTP '+r.status);
-      errEl.textContent='❌ 保存失败：'+errMsg;
+      errEl.textContent='❌ '+(currentLangUI==='en'?'Save failed: ':'保存失败：')+errMsg;
       errEl.style.display='block';
       console.error('Booking save error:', r.status, eb);
       return;
@@ -4539,8 +4540,8 @@ async function doPayConfirm() {
     var saved = await r.json();
     bookingId = (Array.isArray(saved)?saved[0]:saved).id;
   } catch(e){
-    btn.disabled=false; btn.innerHTML='💳 前往 Stripe 完成支付';
-    errEl.textContent='❌ 网络错误：'+e.message;
+    btn.disabled=false; btn.innerHTML=t('btn_stripe');
+    errEl.textContent='❌ '+(currentLangUI==='en'?'Network error: ':'网络错误：')+e.message;
     errEl.style.display='block';
     return;
   }
@@ -4551,7 +4552,7 @@ async function doPayConfirm() {
     + '?client_reference_id=' + encodeURIComponent(bookingId)
     + '&prefilled_email=' + encodeURIComponent(currentUser.email||'');
 
-  btn.innerHTML = '🚀 跳转 Stripe…';
+  btn.innerHTML = '🚀 '+(currentLangUI==="en"?"Redirecting to Stripe…":"跳转 Stripe…");
 
   // Store booking info in sessionStorage so we can restore after redirect
   try {
@@ -4592,7 +4593,7 @@ function renderCoaches() {
     return rOk && lOk && sOk;
   });
   var countEl = document.getElementById('coach-count');
-  if (countEl) countEl.textContent = '共 ' + list.length + ' 位教练';
+  if (countEl) countEl.textContent = currentLangUI==='en' ? list.length+' Coaches' : '共 '+list.length+' 位教练';
   var grid = document.getElementById('coaches-grid');
   if (!grid) return;
   if (list.length === 0) {
@@ -4650,7 +4651,7 @@ function openCoachProfile(coachId) {
     ? '<img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgFBgcGBQgHBgcJCAgJDBMMDAsLDBgREg4THBgdHRsYGxofIywlHyEqIRobJjQnKi4vMTIxHiU2OjYwOiwwMTD/wAARCAAoACgDASIAAhEBAxEB/8QAGwAAAgMBAQEAAAAAAAAAAAAAAAUDBAYCAQf/xAAsEAACAQQBBAECBgMAAAAAAAABAgMABAUREiExBhNBUWEUIjJCUnGhsf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8A8Z0jSLrWbxLSzjLyEZYnhVHuT4FR7V5ZW3UPc3pjWHllcRIgXzHjgDoT+Ky7yjh4q7/tMsgJRHuUeVY+R7j5qr6dqlzpN2t1aSFJAMEHlWHsw8GgLPaW7afcLbXkayRBuSV4zjzz71c0PW7jRb5LiB2MecTRA8JB4P8Ax5pvLdLqMM4VVy4VlDkgjB4qv0+6hbUYJxEjFpF7lWxzxQLSdSbT9VhvYJnjkjOUbPI+PB8GvQ9G1GPUrSO7giIRxgiQFSPbHivOs2URTF3a3C7VyCM8GvX9P1e20OyW1u4j8wfZ4yDj7vHFAYNB0W30C0Gn21wJYWUyABt8ZOT47j/AHVi6s7W5B2yshByzjnHiujdQ0jtcMuXZY2jGxV/c4yN3J/96rXkCW7SJAhaONyqM6bSwBxk+fBoA/8ASmkra6bLJJPILiMmVFJAOcduKy10/Tdtg01x8LHBO1kGeKsT3rR2VqLcQpJJHvYhSS2TnPP+fWjGnO4YC1QkqIxlm4xzQbV22t2sNvLGtxFBcTKo2g4yQgPiuqtHxOPNULvTuoJtVjZkIkZFEiDaFOBg4GB0r0z4Q/EWkzX1r08kVraFnPYR7gVUAhiM9/kV5bPqN5czGaS5kLk5JDH+qA//9k=" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 10%;">'
     : '<div class="profile-hero-ph" style="background:'+c.gradient+';">🎾</div>';
 
-  var dayNames = ['一','二','三','四','五','六','日'];
+  var dayNames = currentLangUI==='en' ? ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'] : ['一','二','三','四','五','六','日'];
   // 优先从 schedule 推导可用天（schedule key 是 JS getDay(): 0=周日,1=周一,...）
   // dayNames index: 0=一,1=二,...,5=六,6=日 → 对应 getDay: 1,2,3,4,5,6,0
   var dowMap = [1,2,3,4,5,6,0]; // dayNames[i] → getDay value
@@ -4685,8 +4686,8 @@ function openCoachProfile(coachId) {
     +'<div class="profile-meta-row">🗣 '+c.lang+'</div>'
     +'</div>'
     +'<div class="profile-cta-btns">'
-    +'<button class="btn-book-primary" data-cid="'+c.id+'" onclick="openBM(this.getAttribute(\'data-cid\'))">📅 立即预约</button>'
-    +'<button class="btn-msg-secondary">💬 消息</button>'
+    +'<button class="btn-book-primary" data-cid="'+c.id+'" onclick="openBM(this.getAttribute(\'data-cid\'))">📅 '+t('btn_book')+'</button>'
+    +'<button class="btn-msg-secondary">💬 '+(currentLangUI==="en"?"Message":"消息")+'</button>'
     +'</div></div>';
 
   // Build main content
@@ -4703,28 +4704,28 @@ function openCoachProfile(coachId) {
   }).join('');
 
   document.getElementById('profile-main-content').innerHTML =
-    '<div class="pcard"><div class="pcard-title">👋 关于我</div>'
+    '<div class="pcard"><div class="pcard-title">👋 '+(currentLangUI==="en"?"About Me":"关于我")+'</div>'
     +'<div style="font-size:13px;color:var(--sub);line-height:1.8;">'+(c.bio||'')+'</div></div>'
 
-    +'<div class="pcard"><div class="pcard-title">🏆 运动履历</div>'+achHtml+'</div>'
+    +'<div class="pcard"><div class="pcard-title">🏆 '+(currentLangUI==="en"?"Background":"运动履历")+'</div>'+achHtml+'</div>'
 
-    +'<div class="pcard"><div class="pcard-title">🎯 课程类型</div>'
+    +'<div class="pcard"><div class="pcard-title">🎯 '+(currentLangUI==="en"?"Lesson Types":"课程类型")+'</div>'
     +'<div class="spec-tags">'+specHtml+'</div></div>'
 
-    +'<div class="pcard"><div class="pcard-title">💰 课程价格</div>'
-    +'<div class="price-row"><div><div class="price-name">单次课程</div><div class="price-desc">1对1私教，60分钟</div></div>'
+    +'<div class="pcard"><div class="pcard-title">💰 '+(currentLangUI==="en"?"Pricing":"课程价格")+'</div>'
+    +'<div class="price-row"><div><div class="price-name">'+(currentLangUI==="en"?"Single Lesson":"单次课程")+'</div><div class="price-desc">'+(currentLangUI==="en"?"1-on-1 private, 60 min":"1对1私教，60分钟")+'</div></div>'
     +'<div class="price-val">'+c.price+'</div></div></div>'
 
-    +'<div class="pcard"><div class="pcard-title">📅 可约时间</div>'
+    +'<div class="pcard"><div class="pcard-title">📅 '+(currentLangUI==="en"?"Availability":"可约时间")+'</div>'
     +'<div class="avail-row">'+availHtml+'</div></div>'
 
-    +'<div class="pcard"><div class="pcard-title">🎾 常用球场</div>'+courtHtml+'</div>';
+    +'<div class="pcard"><div class="pcard-title">🎾 '+(currentLangUI==="en"?"Courts":"常用球场")+'</div>'+courtHtml+'</div>';
 
   // Show profile panel
   document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
   document.getElementById('panel-coach-profile').classList.add('active');
   document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
-  document.getElementById('topbar-title').textContent = '教练详情';
+  document.getElementById('topbar-title').textContent = t('panel_profile');
   // Scroll to top
   var pb = document.querySelector('.page-body');
   if(pb) pb.scrollTop = 0;
@@ -4777,7 +4778,7 @@ async function loadMyBookings() {
 
   var listEl = document.getElementById('my-bookings-list');
   var homeUpEl = document.getElementById('home-upcoming');
-  if(listEl) listEl.innerHTML = '<div class="empty-st"><div class="empty-st-icon" style="font-size:24px;">⏳</div><div>加载中…</div></div>';
+  if(listEl) listEl.innerHTML = '<div class="empty-st"><div class="empty-st-icon" style="font-size:24px;">⏳</div><div>'+(currentLangUI==="en"?"Loading…":"加载中…")</div></div>';
 
   try {
     // Build query URL
@@ -4901,7 +4902,7 @@ function bookingCardHTML(b) {
     +   '<div style="font-size:15px;font-weight:800;margin-bottom:3px;">' + b.booking_time + '</div>'
     +   '<div style="font-size:12px;color:var(--sub);margin-bottom:4px;">🎾 ' + (function(){
         if(b.coach_id){ var c=COACHES.find(function(x){return String(x.id)===String(b.coach_id);}); if(c) return c.name; }
-        return b.coach_name || 'James 教练';
+        return b.coach_name || 'Coach';
       })() + '</div>'
     +   '<div style="font-size:11px;color:var(--mute);margin-bottom:6px;">📍 ' + (b.court||'—') + '</div>'
     +   '<span style="display:inline-block;font-size:11px;font-weight:600;background:var(--green-light);color:var(--green);padding:2px 8px;border-radius:6px;">' + (b.lesson_type||'—') + '</span>'
@@ -4979,11 +4980,58 @@ var LANG = {
     pkg_sub: '买得越多，省得越多 · 套餐课时永久有效',
     pkg_standard: '标准教练', pkg_standard_sub: '单次课 $75 / 小时 · 含场地费',
     pkg_premium: '高级教练', pkg_premium_sub: '单次课 $100 / 小时 · 含场地费',
+    pkg_single: '单次课', pkg_per_lesson: '/ 节', pkg_flexible: '按次付款，灵活无压力',
+    pkg_total: '总价', pkg_best_value: '最划算',
+    btn_find_coach: '立即找教练',
     // Auth
-    btn_register_short: '注册',
+    btn_register_short: '注册', tab_login: '登录账号', tab_register: '新用户注册',
+    lbl_name: '你的姓名', lbl_email: '邮箱地址', lbl_password: '密码',
+    ph_name: '中文或英文名', ph_password: '至少 6 位',
+    auth_tagline: 'DC/MD/VA 华人网球教练预约平台<br>注册后即可在线预约课程',
+    auth_no_account: '还没有账号？点上方「新用户注册」免费创建',
+    site_name: '网球教练平台', site_sub: 'DC · MD · VA 华人网球社区',
+    // Reset password
+    reset_title: '重置密码', reset_sub: '输入注册邮箱，我们会发送<br>重置密码链接到您的邮箱',
+    btn_send_reset: '发送重置链接', btn_cancel: '取消',
+    // Coaches
+    all_regions: '全部地区', all_langs: '全部语言', lang_chinese: '🗣 中文',
+    back_coaches: '‹ 返回教练列表',
+    // Admin
+    admin_sub: '所有预约管理', all_status: '全部状态',
+    status_pending_payment_short: '待支付', status_pending_short: '待确认',
+    status_confirmed_short: '已确认', status_cancelled_short: '已取消',
+    admin_search_ph: '搜索姓名 / 邮箱…',
+    // Login gate
+    gate_title: '登录后才能预约', gate_sub: '请先登录或注册账号<br>预约记录将保存到你的账户',
+    gate_skip: '稍后再说，先浏览教练',
+    // Loyalty
+    loyalty_title: 'Tennis Warehouse 专属折扣',
+    loyalty_sub: '累计约课满 10 次解锁 30% 优惠码',
+    loyalty_badge: '忠实会员专享',
+    // Pay overlay
+    pay_recommended: '推荐',
+    pay_qr_label: '扫码支付（免手续费）',
+    pay_qr_instruction: '扫码付款后点击下方 <strong>「✅ 我已付款，确认预约」</strong> 按钮，客服将核实后确认预约。',
+    pay_card_label: '信用卡 / Apple Pay / Google Pay',
+    pay_fee_notice: '⚠️ 信用卡支付含 <strong>2.9% + $0.30</strong> 手续费由客户承担。<br>推荐使用 <strong>Zelle 扫码支付</strong>，零手续费。',
+    pay_stripe_desc: '通过 Stripe 安全支付，支付完成后自动确认预约。',
+    btn_stripe: '💳 前往 Stripe 完成支付',
+    policy_body: '✅ 上课 <strong>48小时前</strong>取消 → 教练费<strong>全额退还</strong><br>❌ 预约成功后 → 场地费 <strong>$12 不可退还</strong><br>⚠️ 上课 <strong>48小时内</strong>取消 → 费用不予退还',
+    pay_secure_note: '扫码支付安全可靠，客服 24 小时内确认',
     // Benefit
-    benefit_title: '加入平台，享受专属好处',
-    benefit_sub: '透明定价 · 灵活约课 · 本地教练 · 忠实会员专享福利',
+    benefit_features_title: '🎯 平台好处',
+    benefit_f1_title: '中文平台界面', benefit_f1_desc: '平台界面、教练简介、约课流程全部中文显示。部分教练提供中文教学，可在筛选时选择。',
+    benefit_f2_title: '透明公开定价', benefit_f2_desc: '每位教练的课时费一目了然，无隐藏费用，无中间商差价。你看到的价格就是你付的价格。',
+    benefit_f3_title: '灵活约课时间', benefit_f3_desc: '实时查看教练可用时间，按自己的日程安排上课，周末、工作日均可。',
+    benefit_f4_title: '按需匹配教练', benefit_f4_desc: '按技术水平、训练目标、上课地点筛选教练。入门、进阶、儿童训练均有对应教练。',
+    benefit_f5_title: 'DC/MD/VA 本地覆盖', benefit_f5_desc: '平台聚焦大华盛顿地区，教练均在本地，上课地点近、接送方便，真正的社区平台。',
+    benefit_f6_title: '提前 48 小时取消', benefit_f6_desc: '只需提前 48 小时取消预约，无需支付任何费用，灵活应对临时变化，零压力约课。',
+    stat_bookings_done: '成功约课', stat_rating: '平均评分', stat_states: '3州',
+    loading: '加载中…',
+    btn_got_it: '我知道了',
+    loyalty_code_sent: '🎉 恭喜！优惠码已发送至你的注册邮箱',
+    loyalty_code_check: '如未收到请检查垃圾邮件，或联系我们重发',
+    annual_perk: '年度福利', coming_soon: '即将上线', forgot_pwd: '忘记密码？',
   },
   en: {
     // Nav
@@ -5043,11 +5091,58 @@ var LANG = {
     pkg_sub: 'More lessons, more savings · Credits never expire',
     pkg_standard: 'Standard Coach', pkg_standard_sub: '$75 / hr · Court fee included',
     pkg_premium: 'Premium Coach', pkg_premium_sub: '$100 / hr · Court fee included',
+    pkg_single: 'Single Lesson', pkg_per_lesson: '/ lesson', pkg_flexible: 'Pay per lesson, no commitment',
+    pkg_total: 'Total', pkg_best_value: 'Best Value',
+    btn_find_coach: 'Find a Coach',
     // Auth
-    btn_register_short: 'Sign Up',
+    btn_register_short: 'Sign Up', tab_login: 'Log In', tab_register: 'Sign Up',
+    lbl_name: 'Your Name', lbl_email: 'Email', lbl_password: 'Password',
+    ph_name: 'Your name', ph_password: 'At least 6 characters',
+    auth_tagline: 'DC/MD/VA Tennis Coaching Platform<br>Sign up to book lessons online',
+    auth_no_account: 'No account? Click "Sign Up" above to register free.',
+    site_name: 'Tennis Coach Platform', site_sub: 'DC · MD · VA Community',
+    // Reset password
+    reset_title: 'Reset Password', reset_sub: 'Enter your email and we\'ll send<br>a password reset link',
+    btn_send_reset: 'Send Reset Link', btn_cancel: 'Cancel',
+    // Coaches
+    all_regions: 'All Areas', all_langs: 'All Languages', lang_chinese: '🗣 Chinese',
+    back_coaches: '‹ Back to Coaches',
+    // Admin
+    admin_sub: 'All Bookings Management', all_status: 'All Statuses',
+    status_pending_payment_short: 'Awaiting Payment', status_pending_short: 'Pending',
+    status_confirmed_short: 'Confirmed', status_cancelled_short: 'Cancelled',
+    admin_search_ph: 'Search name / email…',
+    // Login gate
+    gate_title: 'Log in to Book', gate_sub: 'Please log in or sign up<br>Your bookings will be saved to your account',
+    gate_skip: 'Maybe later, just browsing',
+    // Loyalty
+    loyalty_title: 'Tennis Warehouse Exclusive Discount',
+    loyalty_sub: 'Book 10 lessons to unlock a 30% promo code',
+    loyalty_badge: 'Loyal Member Perk',
+    // Pay overlay
+    pay_recommended: 'Recommended',
+    pay_qr_label: 'Scan to Pay (No fees)',
+    pay_qr_instruction: 'After scanning and paying, click <strong>"✅ I\'ve Paid — Confirm Booking"</strong> below. Our team will verify and confirm.',
+    pay_card_label: 'Credit Card / Apple Pay / Google Pay',
+    pay_fee_notice: '⚠️ Credit card payments include a <strong>2.9% + $0.30</strong> fee charged to customer.<br>Use <strong>Zelle</strong> to avoid fees.',
+    pay_stripe_desc: 'Secure payment via Stripe. Booking confirmed automatically after payment.',
+    btn_stripe: '💳 Pay with Stripe',
+    policy_body: '✅ Cancel <strong>48+ hours</strong> before → Full coach fee refund<br>❌ After booking → Court fee <strong>$12 non-refundable</strong><br>⚠️ Cancel within <strong>48 hours</strong> → No refund',
+    pay_secure_note: 'Scan-to-pay is safe and secure. Confirmed within 24 hours.',
     // Benefit
-    benefit_title: 'Join Our Platform',
-    benefit_sub: 'Transparent pricing · Flexible booking · Local coaches · Loyalty rewards',
+    benefit_features_title: '🎯 Platform Benefits',
+    benefit_f1_title: 'Bilingual Platform', benefit_f1_desc: 'Full Chinese & English interface. Some coaches offer Chinese instruction — filter by language when searching.',
+    benefit_f2_title: 'Transparent Pricing', benefit_f2_desc: 'All coach rates are clearly listed. No hidden fees, no markups. The price you see is the price you pay.',
+    benefit_f3_title: 'Flexible Scheduling', benefit_f3_desc: 'View real-time coach availability. Book at your own pace — weekdays and weekends available.',
+    benefit_f4_title: 'Find Your Coach', benefit_f4_desc: 'Filter by skill level, training goals, and location. Beginner, advanced, and junior coaches all available.',
+    benefit_f5_title: 'DC/MD/VA Coverage', benefit_f5_desc: 'Focused on the greater DC area. All coaches are local — easy access, convenient courts.',
+    benefit_f6_title: 'Free 48-Hour Cancellation', benefit_f6_desc: 'Cancel up to 48 hours before your lesson at no charge. Stress-free, flexible booking.',
+    stat_bookings_done: 'Lessons Booked', stat_rating: 'Avg Rating', stat_states: '3 States',
+    loading: 'Loading…',
+    btn_got_it: 'Got it',
+    loyalty_code_sent: '🎉 Congrats! Promo code sent to your registered email',
+    loyalty_code_check: 'Check spam if not received, or contact us to resend',
+    annual_perk: 'Annual Perk', coming_soon: 'Coming Soon', forgot_pwd: 'Forgot Password?',
   }
 };
 
@@ -5160,7 +5255,7 @@ function showMobMeSheet() {
     +   '<div><div style="font-size:15px;font-weight:800;">'+currentUser.name+'</div>'
     +   '<div style="font-size:12px;color:#999;margin-top:2px;">'+currentUser.email+'</div></div>'
     + '</div>'
-    + '<button onclick="mobSheetGoBookings()" style="width:100%;padding:14px;background:var(--green-light);color:var(--green);border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:10px;">📅 我的预约</button>'
+    + '<button onclick="mobSheetGoBookings()" data-i18n-onclick="mob_mybookings" style="width:100%;padding:14px;background:var(--green-light);color:var(--green);border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:10px;">📅 我的预约</button>'
     + '<button onclick="mobSheetLogout()" style="width:100%;padding:14px;background:#fdecea;color:#e53935;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">退出登录</button>'
     + '</div>';
   el.onclick = function(e){ if(e.target===el) el.style.display='none'; };
@@ -5178,7 +5273,7 @@ function updateMobNav() {
   } else {
     meIcon.textContent = '👤';
     meIcon.style.cssText = 'font-size:20px;';
-    if(meLabel) meLabel.textContent = '登录';
+    if(meLabel) meLabel.textContent = t('btn_login');
   }
 }
 
@@ -5202,7 +5297,7 @@ function updateLoyaltyCard(bookings) {
   // 同步更新抽奖票数
   var raffleEl = document.getElementById('raffle-count');
   if(raffleEl) {
-    raffleEl.textContent = cnt + ' 张票';
+    raffleEl.textContent = cnt + (currentLangUI==='en'?' entries':' 张票');
     raffleEl.style.color = cnt > 0 ? '#e11d48' : '#1a1a1a';
   }
 
@@ -5211,9 +5306,9 @@ function updateLoyaltyCard(bookings) {
     card.style.borderColor = '#6ee7b7';
     card.style.background = 'linear-gradient(135deg,#f0fdf4,#fff)';
     document.getElementById('loyalty-icon').textContent = '🏆';
-    document.getElementById('loyalty-title').textContent = 'Tennis Warehouse 30% 优惠码已解锁！';
-    document.getElementById('loyalty-sub').textContent = '优惠码已发送至 ' + currentUser.email;
-    document.getElementById('loyalty-badge').textContent = '✅ 忠实会员';
+    document.getElementById('loyalty-title').textContent = currentLangUI==='en'?'Tennis Warehouse 30% Discount Unlocked!':'Tennis Warehouse 30% 优惠码已解锁！';
+    document.getElementById('loyalty-sub').textContent = (currentLangUI==='en'?'Code sent to ':'优惠码已发送至 ') + currentUser.email;
+    document.getElementById('loyalty-badge').textContent = currentLangUI==='en'?'✅ Loyal Member':'✅ 忠实会员';
     document.getElementById('loyalty-badge').style.background = '#1a6b3a';
     document.getElementById('loyalty-progress-wrap').style.display = 'none';
     document.getElementById('loyalty-unlocked').style.display = 'block';
@@ -5221,8 +5316,8 @@ function updateLoyaltyCard(bookings) {
     // 进行中
     document.getElementById('loyalty-progress-wrap').style.display = 'block';
     document.getElementById('loyalty-unlocked').style.display = 'none';
-    document.getElementById('loyalty-count-txt').textContent = '已完成 ' + cnt + ' / ' + LOYALTY_THRESHOLD_CLIENT + ' 次';
-    document.getElementById('loyalty-remain-txt').textContent = '差 ' + (LOYALTY_THRESHOLD_CLIENT - cnt) + ' 次解锁';
+    document.getElementById('loyalty-count-txt').textContent = currentLangUI==='en'?cnt+' / '+LOYALTY_THRESHOLD_CLIENT+' lessons':'已完成 '+cnt+' / '+LOYALTY_THRESHOLD_CLIENT+' 次';
+    document.getElementById('loyalty-remain-txt').textContent = currentLangUI==='en'?((LOYALTY_THRESHOLD_CLIENT-cnt)+' more to unlock'):'差 '+(LOYALTY_THRESHOLD_CLIENT-cnt)+' 次解锁';
     // 延迟一帧让动画生效
     setTimeout(function(){
       document.getElementById('loyalty-bar').style.width = pct + '%';
@@ -5230,7 +5325,7 @@ function updateLoyaltyCard(bookings) {
 
     // 快要解锁时换提示语
     if(cnt >= 8) {
-      document.getElementById('loyalty-sub').textContent = '🔥 还差 ' + (LOYALTY_THRESHOLD_CLIENT - cnt) + ' 次就解锁！加油！';
+      document.getElementById('loyalty-sub').textContent = currentLangUI==='en'?'🔥 '+(LOYALTY_THRESHOLD_CLIENT-cnt)+' more lessons to unlock!':'🔥 还差 '+(LOYALTY_THRESHOLD_CLIENT-cnt)+' 次就解锁！加油！';
     }
   }
 }
@@ -5267,7 +5362,7 @@ function switchGateTab(mode) {
     'flex:1;padding:9px;text-align:center;font-size:13px;cursor:pointer;border-radius:9px;' +
     (!isLogin ? 'background:white;font-weight:700;color:#1a6b3a;box-shadow:0 2px 8px rgba(0,0,0,0.1);' : 'font-weight:500;color:#999;');
   document.getElementById('gate-name-field').style.display = isLogin ? 'none' : 'block';
-  document.getElementById('gate-submit-btn').textContent = isLogin ? '登录账号' : '免费注册';
+  document.getElementById('gate-submit-btn').textContent = isLogin ? t('btn_login') : t('btn_register');
   document.getElementById('gate-err').style.display = 'none';
 }
 
@@ -5278,13 +5373,13 @@ async function submitGate() {
   var errEl = document.getElementById('gate-err');
   errEl.style.display = 'none';
 
-  if(!email||!email.includes('@')){ errEl.textContent='⚠️ 请输入有效邮箱'; errEl.style.display='block'; return; }
-  if(!password||password.length<6){ errEl.textContent='⚠️ 密码至少 6 位'; errEl.style.display='block'; return; }
-  if(gateMode==='register'&&!name){ errEl.textContent='⚠️ 请填写姓名'; errEl.style.display='block'; return; }
+  if(!email||!email.includes('@')){ errEl.textContent=currentLangUI==='en'?'⚠️ Please enter a valid email':'⚠️ 请输入有效邮箱'; errEl.style.display='block'; return; }
+  if(!password||password.length<6){ errEl.textContent=currentLangUI==='en'?'⚠️ Password must be at least 6 characters':'⚠️ 密码至少 6 位'; errEl.style.display='block'; return; }
+  if(gateMode==='register'&&!name){ errEl.textContent=currentLangUI==='en'?'⚠️ Please enter your name':'⚠️ 请填写姓名'; errEl.style.display='block'; return; }
 
   var btn = document.getElementById('gate-submit-btn');
   btn.disabled = true;
-  btn.innerHTML = '<span class="spin"></span>处理中…';
+  btn.innerHTML = '<span class="spin"></span>'+(currentLangUI==="en"?"Processing…":"处理中…");
 
   var endpoint = gateMode==='login' ? '/auth/v1/token?grant_type=password' : '/auth/v1/signup';
   var body = { email, password };
@@ -5298,10 +5393,10 @@ async function submitGate() {
   var data = await r.json();
 
   btn.disabled = false;
-  btn.textContent = gateMode==='login' ? '登录账号' : '免费注册';
+  btn.textContent = gateMode==='login' ? t('btn_login') : t('btn_register');
 
   if(!r.ok || data.error) {
-    var msg = data.error_description || data.msg || data.message || '操作失败';
+    var msg = data.error_description || data.msg || data.message || (currentLangUI==='en'?'Failed, please try again':'操作失败');
     if(msg.includes('Invalid login')) msg = '邮箱或密码错误';
     if(msg.includes('already registered')) msg = '该邮箱已注册，请直接登录';
     errEl.textContent = '⚠️ ' + msg;
@@ -5319,7 +5414,7 @@ async function submitGate() {
     var loginData = await loginRes.json();
     if(loginData.access_token) data = loginData;
     else {
-      errEl.textContent = '注册成功！请用邮箱和密码登录';
+      errEl.textContent = currentLangUI==='en'?'Registered! Please log in.':'注册成功！请用邮箱和密码登录';
       switchGateTab('login');
       document.getElementById('gate-email').value = email;
       return;
@@ -5379,7 +5474,7 @@ function updateSidebarUser() {
   if(currentUser) {
     if(nameEl) nameEl.textContent = currentUser.name;
     if(emailEl) emailEl.textContent = currentUser.email;
-    if(actionEl) actionEl.textContent = '退出登录';
+    if(actionEl) actionEl.textContent = t('logout');
     if(arrowEl) arrowEl.style.display = 'none';
     if(avatarEl) {
       var initials = currentUser.name ? currentUser.name.charAt(0).toUpperCase() : '👤';
@@ -5387,9 +5482,9 @@ function updateSidebarUser() {
       avatarEl.style.background = 'linear-gradient(135deg,#2d9a57,#52b788)';
     }
   } else {
-    if(nameEl) nameEl.textContent = '游客';
-    if(emailEl) emailEl.textContent = '点击登录 / 注册';
-    if(actionEl) actionEl.textContent = '登录账号';
+    if(nameEl) nameEl.textContent = currentLangUI==='en'?'Guest':'游客';
+    if(emailEl) emailEl.textContent = currentLangUI==='en'?'Tap to log in / sign up':'点击登录 / 注册';
+    if(actionEl) actionEl.textContent = t('btn_login');
     if(arrowEl) arrowEl.style.display = 'block';
     if(avatarEl) {
       avatarEl.textContent = '👤';
@@ -5401,8 +5496,8 @@ function updateSidebarUser() {
 function logout() {
   localStorage.removeItem('sb_session');
   currentUser = null;
-  document.getElementById('sb-name').textContent = '游客';
-  document.getElementById('sb-email').textContent = '登录后可预约课程';
+  document.getElementById('sb-name').textContent = currentLangUI==='en' ? 'Guest' : '游客';
+  document.getElementById('sb-email').textContent = currentLangUI==='en' ? 'Log in to book lessons' : '登录后可预约课程';
   showToastClient('已退出登录');
 }
 
@@ -5442,10 +5537,10 @@ async function submitPackage() {
   var phone  = document.getElementById('pkg-phone').value.trim();
   var errEl  = document.getElementById('pkg-err');
   errEl.style.display = 'none';
-  if(!wechat) { errEl.textContent='⚠️ 请填写微信号'; errEl.style.display='block'; return; }
+  if(!wechat) { errEl.textContent=currentLangUI==='en'?'⚠️ Please enter your WeChat ID':'⚠️ 请填写微信号'; errEl.style.display='block'; return; }
 
   var btn = document.getElementById('pkg-submit-btn');
-  btn.disabled = true; btn.textContent = '提交中…';
+  btn.disabled = true; btn.textContent = currentLangUI==='en'?'Submitting…':'提交中…';
 
   var prices = {'5节套餐': 325, '10节套餐': 720};
   var row = {
@@ -5523,10 +5618,10 @@ async function submitCompetition() {
   var errEl  = document.getElementById('comp-err');
   errEl.style.display = 'none';
 
-  if(!wechat) { errEl.textContent='⚠️ 请填写微信号'; errEl.style.display='block'; return; }
+  if(!wechat) { errEl.textContent=currentLangUI==='en'?'⚠️ Please enter your WeChat ID':'⚠️ 请填写微信号'; errEl.style.display='block'; return; }
 
   var btn = document.getElementById('comp-submit-btn');
-  btn.disabled = true; btn.textContent = '提交中…';
+  btn.disabled = true; btn.textContent = currentLangUI==='en'?'Submitting…':'提交中…';
 
   var row = {
     student_name:   name || (currentUser && currentUser.name) || '未填写',
@@ -5600,12 +5695,12 @@ async function submitStringing() {
   var errEl   = document.getElementById('str-err');
   errEl.style.display = 'none';
 
-  if(!racket)  { errEl.textContent='⚠️ 请填写球拍型号'; errEl.style.display='block'; return; }
-  if(!wechat)  { errEl.textContent='⚠️ 请填写微信号，穿线师会通过微信联系你'; errEl.style.display='block'; return; }
+  if(!racket)  { errEl.textContent=currentLangUI==='en'?'⚠️ Please enter racket model':'⚠️ 请填写球拍型号'; errEl.style.display='block'; return; }
+  if(!wechat)  { errEl.textContent=currentLangUI==='en'?'⚠️ Please enter your WeChat ID':'⚠️ 请填写微信号，穿线师会通过微信联系你'; errEl.style.display='block'; return; }
 
   var btn = document.getElementById('str-submit-btn');
   btn.disabled = true;
-  btn.textContent = '提交中…';
+  btn.textContent = currentLangUI==='en'?'Submitting…':'提交中…';
 
   var row = {
     student_name:    name || (currentUser && currentUser.name) || '未填写',
@@ -5749,7 +5844,7 @@ function showForgotPwd() {
   document.getElementById('forgot-ok').style.display = 'none';
   var btn = document.getElementById('forgot-btn');
   btn.disabled = false;
-  btn.textContent = '发送重置链接';
+  btn.textContent = t('btn_send_reset');
   btn.style.cssText = '';
   document.getElementById('forgot-overlay').style.display = 'flex';
 }
@@ -5768,13 +5863,13 @@ async function sendResetEmail() {
   okEl.style.display  = 'none';
 
   if(!email || !email.includes('@')) {
-    errEl.textContent = '⚠️ 请输入有效的邮箱地址';
+    errEl.textContent = currentLangUI==='en'?'⚠️ Please enter a valid email':'⚠️ 请输入有效的邮箱地址';
     errEl.style.display = 'block';
     return;
   }
 
   btn.disabled = true;
-  btn.textContent = '发送中…';
+  btn.textContent = currentLangUI==='en'?'Sending…':'发送中…';
 
   try {
     var r = await fetch(SB_URL + '/auth/v1/recover', {
@@ -5784,24 +5879,24 @@ async function sendResetEmail() {
     });
 
     if(r.ok || r.status === 200) {
-      okEl.innerHTML = '✅ 重置链接已发送！<br>请检查您的邮箱（含垃圾邮件文件夹）<br><span style="opacity:.7;font-size:11px;">链接有效期 1 小时</span>';
+      okEl.innerHTML = currentLangUI==='en'?'✅ Reset link sent! Check your inbox (including spam).<br><span style="opacity:.7;font-size:11px;">Link expires in 1 hour</span>':'✅ 重置链接已发送！<br>请检查您的邮箱（含垃圾邮件文件夹）<br><span style="opacity:.7;font-size:11px;">链接有效期 1 小时</span>';
       okEl.style.display = 'block';
-      btn.textContent = '已发送 ✓';
+      btn.textContent = currentLangUI==='en'?'Sent ✓':'已发送 ✓';
       btn.style.background = '#e8f5e9';
       btn.style.color = '#1a6b3a';
       btn.style.boxShadow = 'none';
     } else {
       var e = await r.json().catch(function(){ return {}; });
-      errEl.textContent = '❌ ' + (e.msg || e.message || '发送失败，请稍后重试');
+      errEl.textContent = '❌ ' + (e.msg || e.message || (currentLangUI==='en'?'Failed, please try again':'发送失败，请稍后重试'));
       errEl.style.display = 'block';
       btn.disabled = false;
-      btn.textContent = '发送重置链接';
+      btn.textContent = t('btn_send_reset');
     }
   } catch(e) {
     errEl.textContent = '❌ 网络错误，请检查连接后重试';
     errEl.style.display = 'block';
     btn.disabled = false;
-    btn.textContent = '发送重置链接';
+    btn.textContent = t('btn_send_reset');
   }
 }
 </script>
@@ -5837,8 +5932,8 @@ async function sendResetEmail() {
     <!-- PRIMARY: Zelle + WeChat -->
     <div style="margin-bottom:14px;">
       <div style="font-size:12px;font-weight:700;color:var(--sub);margin-bottom:10px;display:flex;align-items:center;gap:6px;">
-        <span style="background:#e8f5e9;color:var(--green);padding:2px 8px;border-radius:10px;font-size:11px;font-weight:800;">推荐</span>
-        扫码支付（免手续费）
+        <span style="background:#e8f5e9;color:var(--green);padding:2px 8px;border-radius:10px;font-size:11px;font-weight:800;" data-i18n="pay_recommended">推荐</span>
+        <span data-i18n="pay_qr_label">扫码支付（免手续费）</span>
       </div>
       <div style="display:grid;grid-template-columns:1fr;gap:10px;max-width:260px;margin:0 auto;">
         <!-- Zelle -->
@@ -5851,7 +5946,7 @@ async function sendResetEmail() {
 
       </div>
       <div style="margin-top:10px;background:#f0fdf4;border-radius:10px;padding:10px 12px;font-size:12px;color:#15803d;line-height:1.6;">
-        扫码付款后点击下方 <strong>「✅ 我已付款，确认预约」</strong> 按钮，客服将核实后确认预约。
+        <span data-i18n="pay_qr_instruction">扫码付款后点击下方 <strong>「✅ 我已付款，确认预约」</strong> 按钮，客服将核实后确认预约。</span>
       </div>
     </div>
 
@@ -5860,20 +5955,19 @@ async function sendResetEmail() {
       <div onclick="toggleStripeSection()" style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;cursor:pointer;background:#fafafa;">
         <div style="display:flex;align-items:center;gap:8px;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#635bff" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-          <span style="font-size:13px;font-weight:700;color:#635bff;">信用卡 / Apple Pay / Google Pay</span>
+          <span style="font-size:13px;font-weight:700;color:#635bff;" data-i18n="pay_card_label">信用卡 / Apple Pay / Google Pay</span>
         </div>
         <span id="stripe-toggle-arrow" style="font-size:12px;color:var(--mute);transition:transform 0.2s;">▼</span>
       </div>
       <div id="stripe-section" style="display:none;padding:12px 14px;border-top:1px solid var(--border);">
         <div style="background:#fef3c7;border-radius:8px;padding:8px 12px;font-size:12px;color:#92400e;margin-bottom:10px;line-height:1.5;">
-          ⚠️ 信用卡支付含 <strong>2.9% + $0.30</strong> 手续费由客户承担。<br>
-          推荐使用 <strong>Zelle 扫码支付</strong>，零手续费。
+          <span data-i18n="pay_fee_notice">⚠️ 信用卡支付含 <strong>2.9% + $0.30</strong> 手续费由客户承担。<br>推荐使用 <strong>Zelle 扫码支付</strong>，零手续费。</span>
         </div>
         <p style="font-size:12px;color:var(--mute);line-height:1.5;margin-bottom:10px;">
-          通过 Stripe 安全支付，支付完成后自动确认预约。
+          <span data-i18n="pay_stripe_desc">通过 Stripe 安全支付，支付完成后自动确认预约。</span>
         </p>
         <button onclick="doPayConfirm()" style="width:100%;padding:12px;background:linear-gradient(135deg,#635bff,#5145cd);color:white;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 3px 12px rgba(99,91,255,0.3);">
-          💳 前往 Stripe 完成支付
+          <span data-i18n="btn_stripe">💳 前往 Stripe 完成支付</span>
         </button>
       </div>
     </div>
@@ -5882,9 +5976,9 @@ async function sendResetEmail() {
     <div class="pay-policy">
       <div class="pay-policy-t" data-i18n="policy_title">📋 取消与退款政策</div>
       <div class="pay-policy-b">
-        ✅ 上课 <strong>48小时前</strong>取消 → 教练费<strong>全额退还</strong><br>
+        <span data-i18n="policy_body">✅ 上课 <strong>48小时前</strong>取消 → 教练费<strong>全额退还</strong><br>
         ❌ 预约成功后 → 场地费 <strong>$12 不可退还</strong><br>
-        ⚠️ 上课 <strong>48小时内</strong>取消 → 费用不予退还
+        ⚠️ 上课 <strong>48小时内</strong>取消 → 费用不予退还</span>
       </div>
     </div>
 
@@ -5893,7 +5987,7 @@ async function sendResetEmail() {
     <button class="pay-back-btn" onclick="closePayOverlay()"><span data-i18n="btn_goback">← 返回修改</span></button>
     <div class="pay-secure">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      扫码支付安全可靠，客服 24 小时内确认
+      <span data-i18n="pay_secure_note">扫码支付安全可靠，客服 24 小时内确认</span>
     </div>
   </div>
 </div>
