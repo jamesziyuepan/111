@@ -4778,7 +4778,7 @@ async function loadMyBookings() {
 
   var listEl = document.getElementById('my-bookings-list');
   var homeUpEl = document.getElementById('home-upcoming');
-  if(listEl) listEl.innerHTML = '<div class="empty-st"><div class="empty-st-icon" style="font-size:24px;">⏳</div><div>'+(currentLangUI==="en"?"Loading…":"加载中…")</div></div>';
+  if(listEl) listEl.innerHTML = '<div class="empty-st"><div class="empty-st-icon" style="font-size:24px;">⏳</div><div>'+(currentLangUI==="en"?"Loading…":"加载中…")+'</div></div>';
 
   try {
     // Build query URL
@@ -5032,6 +5032,9 @@ var LANG = {
     loyalty_code_sent: '🎉 恭喜！优惠码已发送至你的注册邮箱',
     loyalty_code_check: '如未收到请检查垃圾邮件，或联系我们重发',
     annual_perk: '年度福利', coming_soon: '即将上线', forgot_pwd: '忘记密码？',
+    benefit_title: '加入平台，享受专属好处',
+    benefit_sub: '透明定价 · 灵活约课 · 本地教练 · 忠实会员专享福利',
+    nav_benefit_short: '好处', nav_packages_short: '套餐',
   },
   en: {
     // Nav
@@ -5137,9 +5140,15 @@ var LANG = {
     benefit_f4_title: 'Find Your Coach', benefit_f4_desc: 'Filter by skill level, training goals, and location. Beginner, advanced, and junior coaches all available.',
     benefit_f5_title: 'DC/MD/VA Coverage', benefit_f5_desc: 'Focused on the greater DC area. All coaches are local — easy access, convenient courts.',
     benefit_f6_title: 'Free 48-Hour Cancellation', benefit_f6_desc: 'Cancel up to 48 hours before your lesson at no charge. Stress-free, flexible booking.',
+    benefit_title: '加入平台，享受专属好处',
+    benefit_sub: '透明定价 · 灵活约课 · 本地教练 · 忠实会员专享福利',
+    nav_benefit_short: '好处', nav_packages_short: '套餐',
     stat_bookings_done: 'Lessons Booked', stat_rating: 'Avg Rating', stat_states: '3 States',
     loading: 'Loading…',
     btn_got_it: 'Got it',
+    benefit_title: 'Join Our Platform',
+    benefit_sub: 'Transparent pricing · Flexible booking · Local coaches · Loyalty rewards',
+    nav_benefit_short: 'Benefits', nav_packages_short: 'Pkgs',
     loyalty_code_sent: '🎉 Congrats! Promo code sent to your registered email',
     loyalty_code_check: 'Check spam if not received, or contact us to resend',
     annual_perk: 'Annual Perk', coming_soon: 'Coming Soon', forgot_pwd: 'Forgot Password?',
