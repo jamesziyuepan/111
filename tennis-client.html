@@ -2630,7 +2630,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 
     <div class="auth-err" id="auth-err"></div>
 
-    <button class="auth-submit-btn" id="auth-submit-btn" onclick="submitAuth()">登录账号</button>
+    <button class="auth-submit-btn" id="auth-submit-btn" onclick="submitAuth()"><span data-i18n="btn_login">登录账号</span></button>
 
     <div class="auth-note" id="auth-note">
       还没有账号？点上方「新用户注册」免费创建
@@ -2679,14 +2679,14 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
       <div class="logo-sub">DC · MD · VA</div>
     </div>
     <div class="sidebar-nav">
-      <div class="nav-section-label">学员中心</div>
-      <div class="nav-item active" onclick="showPanel('home',this)"><span class="nav-icon">🏠</span> 首页</div>
-      <div class="nav-item" onclick="showPanel('coaches',this)"><span class="nav-icon">🎾</span> 找教练</div>
-      <div class="nav-item" onclick="showPanel('my-bookings',this)"><span class="nav-icon">📅</span> 我的预约</div>
-      <div class="nav-item" onclick="showPanel('packages',this)"><span class="nav-icon">📦</span> 课程套餐</div>
-      <div class="nav-item" onclick="showPanel('benefit',this)"><span class="nav-icon">🎁</span> 平台好处</div>
-      <div id="nav-admin" class="nav-item" onclick="showPanel('admin',this)" style="display:none"><span class="nav-icon">⚙️</span> 管理后台</div>
-      <div class="nav-section-label" style="margin-top:10px;">地区筛选</div>
+      <div class="nav-section-label" data-i18n="nav_student_center">学员中心</div>
+      <div class="nav-item active" onclick="showPanel('home',this)"><span class="nav-icon">🏠</span> <span data-i18n="nav_home">首页</span></div>
+      <div class="nav-item" onclick="showPanel('coaches',this)"><span class="nav-icon">🎾</span> <span data-i18n="nav_coaches">找教练</span></div>
+      <div class="nav-item" onclick="showPanel('my-bookings',this)"><span class="nav-icon">📅</span> <span data-i18n="nav_mybookings">我的预约</span></div>
+      <div class="nav-item" onclick="showPanel('packages',this)"><span class="nav-icon">📦</span> <span data-i18n="nav_packages">课程套餐</span></div>
+      <div class="nav-item" onclick="showPanel('benefit',this)"><span class="nav-icon">🎁</span> <span data-i18n="nav_benefit">平台好处</span></div>
+      <div id="nav-admin" class="nav-item" onclick="showPanel('admin',this)" style="display:none"><span class="nav-icon">⚙️</span> <span data-i18n="nav_admin">管理后台</span></div>
+      <div class="nav-section-label" style="margin-top:10px;" data-i18n="nav_region">地区筛选</div>
       <div class="nav-item" onclick="showPanel('coaches',this);setRegion('dc')"><span class="nav-icon">📍</span> Washington DC</div>
       <div class="nav-item" onclick="showPanel('coaches',this);setRegion('md')"><span class="nav-icon">📍</span> Maryland</div>
       <div class="nav-item" onclick="showPanel('coaches',this);setRegion('arlington')"><span class="nav-icon">📍</span> Arlington / McLean</div>
@@ -2697,7 +2697,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
         <div style="min-width:0;flex:1;">
           <div class="user-name" id="sb-name">加载中…</div>
           <div class="user-email" id="sb-email"></div>
-          <div id="sb-action-link" class="logout-link" onclick="event.stopPropagation();sidebarActionClick()">退出登录</div>
+          <div id="sb-action-link" class="logout-link" onclick="event.stopPropagation();sidebarActionClick()" data-i18n="logout">退出登录</div>
         </div>
         <div id="sb-login-arrow" style="color:rgba(255,255,255,0.4);font-size:14px;flex-shrink:0;">›</div>
       </div>
@@ -2709,8 +2709,8 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
     <div class="topbar">
       <div class="topbar-title" id="topbar-title">首页</div>
       <div class="topbar-right">
-        <div class="topbar-search"><span>🔍</span><span>搜索教练…</span></div>
-        <div class="topbar-btn" onclick="window.location='/tennis-client-en.html'" title="Switch to English" style="font-size:12px;font-weight:700;">EN</div>
+        <div class="topbar-search"><span>🔍</span><span data-i18n="search_placeholder">搜索教练…</span></div>
+        <div class="topbar-btn" id="lang-btn" onclick="toggleLang()" style="font-size:12px;font-weight:700;cursor:pointer;min-width:32px;text-align:center;">EN</div>
       </div>
     </div>
 
@@ -2720,21 +2720,21 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
       <div id="panel-home" class="panel active">
         <div class="home-hero">
           <div class="hero-greeting" id="hero-greeting">👋 欢迎！</div>
-          <div class="hero-title">找到最好的<br>DC/MD/VA 网球教练</div>
+          <div class="hero-title" data-i18n="hero_title">找到最好的<br>DC/MD/VA 网球教练</div>
           <div class="hero-ball">🎾</div>
         </div>
 
         <div class="stats-strip">
-          <div class="stat-card"><div class="stat-icon si-amber">📅</div><div><div class="stat-val" id="st-upcoming">—</div><div class="stat-lbl">即将上课</div></div></div>
-          <div class="stat-card"><div class="stat-icon si-green">✅</div><div><div class="stat-val" id="st-done">—</div><div class="stat-lbl">已完成课时</div></div></div>
-          <div class="stat-card"><div class="stat-icon si-blue">🎾</div><div><div class="stat-val" id="stat-coaches">—</div><div class="stat-lbl">认证教练</div></div></div>
-          <div class="stat-card"><div class="stat-icon si-purple">📍</div><div><div class="stat-val">6</div><div class="stat-lbl">服务地区</div></div></div>
+          <div class="stat-card"><div class="stat-icon si-amber">📅</div><div><div class="stat-val" id="st-upcoming">—</div><div class="stat-lbl" data-i18n="stat_upcoming">即将上课</div></div></div>
+          <div class="stat-card"><div class="stat-icon si-green">✅</div><div><div class="stat-val" id="st-done">—</div><div class="stat-lbl" data-i18n="stat_done">已完成课时</div></div></div>
+          <div class="stat-card"><div class="stat-icon si-blue">🎾</div><div><div class="stat-val" id="stat-coaches">—</div><div class="stat-lbl" data-i18n="stat_coaches">认证教练</div></div></div>
+          <div class="stat-card"><div class="stat-icon si-purple">📍</div><div><div class="stat-val">6</div><div class="stat-lbl" data-i18n="stat_regions">服务地区</div></div></div>
         </div>
 
         <!-- Upcoming bookings -->
         <div class="sec-hd">
-          <span class="sec-title">📅 即将到来的课程</span>
-          <span class="sec-link" onclick="showPanel('my-bookings',null)">查看全部 ›</span>
+          <span class="sec-title" data-i18n="sec_upcoming">📅 即将到来的课程</span>
+          <span class="sec-link" onclick="showPanel('my-bookings',null)" data-i18n="see_all">查看全部 ›</span>
         </div>
         <div class="content-card" id="home-upcoming">
           <div class="empty-st"><div class="empty-st-icon">📅</div><div>暂无即将到来的课程</div></div>
@@ -2742,11 +2742,11 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 
         <!-- Recommended coaches -->
         <div class="sec-hd" style="margin-top:20px;">
-          <span class="sec-title">推荐教练</span>
-          <span class="sec-link" onclick="showPanel('coaches',null)">查看全部 ›</span>
+          <span class="sec-title" data-i18n="sec_recommended">推荐教练</span>
+          <span class="sec-link" onclick="showPanel('coaches',null)" data-i18n="see_all">查看全部 ›</span>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
-          <div class="fchip active" onclick="filterHomeRegion(this,'all')">全部</div>
+          <div class="fchip active" onclick="filterHomeRegion(this,'all')" data-i18n="all">全部</div>
           <div class="fchip" onclick="filterHomeRegion(this,'dc')">DC</div>
           <div class="fchip" onclick="filterHomeRegion(this,'md')">Maryland</div>
           <div class="fchip" onclick="filterHomeRegion(this,'arlington')">Arlington</div>
@@ -2792,8 +2792,8 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
       <!-- MY BOOKINGS PANEL -->
       <div id="panel-my-bookings" class="panel">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-          <div style="font-size:18px;font-weight:900;">📅 我的预约</div>
-          <button onclick="loadMyBookings()" style="padding:7px 14px;background:var(--green-light);color:var(--green);border:none;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;">🔄 刷新</button>
+          <div style="font-size:18px;font-weight:900;" data-i18n="nav_mybookings">📅 我的预约</div>
+          <button onclick="loadMyBookings()" style="padding:7px 14px;background:var(--green-light);color:var(--green);border:none;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;"><span data-i18n="refresh">🔄 刷新</span></button>
         </div>
 
         <!-- ── 忠实会员进度卡片 ── -->
@@ -2836,14 +2836,14 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
           <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,0.02) 0,rgba(255,255,255,0.02) 1px,transparent 0,transparent 28px);"></div>
           <div style="position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:72px;opacity:0.08;">📦</div>
           <div style="position:relative;z-index:1;">
-            <div style="color:white;font-size:22px;font-weight:900;margin-bottom:6px;">课程套餐</div>
-            <div style="color:rgba(255,255,255,0.7);font-size:13px;">买得越多，省得越多 · 套餐课时永久有效</div>
+            <div style="color:white;font-size:22px;font-weight:900;margin-bottom:6px;" data-i18n="nav_packages">课程套餐</div>
+            <div style="color:rgba(255,255,255,0.7);font-size:13px;" data-i18n="pkg_sub">买得越多，省得越多 · 套餐课时永久有效</div>
           </div>
         </div>
 
         <!-- ── 标准教练 $75 ── -->
-        <div style="font-size:15px;font-weight:800;margin-bottom:4px;">标准教练</div>
-        <div style="font-size:12px;color:var(--mute);margin-bottom:16px;">单次课 $75 / 小时 · 含场地费</div>
+        <div style="font-size:15px;font-weight:800;margin-bottom:4px;" data-i18n="pkg_standard">标准教练</div>
+        <div style="font-size:12px;color:var(--mute);margin-bottom:16px;" data-i18n="pkg_standard_sub">单次课 $75 / 小时 · 含场地费</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:28px;">
 
           <!-- 单次 -->
@@ -2891,8 +2891,8 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
         </div>
 
         <!-- ── 高级教练 $100 ── -->
-        <div style="font-size:15px;font-weight:800;margin-bottom:4px;">高级教练</div>
-        <div style="font-size:12px;color:var(--mute);margin-bottom:16px;">单次课 $100 / 小时 · 含场地费</div>
+        <div style="font-size:15px;font-weight:800;margin-bottom:4px;" data-i18n="pkg_premium">高级教练</div>
+        <div style="font-size:12px;color:var(--mute);margin-bottom:16px;" data-i18n="pkg_premium_sub">单次课 $100 / 小时 · 含场地费</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:12px;">
 
           <!-- 单次 -->
@@ -2968,8 +2968,8 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
           <div style="position:absolute;right:24px;top:50%;transform:translateY(-50%);font-size:80px;opacity:0.08;">🎾</div>
           <div style="position:relative;z-index:1;">
             <div style="display:inline-block;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.9);font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:1px;margin-bottom:14px;">DC · MD · VA 华人网球社区</div>
-            <div style="color:white;font-size:clamp(20px,3vw,28px);font-weight:900;line-height:1.3;margin-bottom:8px;">加入平台，享受专属好处</div>
-            <div style="color:rgba(255,255,255,0.7);font-size:13px;line-height:1.7;">透明定价 · 灵活约课 · 本地教练 · 忠实会员专享福利</div>
+            <div style="color:white;font-size:clamp(20px,3vw,28px);font-weight:900;line-height:1.3;margin-bottom:8px;" data-i18n="benefit_title">加入平台，享受专属好处</div>
+            <div style="color:rgba(255,255,255,0.7);font-size:13px;line-height:1.7;" data-i18n="benefit_sub">透明定价 · 灵活约课 · 本地教练 · 忠实会员专享福利</div>
           </div>
         </div>
 
@@ -3203,7 +3203,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
     </div>
     <div style="margin-bottom:14px;">
       <input id="pkg-name" type="text" placeholder="姓名" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;margin-bottom:8px;" onfocus="this.style.borderColor='var(--green)'" onblur="this.style.borderColor='var(--border)'">
-      <input id="pkg-wechat" type="text" placeholder="微信号 *" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;margin-bottom:8px;" onfocus="this.style.borderColor='var(--green)'" onblur="this.style.borderColor='var(--border)'">
+      <input id="pkg-wechat" type="text" data-i18n-placeholder="pay_wechat_ph" placeholder="微信号 *" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;margin-bottom:8px;" onfocus="this.style.borderColor='var(--green)'" onblur="this.style.borderColor='var(--border)'">
       <input id="pkg-phone" type="tel" placeholder="手机号（含国家区号）" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='var(--green)'" onblur="this.style.borderColor='var(--border)'">
     </div>
     <div id="pkg-err" style="background:#fdecea;border-radius:8px;padding:10px 14px;font-size:12px;color:var(--red);margin-bottom:12px;display:none;"></div>
@@ -3251,7 +3251,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
     <div style="margin-bottom:20px;">
       <div style="font-size:13px;font-weight:700;color:var(--sub);margin-bottom:8px;">📱 联系方式</div>
       <input id="comp-name" type="text" placeholder="姓名" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;margin-bottom:8px;" onfocus="this.style.borderColor='#7c3aed'" onblur="this.style.borderColor='var(--border)'">
-      <input id="comp-wechat" type="text" placeholder="微信号 *" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='#7c3aed'" onblur="this.style.borderColor='var(--border)'">
+      <input id="comp-wechat" type="text" data-i18n-placeholder="pay_wechat_ph" placeholder="微信号 *" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='#7c3aed'" onblur="this.style.borderColor='var(--border)'">
     </div>
 
     <div id="comp-err" style="background:#fdecea;border-radius:8px;padding:10px 14px;font-size:12px;color:var(--red);margin-bottom:12px;display:none;"></div>
@@ -3315,7 +3315,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
     <div style="margin-bottom:18px;">
       <div style="font-size:13px;font-weight:700;color:var(--sub);margin-bottom:8px;">📱 联系方式</div>
       <input id="str-name" type="text" placeholder="姓名" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;margin-bottom:8px;" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='var(--border)'">
-      <input id="str-wechat" type="text" placeholder="微信号 *" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;margin-bottom:8px;" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='var(--border)'">
+      <input id="str-wechat" type="text" data-i18n-placeholder="pay_wechat_ph" placeholder="微信号 *" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;margin-bottom:8px;" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='var(--border)'">
       <input id="str-phone" type="tel" placeholder="手机号（含国家区号，如 +1 571-xxx-xxxx）" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:13px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='#3b82f6'" onblur="this.style.borderColor='var(--border)'">
     </div>
 
@@ -3352,13 +3352,13 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
   <!-- Mobile bottom nav -->
   <div class="mobile-nav" id="mobile-nav">
     <div class="mob-nav-item active" id="mobnav-home" onclick="mobileNav('home',this)">
-      <div class="mob-nav-icon">🏠</div><span>首页</span>
+      <div class="mob-nav-icon">🏠</div><span data-i18n="nav_home">首页</span>
     </div>
     <div class="mob-nav-item" id="mobnav-coaches" onclick="mobileNav('coaches',this)">
-      <div class="mob-nav-icon">🎾</div><span>找教练</span>
+      <div class="mob-nav-icon">🎾</div><span data-i18n="nav_coaches">找教练</span>
     </div>
     <div class="mob-nav-item" id="mobnav-my-bookings" onclick="mobileNav('my-bookings',this)" style="position:relative;">
-      <div class="mob-nav-icon">📅</div><span>我的预约</span>
+      <div class="mob-nav-icon">📅</div><span data-i18n="nav_mybookings">我的预约</span>
       <div id="mob-bk-badge" style="display:none;position:absolute;top:4px;right:18px;width:8px;height:8px;background:var(--red);border-radius:50%;"></div>
     </div>
     <div class="mob-nav-item" id="mobnav-packages" onclick="mobileNav('packages',this)">
@@ -3402,7 +3402,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 
     <!-- Header -->
     <div class="bk-modal-hd" id="bm-main-content">
-      <div class="bk-modal-title">📅 预约课程</div>
+      <div class="bk-modal-title" data-i18n="bk_title">📅 预约课程</div>
       <div class="bk-modal-x" onclick="closeBM()">✕</div>
     </div>
 
@@ -3416,25 +3416,25 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
           <div class="bk-step-card">
             <div class="bk-step-head">
               <div class="step-num">1</div>
-              <div class="step-lbl">选择课程类型</div>
+              <div class="step-lbl" data-i18n="step_type">选择课程类型</div>
             </div>
             <div class="type-grid" id="bk-type-grid">
               <div class="type-card selected" onclick="bkSelectType(this,'网球入门 & 提升 1v1')">
                 <span class="type-icon">🎾</span>
-                <span class="type-name">网球入门 & 提升</span>
-                <span class="type-desc">1对1私教，60分钟</span>
+                <span class="type-name" data-i18n="type_tennis_name">网球入门 & 提升</span>
+                <span class="type-desc" data-i18n="type_1v1_desc">1对1私教，60分钟</span>
                 <span class="type-price" id="bk-type-price1">$77.55</span>
               </div>
               <div class="type-card" onclick="bkSelectType(this,'网球入门 & 提升 1v2')" id="bk-1v2-card">
                 <span class="type-icon">👥</span>
-                <span class="type-name">网球入门 & 提升</span>
-                <span class="type-desc">1对2双人，60分钟</span>
+                <span class="type-name" data-i18n="type_tennis_name">网球入门 & 提升</span>
+                <span class="type-desc" data-i18n="type_1v2_desc">1对2双人，60分钟</span>
                 <span class="type-price" id="bk-type-price2">$123.89</span>
               </div>
               <div class="type-card" onclick="bkSelectType(this,'运动表现 & 体能 1v1')" id="bk-strength-card" style="display:none">
                 <span class="type-icon">💪</span>
-                <span class="type-name">运动表现 & 体能</span>
-                <span class="type-desc">Strength & Conditioning</span>
+                <span class="type-name" data-i18n="type_strength_name">运动表现 & 体能</span>
+                <span class="type-desc" data-i18n="type_strength_desc">Strength & Conditioning</span>
                 <span class="type-price" id="bk-type-price3">$103.30</span>
               </div>
             </div>
@@ -3444,7 +3444,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
           <div class="bk-step-card">
             <div class="bk-step-head">
               <div class="step-num">2</div>
-              <div class="step-lbl">选择日期</div>
+              <div class="step-lbl" data-i18n="step_date">选择日期</div>
             </div>
             <div class="calendar-wrap">
               <div class="month-nav">
@@ -3453,10 +3453,10 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
                 <button class="m-arrow" onclick="bkChangeMonth(1)">›</button>
               </div>
               <div class="week-head" id="bk-week-head">
-                <span class="w-lbl">日</span><span class="w-lbl">一</span>
-                <span class="w-lbl">二</span><span class="w-lbl">三</span>
-                <span class="w-lbl">四</span><span class="w-lbl">五</span>
-                <span class="w-lbl">六</span>
+                <span class="w-lbl" id="wh0">日</span><span class="w-lbl" id="wh1">一</span>
+                <span class="w-lbl" id="wh2">二</span><span class="w-lbl" id="wh3">三</span>
+                <span class="w-lbl" id="wh4">四</span><span class="w-lbl" id="wh5">五</span>
+                <span class="w-lbl" id="wh6">六</span>
               </div>
               <div class="cal-grid" id="bk-cal-grid"></div>
               <div id="bk-avail-legend" style="margin-top:10px;font-size:11px;color:var(--mute);"></div>
@@ -3467,9 +3467,9 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
           <div class="bk-step-card">
             <div class="bk-step-head">
               <div class="step-num">3</div>
-              <div class="step-lbl">选择时间段</div>
+              <div class="step-lbl" data-i18n="step_time">选择时间段</div>
             </div>
-            <div class="notice-band" id="bk-avail-notice">请先选择日期</div>
+            <div class="notice-band" id="bk-avail-notice" data-i18n="bk_select_date">请先选择日期</div>
             <div class="time-slots-bk" id="bk-time-slots">
               <!-- rendered dynamically -->
             </div>
@@ -3479,7 +3479,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
           <div class="bk-step-card">
             <div class="bk-step-head">
               <div class="step-num">4</div>
-              <div class="step-lbl">选择球场</div>
+              <div class="step-lbl" data-i18n="step_court">选择球场</div>
             </div>
             <div id="bk-courts-list">
               <!-- rendered dynamically from coach data -->
@@ -3490,7 +3490,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 
         <!-- Right: order summary -->
         <div class="bk-order-panel">
-          <div class="bk-order-title">📋 预约小结</div>
+          <div class="bk-order-title" data-i18n="bk_summary">📋 预约小结</div>
           <div class="coach-mini" id="bk-coach-mini">
             <div class="coach-mini-ava" id="bk-coach-ava">🎾</div>
             <div>
@@ -3498,16 +3498,16 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
               <div class="coach-mini-sub" id="bk-coach-sub">—</div>
             </div>
           </div>
-          <div class="os-row"><span class="os-lbl">课程类型</span><span class="os-val" id="bk-os-type">网球入门 & 提升</span></div>
-          <div class="os-row"><span class="os-lbl">日期时间</span><span class="os-val" id="bk-os-datetime">—</span></div>
-          <div class="os-row"><span class="os-lbl">球场</span><span class="os-val" id="bk-os-court">—</span></div>
+          <div class="os-row"><span class="os-lbl" data-i18n="lbl_type">课程类型</span><span class="os-val" id="bk-os-type">网球入门 & 提升</span></div>
+          <div class="os-row"><span class="os-lbl" data-i18n="lbl_datetime">日期时间</span><span class="os-val" id="bk-os-datetime">—</span></div>
+          <div class="os-row"><span class="os-lbl" data-i18n="lbl_court">球场</span><span class="os-val" id="bk-os-court">—</span></div>
           <div class="total-row">
-            <span class="total-lbl">应付金额</span>
+            <span class="total-lbl" data-i18n="lbl_total">应付金额</span>
             <span class="total-price" id="bk-total-price">$77.55</span>
           </div>
-          <button class="bk-confirm-btn disabled" id="bk-confirm-btn" onclick="submitBM()">确认预约</button>
+          <button class="bk-confirm-btn disabled" id="bk-confirm-btn" onclick="submitBM()"><span data-i18n="btn_confirm">确认预约</span></button>
           <div class="bk-err-band" id="bm-err"></div>
-          <div style="font-size:11px;color:var(--mute);text-align:center;margin-top:10px;">请提前48小时（2天）预约</div>
+          <div style="font-size:11px;color:var(--mute);text-align:center;margin-top:10px;" data-i18n="bk_advance_notice">请提前48小时（2天）预约</div>
         </div>
       </div>
     </div>
@@ -3515,15 +3515,15 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
     <!-- Success state -->
     <div class="bk-success-body" id="bm-success">
       <div class="bk-suc-icon">🎉</div>
-      <div class="bk-suc-title">预约成功！</div>
-      <div class="bk-suc-sub">请等待教练确认，确认后将收到通知</div>
+      <div class="bk-suc-title" data-i18n="suc_title">预约成功！</div>
+      <div class="bk-suc-sub" data-i18n="suc_sub">请等待教练确认，确认后将收到通知</div>
       <div class="bk-suc-detail">
-        <div class="bk-suc-row"><span class="bk-suc-lbl">教练</span><span class="bk-suc-val" id="suc-coach">—</span></div>
-        <div class="bk-suc-row"><span class="bk-suc-lbl">日期</span><span class="bk-suc-val" id="suc-date">—</span></div>
-        <div class="bk-suc-row"><span class="bk-suc-lbl">时间</span><span class="bk-suc-val" id="suc-time">—</span></div>
-        <div class="bk-suc-row"><span class="bk-suc-lbl">球场</span><span class="bk-suc-val" id="suc-court">—</span></div>
+        <div class="bk-suc-row"><span class="bk-suc-lbl" data-i18n="lbl_coach">教练</span><span class="bk-suc-val" id="suc-coach">—</span></div>
+        <div class="bk-suc-row"><span class="bk-suc-lbl" data-i18n="lbl_date">日期</span><span class="bk-suc-val" id="suc-date">—</span></div>
+        <div class="bk-suc-row"><span class="bk-suc-lbl" data-i18n="lbl_time">时间</span><span class="bk-suc-val" id="suc-time">—</span></div>
+        <div class="bk-suc-row"><span class="bk-suc-lbl" data-i18n="lbl_court">球场</span><span class="bk-suc-val" id="suc-court">—</span></div>
       </div>
-      <button style="width:100%;padding:13px;background:var(--green-light);color:var(--green);border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;" onclick="closeBM()">好的，返回首页</button>
+      <button style="width:100%;padding:13px;background:var(--green-light);color:var(--green);border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;" onclick="closeBM()" data-i18n="btn_back_home">好的，返回首页</button>
     </div>
 
   </div>
@@ -3652,7 +3652,7 @@ function switchAuthTab(mode) {
   authMode = mode;
   document.getElementById('tab-login').classList.toggle('active', mode==='login');
   document.getElementById('tab-register').classList.toggle('active', mode==='register');
-  document.getElementById('auth-submit-btn').textContent = mode==='login' ? '登录账号' : '免费注册';
+  document.getElementById('auth-submit-btn').textContent = mode==='login' ? t('btn_login') : t('btn_register');
   document.getElementById('register-name-field').style.display = mode==='register' ? 'block' : 'none';
   document.getElementById('auth-note').textContent = mode==='login'
     ? '还没有账号？点上方「注册」'
@@ -3857,6 +3857,10 @@ function onUserLoggedIn() {
 function initApp() {
   updateSidebarUser();
   loadCoachesFromDB();
+  // Apply saved language
+  setLang(currentLangUI);
+  var btn = document.getElementById('lang-btn');
+  if(btn) btn.textContent = currentLangUI === 'zh' ? 'EN' : '中文';
 }
 
 function launchApp() {
@@ -3966,7 +3970,7 @@ function coachCardHTML(c) {
     +'<div class="coach-name">'+(c.name||'')+'</div>'
     +'<div class="coach-sub-txt">'+(c.sub||'')+'</div>'
     +'<div class="coach-tags"><span class="lang-tag">🗣 '+(c.lang||'')+'</span>'+tags+'</div>'
-    +'<button class="coach-book-btn" onclick="event.stopPropagation();openCoachProfile(\''+c.id+'\')">查看详情 →</button>'
+    +'<button class="coach-book-btn" onclick="event.stopPropagation();openCoachProfile(\''+c.id+'\')">'+t('btn_view_detail')+'</button>'
     +'</div></div>';
 }
 
@@ -4050,6 +4054,9 @@ function openBM(coachId) {
   var legend = document.getElementById('bk-avail-legend');
   if(legend) legend.textContent = '✅ 教练可约：' + availNames.join(' / ');
 
+  // Update week head labels
+  var wLabels = t('cal_weeks');
+  for(var wi=0;wi<7;wi++){var wEl=document.getElementById('wh'+wi);if(wEl)wEl.textContent=wLabels[wi];}
   // Highlight available weekday headers
   var heads = document.querySelectorAll('#bk-week-head .w-lbl');
   heads.forEach(function(el, i){
@@ -4163,7 +4170,7 @@ async function bkRenderTimeSlots(dateStr) {
   var notice = document.getElementById('bk-avail-notice');
   var slotsEl = document.getElementById('bk-time-slots');
   if(!dateStr) {
-    notice.textContent = '请先选择日期';
+    notice.textContent = t('bk_select_date');
     slotsEl.innerHTML = '';
     return;
   }
@@ -4186,7 +4193,7 @@ async function bkRenderTimeSlots(dateStr) {
       slots = sch[String(dow)];
     } else {
       // Day not in schedule = no slots available
-      notice.textContent = '⚠️ 教练该日暂无可约时段';
+      notice.textContent = t('bk_no_slots');
       slotsEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--mute);font-size:13px;">教练该日暂无开放时段</div>';
       return;
     }
@@ -4206,12 +4213,12 @@ async function bkRenderTimeSlots(dateStr) {
   });
 
   if(slots.length === 0) {
-    notice.textContent = '⚠️ 该日暂无可约时段（需提前48小时预约）';
-    slotsEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--mute);font-size:13px;">约课需至少提前48小时（2天），<br>请选择更晚的日期。</div>';
+    notice.textContent = t('bk_no_slots');
+    slotsEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--mute);font-size:13px);">'+t('bk_slot_too_soon').replace('\n','<br>')+'</div>';
     return;
   }
 
-  notice.textContent = '⏰ 请选择上课时间';
+  notice.textContent = currentLangUI==='en' ? '⏰ Select a time slot' : '⏰ 请选择上课时间';
   slotsEl.innerHTML = slots.map(function(s){
     return '<div class="t-slot-bk" data-slot="'+s+'" onclick="bkSlotClick(this)">'
       +'<span>'+s+'</span><span>空闲</span></div>';
@@ -4272,7 +4279,9 @@ function bkSelectType(el, name) {
   document.querySelectorAll('.type-card').forEach(function(c){ c.classList.remove('selected'); });
   el.classList.add('selected');
   bmState.typeName = name;
-  document.getElementById('bk-os-type').textContent = name;
+  // Show translated type name in summary
+  var typeDisplay = name.replace('网球入门 & 提升','Tennis Fundamentals & Improvement').replace('运动表现 & 体能','Strength & Conditioning');
+  document.getElementById('bk-os-type').textContent = currentLangUI==='en' ? typeDisplay : name;
   var price = getStripePrice(bmState.coachName, name);
   bmState.price = price;
   document.getElementById('bk-total-price').textContent = '$'+parseFloat(price).toFixed(2);
@@ -4829,7 +4838,7 @@ async function loadMyBookings() {
     // Home page upcoming (top 3)
     if(homeUpEl) {
       if(upcoming.length === 0) {
-        homeUpEl.innerHTML = '<div class="empty-st"><div class="empty-st-icon">📅</div><div>暂无即将到来的课程</div></div>';
+        homeUpEl.innerHTML = '<div class="empty-st"><div class="empty-st-icon">📅</div><div>'+t('empty_upcoming')+'</div></div>';
       } else {
         homeUpEl.innerHTML = upcoming.slice(0,3).map(bookingCardHTML).join('');
       }
@@ -4862,13 +4871,14 @@ async function loadMyBookings() {
 function bookingCardHTML(b) {
   var d = new Date(b.booking_date + 'T00:00:00');
   var months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-  var weekdays = ['周日','周一','周二','周三','周四','周五','周六'];
+  var weekdays = currentLangUI==='en' ? ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'] : ['周日','周一','周二','周三','周四','周五','周六'];
 
   // Status badge
   var statusMap = {
-    pending:   { cls:'status-pending',   icon:'⏳', text:'待确认' },
-    confirmed: { cls:'status-confirmed', icon:'✅', text:'已确认' },
-    cancelled: { cls:'status-cancelled', icon:'❌', text:'已取消' }
+    pending:         { cls:'status-pending',   icon:'⏳', text: t('status_pending') },
+    pending_payment: { cls:'status-pending',   icon:'💳', text: t('status_pending_payment') },
+    confirmed:       { cls:'status-confirmed', icon:'✅', text: t('status_confirmed') },
+    cancelled:       { cls:'status-cancelled', icon:'❌', text: t('status_cancelled') }
   };
   var st = statusMap[b.status] || statusMap.pending;
 
@@ -4905,6 +4915,188 @@ function bookingCardHTML(b) {
 }
 
 
+// ═══════════════════════════════════════
+// I18N - BILINGUAL SYSTEM
+// ═══════════════════════════════════════
+var currentLangUI = localStorage.getItem('lang') || 'zh';
+
+var LANG = {
+  zh: {
+    // Nav
+    nav_student_center: '学员中心',
+    nav_home: '首页', nav_coaches: '找教练', nav_mybookings: '我的预约',
+    nav_packages: '课程套餐', nav_benefit: '平台好处', nav_admin: '管理后台',
+    nav_region: '地区筛选', logout: '退出登录', login_prompt: '登录 / 注册',
+    // Topbar
+    search_placeholder: '搜索教练…',
+    // Home
+    hero_title: '找到最好的<br>DC/MD/VA 网球教练',
+    stat_upcoming: '即将上课', stat_done: '已完成课时',
+    stat_coaches: '认证教练', stat_regions: '服务地区',
+    sec_upcoming: '📅 即将到来的课程', see_all: '查看全部 ›',
+    sec_recommended: '推荐教练', all: '全部',
+    empty_upcoming: '暂无即将到来的课程', empty_bookings: '暂无预约记录',
+    refresh: '🔄 刷新',
+    // Booking modal
+    bk_title: '📅 预约课程',
+    step_type: '选择课程类型', step_date: '选择日期',
+    step_time: '选择时间段', step_court: '选择球场',
+    type_tennis_name: '网球入门 & 提升',
+    type_1v1_desc: '1对1私教，60分钟', type_1v2_desc: '1对2双人，60分钟',
+    type_strength_name: '运动表现 & 体能', type_strength_desc: 'Strength & Conditioning',
+    bk_summary: '📋 预约小结',
+    lbl_type: '课程类型', lbl_datetime: '日期时间', lbl_court: '球场',
+    lbl_coach: '教练', lbl_date: '日期', lbl_time: '时间',
+    lbl_total: '应付金额', btn_confirm: '确认预约',
+    bk_advance_notice: '请提前48小时（2天）预约',
+    suc_title: '预约成功！', suc_sub: '请等待教练确认，确认后将收到通知',
+    btn_back_home: '好的，返回首页',
+    // Pay overlay
+    pay_title: '💰 支付课程押金',
+    pay_cny_lbl: '人民币参考',
+    pay_contact_lbl: '📱 留下联系方式（客服确认用）',
+    pay_wechat_ph: '微信号 *', pay_phone_ph: '手机号（含国家区号，如 +1）*',
+    btn_paid: '✅ 我已付款，确认预约', btn_goback: '← 返回修改',
+    policy_title: '📋 取消与退款政策',
+    // Auth
+    btn_login: '登录账号', btn_register: '免费注册',
+    // Booking status labels
+    status_pending_payment: '💳 待支付', status_pending: '⏳ 待确认',
+    status_confirmed: '✅ 已确认', status_cancelled: '❌ 已取消',
+    // Coach card
+    btn_view_detail: '查看详情 →', btn_book: '立即预约',
+    // Calendar
+    cal_weeks: ['日','一','二','三','四','五','六'],
+    cal_months: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+    // My bookings
+    bk_no_slots: '⚠️ 该日暂无可约时段（需提前48小时预约）',
+    bk_select_date: '请先选择日期',
+    bk_slot_too_soon: '约课需至少提前48小时（2天），\n请选择更晚的日期。',
+    // Panel titles
+    panel_home: '首页', panel_coaches: '找教练', panel_mybookings: '我的预约',
+    panel_packages: '课程套餐', panel_benefit: '平台好处', panel_profile: '教练详情',
+    // Packages
+    pkg_sub: '买得越多，省得越多 · 套餐课时永久有效',
+    pkg_standard: '标准教练', pkg_standard_sub: '单次课 $75 / 小时 · 含场地费',
+    pkg_premium: '高级教练', pkg_premium_sub: '单次课 $100 / 小时 · 含场地费',
+    // Auth
+    btn_register_short: '注册',
+    // Benefit
+    benefit_title: '加入平台，享受专属好处',
+    benefit_sub: '透明定价 · 灵活约课 · 本地教练 · 忠实会员专享福利',
+  },
+  en: {
+    // Nav
+    nav_student_center: 'Menu',
+    nav_home: 'Home', nav_coaches: 'Find Coaches', nav_mybookings: 'My Bookings',
+    nav_packages: 'Packages', nav_benefit: 'Why Us', nav_admin: 'Admin',
+    nav_region: 'Region', logout: 'Log Out', login_prompt: 'Log In / Sign Up',
+    // Topbar
+    search_placeholder: 'Search coaches…',
+    // Home
+    hero_title: 'Find the Best<br>DC/MD/VA Tennis Coach',
+    stat_upcoming: 'Upcoming', stat_done: 'Completed',
+    stat_coaches: 'Coaches', stat_regions: 'Areas',
+    sec_upcoming: '📅 Upcoming Lessons', see_all: 'See All ›',
+    sec_recommended: 'Featured Coaches', all: 'All',
+    empty_upcoming: 'No upcoming lessons', empty_bookings: 'No bookings yet',
+    refresh: '🔄 Refresh',
+    // Booking modal
+    bk_title: '📅 Book a Lesson',
+    step_type: 'Select Lesson Type', step_date: 'Select Date',
+    step_time: 'Select Time', step_court: 'Select Court',
+    type_tennis_name: 'Tennis Fundamentals & Improvement',
+    type_1v1_desc: '1-on-1 private lesson, 60 min', type_1v2_desc: '1-on-2 group lesson, 60 min',
+    type_strength_name: 'Strength & Conditioning', type_strength_desc: 'Athletic performance training',
+    bk_summary: '📋 Booking Summary',
+    lbl_type: 'Lesson Type', lbl_datetime: 'Date & Time', lbl_court: 'Court',
+    lbl_coach: 'Coach', lbl_date: 'Date', lbl_time: 'Time',
+    lbl_total: 'Total', btn_confirm: 'Confirm Booking',
+    bk_advance_notice: 'Booking must be made 48 hours in advance',
+    suc_title: 'Booking Submitted!', suc_sub: 'Awaiting coach confirmation. You will be notified.',
+    btn_back_home: 'Back to Home',
+    // Pay overlay
+    pay_title: '💰 Pay Lesson Deposit',
+    pay_cny_lbl: 'CNY (reference)',
+    pay_contact_lbl: '📱 Contact info (for our team to confirm)',
+    pay_wechat_ph: 'WeChat ID *', pay_phone_ph: 'Phone number (incl. country code, e.g. +1) *',
+    btn_paid: '✅ I\'ve Paid — Confirm Booking', btn_goback: '← Go Back',
+    policy_title: '📋 Cancellation Policy',
+    // Auth
+    btn_login: 'Log In', btn_register: 'Sign Up Free',
+    // Booking status labels
+    status_pending_payment: '💳 Awaiting Payment', status_pending: '⏳ Pending',
+    status_confirmed: '✅ Confirmed', status_cancelled: '❌ Cancelled',
+    // Coach card
+    btn_view_detail: 'View Details →', btn_book: 'Book Now',
+    // Calendar
+    cal_weeks: ['Su','Mo','Tu','We','Th','Fr','Sa'],
+    cal_months: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    // My bookings
+    bk_no_slots: '⚠️ No available slots (48hr advance booking required)',
+    bk_select_date: 'Please select a date first',
+    bk_slot_too_soon: 'Booking must be made at least 48 hours in advance.\nPlease choose a later date.',
+    // Panel titles
+    panel_home: 'Home', panel_coaches: 'Find Coaches', panel_mybookings: 'My Bookings',
+    panel_packages: 'Packages', panel_benefit: 'Why Us', panel_profile: 'Coach Profile',
+    // Packages
+    pkg_sub: 'More lessons, more savings · Credits never expire',
+    pkg_standard: 'Standard Coach', pkg_standard_sub: '$75 / hr · Court fee included',
+    pkg_premium: 'Premium Coach', pkg_premium_sub: '$100 / hr · Court fee included',
+    // Auth
+    btn_register_short: 'Sign Up',
+    // Benefit
+    benefit_title: 'Join Our Platform',
+    benefit_sub: 'Transparent pricing · Flexible booking · Local coaches · Loyalty rewards',
+  }
+};
+
+function t(key) {
+  return (LANG[currentLangUI] && LANG[currentLangUI][key]) || (LANG.zh[key]) || key;
+}
+
+function setLang(lang) {
+  currentLangUI = lang;
+  localStorage.setItem('lang', lang);
+  // Update toggle button
+  var btn = document.getElementById('lang-btn');
+  if(btn) btn.textContent = lang === 'zh' ? 'EN' : '中文';
+  // Update all data-i18n elements
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    var val = t(key);
+    if(el.tagName === 'INPUT') el.placeholder = val;
+    else el.innerHTML = val;
+  });
+  // Update placeholders
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+    el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
+  });
+  // Update week head labels
+  var wLabels = t('cal_weeks');
+  for(var wi=0;wi<7;wi++){var wEl=document.getElementById('wh'+wi);if(wEl)wEl.textContent=wLabels[wi];}
+  // Update panel title
+  updateTopbarTitle();
+  // Re-render dynamic content
+  if(typeof renderCoaches === 'function') renderCoaches();
+  if(typeof loadMyBookings === 'function' && (currentPanel === 'my-bookings' || currentPanel === 'home')) loadMyBookings();
+}
+
+function toggleLang() {
+  setLang(currentLangUI === 'zh' ? 'en' : 'zh');
+}
+
+function updateTopbarTitle() {
+  var titleMap = {
+    'home': t('panel_home'), 'coaches': t('panel_coaches'),
+    'my-bookings': t('panel_mybookings'), 'packages': t('panel_packages'),
+    'benefit': t('panel_benefit'), 'coach-profile': t('panel_profile'),
+    'admin': t('nav_admin')
+  };
+  var el = document.getElementById('topbar-title');
+  if(el) el.textContent = titleMap[currentPanel] || currentPanel;
+}
+
 var panelTitles = {
   'home': '首页',
   'coaches': '找教练',
@@ -4921,7 +5113,7 @@ function showPanel(id, navEl) {
   if(el) el.classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   if(navEl) navEl.classList.add('active');
-  document.getElementById('topbar-title').textContent = panelTitles[id]||id;
+  updateTopbarTitle();
   if(id==='coaches') renderCoaches();
   if(id==='my-bookings') loadMyBookings();
   if(id==='admin') adminLoadBookings();
@@ -5618,17 +5810,17 @@ async function sendResetEmail() {
 <div class="pay-overlay" id="pay-overlay">
   <div class="pay-sheet">
     <div class="pay-handle"></div>
-    <div class="pay-title">💰 支付课程押金</div>
+    <div class="pay-title" data-i18n="pay_title">💰 支付课程押金</div>
 
     <!-- Amount -->
     <div class="pay-amt-box">
       <div class="pay-amt-row">
         <div>
-          <div class="pay-amt-lbl">应付金额</div>
+          <div class="pay-amt-lbl" data-i18n="lbl_total">应付金额</div>
           <div class="pay-amt-usd" id="pay-usd">$—</div>
         </div>
         <div style="text-align:right">
-          <div class="pay-amt-lbl">人民币参考</div>
+          <div class="pay-amt-lbl" data-i18n="pay_cny_lbl">人民币参考</div>
           <div class="pay-amt-cny" id="pay-cny" style="font-size:14px;color:var(--mute)">¥—</div>
         </div>
       </div>
@@ -5637,9 +5829,9 @@ async function sendResetEmail() {
 
     <!-- Contact info -->
     <div class="pay-inp-grp">
-      <div class="pay-inp-lbl">📱 留下联系方式（客服确认用）</div>
-      <input class="pay-inp" id="pay-wechat" type="text" placeholder="微信号 *">
-      <input class="pay-inp" id="pay-phone" type="tel" placeholder="手机号（含国家区号，如 +1）*">
+      <div class="pay-inp-lbl" data-i18n="pay_contact_lbl">📱 留下联系方式（客服确认用）</div>
+      <input class="pay-inp" id="pay-wechat" type="text" data-i18n-placeholder="pay_wechat_ph" placeholder="微信号 *">
+      <input class="pay-inp" id="pay-phone" type="tel" data-i18n-placeholder="pay_phone_ph" placeholder="手机号（含国家区号，如 +1）*">
     </div>
 
     <!-- PRIMARY: Zelle + WeChat -->
@@ -5688,7 +5880,7 @@ async function sendResetEmail() {
 
     <!-- Policy -->
     <div class="pay-policy">
-      <div class="pay-policy-t">📋 取消与退款政策</div>
+      <div class="pay-policy-t" data-i18n="policy_title">📋 取消与退款政策</div>
       <div class="pay-policy-b">
         ✅ 上课 <strong>48小时前</strong>取消 → 教练费<strong>全额退还</strong><br>
         ❌ 预约成功后 → 场地费 <strong>$12 不可退还</strong><br>
@@ -5697,8 +5889,8 @@ async function sendResetEmail() {
     </div>
 
     <div class="pay-err" id="pay-err"></div>
-    <button class="pay-btn" id="pay-confirm" onclick="doPayConfirmQR()" style="background:linear-gradient(135deg,var(--green),var(--green2));">✅ 我已付款，确认预约</button>
-    <button class="pay-back-btn" onclick="closePayOverlay()">← 返回修改</button>
+    <button class="pay-btn" id="pay-confirm" onclick="doPayConfirmQR()" style="background:linear-gradient(135deg,var(--green),var(--green2));"><span data-i18n="btn_paid">✅ 我已付款，确认预约</span></button>
+    <button class="pay-back-btn" onclick="closePayOverlay()"><span data-i18n="btn_goback">← 返回修改</span></button>
     <div class="pay-secure">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
       扫码支付安全可靠，客服 24 小时内确认
