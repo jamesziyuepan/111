@@ -900,32 +900,37 @@ function renderDashRecent() {
 }
 
 function bookingRowHTML(b, full) {
-  var d = new Date(b.booking_date+'T00:00:00');
-  var dateStr = (d.getMonth()+1)+'月'+d.getDate()+'日';
+  // Detect group class booking
+  var isGroup = b.lesson_type && b.lesson_type.indexOf('小班课') !== -1;
+  var dateStr = '—';
+  if(b.booking_date) {
+    var d = new Date(b.booking_date+'T00:00:00');
+    dateStr = (d.getMonth()+1)+'月'+d.getDate()+'日';
+  }
   var sc = {pending:'s-pending',pending_payment:'s-amber',confirmed:'s-confirmed',cancelled:'s-cancelled'}[b.status]||'s-pending';
   var sl = {pending:'⏳ 待确认',pending_payment:'💳 待支付',confirmed:'✅ 已确认',cancelled:'❌ 已取消'}[b.status]||b.status;
-  var created = new Date(b.created_at).toLocaleDateString('zh-CN');
-  // 所有未取消的状态都显示确认和取消按钮
   var acts = b.status === 'cancelled'
     ? '—'
     : '<button class="act-btn confirm-btn" onclick="confirmBk(\'' + b.id + '\')">✅ 确认</button> <button class="act-btn cancel-btn" onclick="cancelBk(\'' + b.id + '\')">取消</button>';
-
   var depositStr = b.deposit_amount
-    ? '$'+parseFloat(b.deposit_amount).toFixed(2)+(b.deposit_cny?' / ¥'+b.deposit_cny:'')
+    ? '$'+parseFloat(b.deposit_amount).toFixed(2)
     : '—';
-  var payIcon = {wechat:'💚',alipay:'💙'}[b.payment_method]||'';
+  var payIcon = {wechat:'💚',alipay:'💙',zelle:'💜',stripe:'💳'}[b.payment_method]||'';
+  // Group class badge
+  var groupBadge = isGroup ? '<span style="display:inline-block;background:#eff6ff;color:#1d4ed8;font-size:10px;font-weight:800;padding:1px 7px;border-radius:8px;margin-left:4px;">👥 团课</span>' : '';
 
   if(full) {
     var coachObj = allCoaches.find(function(c){return c.id===b.coach_id;});
-    var coachName = coachObj ? coachObj.name : (b.coach_id ? '未知教练' : '—');
-    return '<tr>'
-      +'<td><div style="font-weight:600;">'+b.student_name+'</div>'
+    var coachName = coachObj ? coachObj.name : (isGroup ? 'James' : (b.coach_id ? '未知教练' : '—'));
+    var timeStr = b.booking_time || (isGroup ? '周三 7:00–8:30 PM' : '—');
+    return '<tr'+(isGroup?' style="background:#f8f9ff;"':'')+'>'
+      +'<td><div style="font-weight:600;">'+b.student_name+groupBadge+'</div>'
       +'<div style="font-size:11px;color:var(--mute);">'+b.student_email+'</div></td>'
       +'<td style="font-weight:600;white-space:nowrap;">'+coachName+'</td>'
       +'<td>'+(b.student_wechat?'<div style="font-size:13px;font-weight:600;">'+b.student_wechat+'</div>':'<span style="color:#ccc;">—</span>')+'</td>'
       +'<td>'+(b.student_phone?'<div style="font-size:12px;">'+b.student_phone+'</div>':'<span style="color:#ccc;">—</span>')+'</td>'
       +'<td style="font-weight:600;white-space:nowrap;">'+dateStr+'</td>'
-      +'<td style="white-space:nowrap;">'+b.booking_time+'</td>'
+      +'<td style="white-space:nowrap;">'+timeStr+'</td>'
       +'<td style="white-space:nowrap;font-size:12px;">'+payIcon+' '+depositStr+'</td>'
       +'<td><div style="font-size:12px;">'+b.lesson_type+'</div></td>'
       +'<td><span class="sbadge '+sc+'">'+sl+'</span></td>'
@@ -933,15 +938,16 @@ function bookingRowHTML(b, full) {
       +'</tr>';
   } else {
     var coachObj2 = allCoaches.find(function(c){return c.id===b.coach_id;});
-    var coachName2 = coachObj2 ? coachObj2.name : '—';
-    return '<tr>'
-      +'<td><div style="font-weight:600;">'+b.student_name+'</div>'
-      +'<div style="font-size:11px;color:var(--green);font-weight:600;">🎾 '+coachName2+'</div>'
-      +(b.student_wechat?'<div style="font-size:11px;color:var(--green);">💚 '+b.student_wechat+'</div>':'')
+    var coachName2 = coachObj2 ? coachObj2.name : (isGroup ? 'James' : '—');
+    var timeStr2 = b.booking_time || (isGroup ? '周三 7:00–8:30 PM' : '');
+    return '<tr'+(isGroup?' style="background:#f8f9ff;"':'')+'>'
+      +'<td><div style="font-weight:600;">'+b.student_name+groupBadge+'</div>'
+      +'<div style="font-size:11px;color:'+(isGroup?'#3b82f6':'var(--green)')+';font-weight:600;">'+(isGroup?'👥':'🎾')+' '+coachName2+'</div>'
+      +(b.student_wechat?'<div style="font-size:11px;color:var(--mute);">💬 '+b.student_wechat+'</div>':'')
       +(b.student_phone?'<div style="font-size:11px;color:var(--mute);">📱 '+b.student_phone+'</div>':'')+'</td>'
-      +'<td style="white-space:nowrap;font-weight:600;">'+dateStr+' '+b.booking_time+'</td>'
-      +'<td>'+b.lesson_type+'</td>'
-      +(b.deposit_amount?'<td style="font-size:12px;color:var(--green);font-weight:600;">'+(b.payment_method==='wechat'?'💚':'💙')+' $'+parseFloat(b.deposit_amount).toFixed(2)+'</td>':'<td style="color:#ccc;">—</td>')
+      +'<td style="white-space:nowrap;font-weight:600;">'+dateStr+(timeStr2?' '+timeStr2:'')+'</td>'
+      +'<td><div style="font-size:12px;">'+b.lesson_type+'</div></td>'
+      +(b.deposit_amount?'<td style="font-size:12px;color:var(--green);font-weight:600;">'+payIcon+' $'+parseFloat(b.deposit_amount).toFixed(2)+'</td>':'<td style="color:#ccc;">—</td>')
       +'<td style="white-space:nowrap;">'+acts+'</td>'
       +'</tr>';
   }
