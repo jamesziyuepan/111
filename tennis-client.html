@@ -5034,7 +5034,9 @@ async function submitGroupClass() {
     student_name: name, student_email: (currentUser?currentUser.email:''),
     student_wechat: wechat, student_phone: phone,
     lesson_type: 'James 4人小班课 × 4节 ($49.9/节)', status: 'pending',
-    deposit_amount: 199.6, payment_method: 'zelle', court: note||null
+    deposit_amount: 199.6, payment_method: 'zelle', court: note||null,
+    booking_date: '2099-01-01',
+    booking_time: '每周三 7:00–8:30 PM'
   };
   try {
     var token = (currentUser&&currentUser.token)||SB_KEY;
