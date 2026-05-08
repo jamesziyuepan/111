@@ -2939,6 +2939,49 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
           </div>
         </div>
 
+        <!-- ── James 4人小班课 ── -->
+        <div style="margin-bottom:10px;">
+          <div style="font-size:15px;font-weight:800;margin-bottom:4px;">🎾 James 小班课</div>
+          <div style="font-size:12px;color:var(--mute);margin-bottom:14px;">4人小班 · 每节 1.5小时 · James 教练主课</div>
+        </div>
+
+        <div style="background:linear-gradient(135deg,#0f172a,#1e3a5f);border-radius:20px;padding:24px;margin-bottom:16px;box-shadow:0 8px 30px rgba(15,23,42,0.25);position:relative;overflow:hidden;">
+          <!-- Background decoration -->
+          <div style="position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:rgba(255,255,255,0.03);border-radius:50%;"></div>
+          <div style="position:absolute;bottom:-30px;left:-10px;width:90px;height:90px;background:rgba(99,179,237,0.06);border-radius:50%;"></div>
+
+          <!-- Badge -->
+          <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(245,158,11,0.2);border:1px solid rgba(245,158,11,0.4);border-radius:20px;padding:3px 12px;font-size:11px;font-weight:800;color:#fbbf24;margin-bottom:14px;">
+            👥 4人小班 · 一次付清4节
+          </div>
+
+          <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:6px;">
+            <div>
+              <div style="display:flex;align-items:baseline;gap:6px;">
+                <span style="font-size:42px;font-weight:900;color:white;line-height:1;">$199.6</span>
+                <span style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:4px;">/ 4节课</span>
+              </div>
+              <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:2px;">$49.9 / 节 · 每节 1.5 小时</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:line-through;">原价 $200+</div>
+              <div style="background:rgba(34,197,94,0.2);border:1px solid rgba(34,197,94,0.35);border-radius:8px;padding:3px 10px;font-size:11px;font-weight:800;color:#4ade80;margin-top:4px;">超值优惠</div>
+            </div>
+          </div>
+
+          <!-- Features -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0;padding:12px;background:rgba(255,255,255,0.04);border-radius:12px;">
+            <div style="font-size:12px;color:rgba(255,255,255,0.6);display:flex;align-items:center;gap:5px;">🎓 James 教练亲授</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.6);display:flex;align-items:center;gap:5px;">⏱ 每节 1.5 小时</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.6);display:flex;align-items:center;gap:5px;">👥 最多 4 人</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.6);display:flex;align-items:center;gap:5px;">📍 含场地费</div>
+          </div>
+
+          <button onclick="openGroupClassModal()" style="width:100%;padding:13px;background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:white;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:0.3px;box-shadow:0 4px 15px rgba(59,130,246,0.4);">
+            🙋 立即报名 · $199.6
+          </button>
+        </div>
+
         <!-- 含场地费标注 -->
         <div style="display:flex;align-items:center;gap:8px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px 14px;margin-bottom:28px;">
           <span style="font-size:16px;">📍</span>
@@ -4917,6 +4960,66 @@ function bookingCardHTML(b) {
 
 
 // ═══════════════════════════════════════
+// ── GROUP CLASS ──
+function openGroupClassModal() {
+  var el = document.getElementById('group-class-overlay');
+  el.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  var qr = document.getElementById('group-zelle-qr');
+  if(qr && typeof ZELLE_PAY_QR !== 'undefined') qr.src = ZELLE_PAY_QR;
+  ['gc-name','gc-wechat','gc-phone','gc-note'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('gc-err').style.display = 'none';
+  document.getElementById('gc-success').style.display = 'none';
+  var btn = document.getElementById('gc-submit-btn');
+  btn.disabled = false; btn.style.display = ''; btn.innerHTML = '✅ 我已付款，提交报名';
+  var back = document.getElementById('gc-back-btn');
+  if(back) back.style.display = '';
+}
+
+function closeGroupClassModal() {
+  document.getElementById('group-class-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+async function submitGroupClass() {
+  var name   = document.getElementById('gc-name').value.trim();
+  var wechat = document.getElementById('gc-wechat').value.trim();
+  var phone  = document.getElementById('gc-phone').value.trim();
+  var note   = document.getElementById('gc-note').value.trim();
+  var errEl  = document.getElementById('gc-err');
+  errEl.style.display = 'none';
+  if(!name)   { errEl.textContent='⚠️ 请填写姓名'; errEl.style.display='block'; return; }
+  if(!wechat) { errEl.textContent='⚠️ 请填写微信号'; errEl.style.display='block'; return; }
+  if(!phone)  { errEl.textContent='⚠️ 请填写手机号'; errEl.style.display='block'; return; }
+  var btn = document.getElementById('gc-submit-btn');
+  btn.disabled=true; btn.innerHTML='<span class="spin"></span>提交中…';
+  var row = {
+    student_name: name, student_email: (currentUser?currentUser.email:''),
+    student_wechat: wechat, student_phone: phone,
+    lesson_type: 'James 4人小班课 × 4节 ($49.9/节)', status: 'pending',
+    deposit_amount: 199.6, payment_method: 'zelle', court: note||null
+  };
+  try {
+    var token = (currentUser&&currentUser.token)||SB_KEY;
+    var r = await fetch(SB_URL+'/rest/v1/bookings', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+token,'Prefer':'return=minimal'},
+      body: JSON.stringify(row)
+    });
+    if(!r.ok) {
+      var eb = await r.json().catch(function(){return{};});
+      btn.disabled=false; btn.innerHTML='✅ 我已付款，提交报名';
+      errEl.textContent='❌ 提交失败：'+(eb.message||r.status); errEl.style.display='block'; return;
+    }
+  } catch(e) {
+    btn.disabled=false; btn.innerHTML='✅ 我已付款，提交报名';
+    errEl.textContent='❌ 网络错误：'+e.message; errEl.style.display='block'; return;
+  }
+  btn.style.display='none';
+  document.getElementById('gc-back-btn').style.display='none';
+  document.getElementById('gc-success').style.display='block';
+}
+
 // I18N - BILINGUAL SYSTEM
 // ═══════════════════════════════════════
 var currentLangUI = localStorage.getItem('lang') || 'zh';
@@ -5909,6 +6012,69 @@ async function sendResetEmail() {
   }
 }
 </script>
+
+<!-- GROUP CLASS MODAL -->
+<div id="group-class-overlay" style="display:none;position:fixed;inset:0;z-index:3500;background:rgba(0,0,0,0.65);align-items:flex-end;justify-content:center;" onclick="if(event.target===this)closeGroupClassModal()">
+  <div style="background:white;width:100%;max-width:520px;border-radius:24px 24px 0 0;padding:28px 24px 40px;max-height:92dvh;overflow-y:auto;">
+    <div style="width:40px;height:4px;background:#e5e7eb;border-radius:2px;margin:0 auto 20px;"></div>
+    <div style="font-size:20px;font-weight:900;margin-bottom:4px;">🎾 James 4人小班课报名</div>
+    <div style="font-size:13px;color:var(--mute);margin-bottom:20px;">4节课 · 每节1.5小时 · 最多4人 · 含场地费</div>
+
+    <!-- Price highlight -->
+    <div style="background:linear-gradient(135deg,#0f172a,#1e3a5f);border-radius:14px;padding:16px 18px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-size:28px;font-weight:900;color:white;">$199.6</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.45);margin-top:2px;">4节课 · $49.9/节 · 一次付清</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:10px;color:rgba(255,255,255,0.35);text-decoration:line-through;">原价 $200+</div>
+        <div style="background:rgba(34,197,94,0.25);color:#4ade80;font-size:11px;font-weight:800;padding:3px 10px;border-radius:8px;margin-top:4px;">省超 50%</div>
+      </div>
+    </div>
+
+    <!-- Zelle QR -->
+    <div style="margin-bottom:18px;">
+      <div style="font-size:12px;font-weight:700;color:var(--sub);margin-bottom:10px;display:flex;align-items:center;gap:6px;">
+        <span style="background:#e8f5e9;color:var(--green);padding:2px 8px;border-radius:10px;font-size:11px;font-weight:800;">推荐</span>
+        Zelle 扫码支付（免手续费）
+      </div>
+      <div style="background:#f5f0ff;border:2px solid #7c3aed;border-radius:14px;padding:16px;text-align:center;">
+        <div style="font-size:13px;font-weight:800;color:#7c3aed;margin-bottom:8px;">Zelle</div>
+        <img id="group-zelle-qr" src="" style="width:150px;height:150px;border-radius:8px;display:block;margin:0 auto 8px;" alt="Zelle QR">
+        <div style="font-size:12px;color:#6d28d9;font-weight:600;">JOYKINETIC LLC</div>
+        <div style="font-size:11px;color:#9f7aea;margin-top:2px;">joykinetic</div>
+      </div>
+      <div style="margin-top:10px;background:#f0fdf4;border-radius:10px;padding:10px 12px;font-size:12px;color:#15803d;line-height:1.6;">
+        扫码支付 <strong>$199.6</strong> 后，填写下方信息提交报名，客服会在 24 小时内确认。
+      </div>
+    </div>
+
+    <!-- Contact form -->
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px;">
+      <input id="gc-name" type="text" placeholder="姓名 *" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:14px;font-family:inherit;box-sizing:border-box;">
+      <input id="gc-wechat" type="text" placeholder="微信号 * （客服联系用）" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:14px;font-family:inherit;box-sizing:border-box;">
+      <input id="gc-phone" type="tel" placeholder="手机号（含国家区号，如 +1）*" style="width:100%;height:44px;border:1.5px solid var(--border);border-radius:10px;padding:0 14px;font-size:14px;font-family:inherit;box-sizing:border-box;">
+      <textarea id="gc-note" placeholder="备注（如：希望上课时间、技术水平等）" style="width:100%;height:72px;border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:13px;font-family:inherit;resize:none;box-sizing:border-box;"></textarea>
+    </div>
+
+    <div id="gc-err" style="display:none;background:#fef2f2;border-radius:8px;padding:10px 12px;font-size:13px;color:#dc2626;margin-bottom:12px;"></div>
+
+    <button id="gc-submit-btn" onclick="submitGroupClass()" style="width:100%;padding:14px;background:linear-gradient(135deg,var(--green),var(--green2));color:white;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;margin-bottom:10px;">
+      ✅ 我已付款，提交报名
+    </button>
+    <button id="gc-back-btn" onclick="closeGroupClassModal()" style="width:100%;padding:12px;background:none;border:1.5px solid var(--border);border-radius:12px;font-size:14px;color:var(--mute);cursor:pointer;font-family:inherit;">
+      ← 返回
+    </button>
+
+    <!-- Success state -->
+    <div id="gc-success" style="display:none;text-align:center;padding:20px 0;">
+      <div style="font-size:48px;margin-bottom:12px;">🎉</div>
+      <div style="font-size:20px;font-weight:900;margin-bottom:6px;">报名成功！</div>
+      <div style="font-size:13px;color:var(--mute);line-height:1.7;">客服会在 24 小时内通过微信联系你<br>确认上课时间和安排</div>
+      <button onclick="closeGroupClassModal()" style="margin-top:20px;padding:12px 32px;background:var(--green);color:white;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;">好的，知道了</button>
+    </div>
+  </div>
+</div>
 
 <!-- PAY OVERLAY -->
 <div class="pay-overlay" id="pay-overlay">
