@@ -2684,6 +2684,7 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
       <div class="nav-item" onclick="showPanel('coaches',this)"><span class="nav-icon">🎾</span> <span data-i18n="nav_coaches">找教练</span></div>
       <div class="nav-item" onclick="showPanel('my-bookings',this)"><span class="nav-icon">📅</span> <span data-i18n="nav_mybookings">我的预约</span></div>
       <div class="nav-item" onclick="showPanel('packages',this)"><span class="nav-icon">📦</span> <span data-i18n="nav_packages">课程套餐</span></div>
+      <div class="nav-item" onclick="showPanel('group-class',this)"><span class="nav-icon">👥</span> <span data-i18n="nav_group">小班团课</span></div>
       <div class="nav-item" onclick="showPanel('benefit',this)"><span class="nav-icon">🎁</span> <span data-i18n="nav_benefit">平台好处</span></div>
       <div id="nav-admin" class="nav-item" onclick="showPanel('admin',this)" style="display:none"><span class="nav-icon">⚙️</span> <span data-i18n="nav_admin">管理后台</span></div>
       <div class="nav-section-label" style="margin-top:10px;" data-i18n="nav_region">地区筛选</div>
@@ -2939,51 +2940,6 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
           </div>
         </div>
 
-        <!-- ── James 4人小班课 ── -->
-        <div style="margin-bottom:10px;">
-          <div style="font-size:15px;font-weight:800;margin-bottom:4px;">🎾 James 小班课</div>
-          <div style="font-size:12px;color:var(--mute);margin-bottom:14px;">4人小班 · 每节 1.5小时 · James 教练主课 · 每周三 7:00–8:30 PM · VA Highlands Park</div>
-        </div>
-
-        <div style="background:linear-gradient(135deg,#0f172a,#1e3a5f);border-radius:20px;padding:24px;margin-bottom:16px;box-shadow:0 8px 30px rgba(15,23,42,0.25);position:relative;overflow:hidden;">
-          <!-- Background decoration -->
-          <div style="position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:rgba(255,255,255,0.03);border-radius:50%;"></div>
-          <div style="position:absolute;bottom:-30px;left:-10px;width:90px;height:90px;background:rgba(99,179,237,0.06);border-radius:50%;"></div>
-
-          <!-- Badge -->
-          <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(245,158,11,0.2);border:1px solid rgba(245,158,11,0.4);border-radius:20px;padding:3px 12px;font-size:11px;font-weight:800;color:#fbbf24;margin-bottom:14px;">
-            👥 4人小班 · 一次付清4节
-          </div>
-
-          <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:6px;">
-            <div>
-              <div style="display:flex;align-items:baseline;gap:6px;">
-                <span style="font-size:42px;font-weight:900;color:white;line-height:1;">$199.6</span>
-                <span style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:4px;">/ 4节课</span>
-              </div>
-              <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:2px;">$49.9 / 节 · 每节 1.5 小时</div>
-            </div>
-            <div style="text-align:right;">
-              <div style="font-size:11px;color:rgba(255,255,255,0.35);text-decoration:line-through;">原价 $200+</div>
-              <div style="background:rgba(34,197,94,0.2);border:1px solid rgba(34,197,94,0.35);border-radius:8px;padding:3px 10px;font-size:11px;font-weight:800;color:#4ade80;margin-top:4px;">超值优惠</div>
-            </div>
-          </div>
-
-          <!-- Features -->
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0;padding:12px;background:rgba(255,255,255,0.04);border-radius:12px;">
-            <div style="font-size:12px;color:rgba(255,255,255,0.6);display:flex;align-items:center;gap:5px;">🎓 James 教练亲授</div>
-            <div style="font-size:12px;color:rgba(255,255,255,0.6);display:flex;align-items:center;gap:5px;">⏱ 每节 1.5 小时</div>
-            <div style="font-size:12px;color:rgba(255,255,255,0.6);display:flex;align-items:center;gap:5px;">👥 最多 4 人</div>
-            <div style="font-size:12px;color:rgba(255,255,255,0.6);display:flex;align-items:center;gap:5px;">📍 含场地费</div>
-            <div style="font-size:12px;color:#93c5fd;display:flex;align-items:center;gap:5px;font-weight:700;grid-column:1/-1;">📅 每周三 7:00–8:30 PM</div>
-            <div style="font-size:12px;color:rgba(255,255,255,0.6);display:flex;align-items:center;gap:5px;grid-column:1/-1;">📍 VA Highlands Park <span style="color:rgba(255,255,255,0.35);font-size:10px;margin-left:4px;">subject to change</span></div>
-          </div>
-
-          <button onclick="openGroupClassModal()" style="width:100%;padding:13px;background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:white;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:0.3px;box-shadow:0 4px 15px rgba(59,130,246,0.4);">
-            🙋 立即报名 · $199.6
-          </button>
-        </div>
-
         <!-- 含场地费标注 -->
         <div style="display:flex;align-items:center;gap:8px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px 14px;margin-bottom:28px;">
           <span style="font-size:16px;">📍</span>
@@ -3002,6 +2958,82 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
           </div>
         </div>
 
+      </div>
+
+      <!-- GROUP CLASS PANEL -->
+      <div id="panel-group-class" class="panel">
+        <div style="max-width:600px;margin:0 auto;">
+
+          <!-- Hero banner -->
+          <div style="background:linear-gradient(135deg,#0f172a,#1e3a5f);border-radius:20px;padding:28px 24px;margin-bottom:24px;position:relative;overflow:hidden;">
+            <div style="position:absolute;top:-30px;right:-30px;width:150px;height:150px;background:rgba(255,255,255,0.03);border-radius:50%;"></div>
+            <div style="position:absolute;bottom:-40px;left:-20px;width:120px;height:120px;background:rgba(99,179,237,0.05);border-radius:50%;"></div>
+            <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(245,158,11,0.2);border:1px solid rgba(245,158,11,0.4);border-radius:20px;padding:3px 12px;font-size:11px;font-weight:800;color:#fbbf24;margin-bottom:14px;">
+              👥 小班团课 · 限额4人
+            </div>
+            <div style="font-size:28px;font-weight:900;color:white;margin-bottom:6px;">James 小班团课</div>
+            <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;">专业网球小班课 · 亲切互动 · 高性价比</div>
+          </div>
+
+          <!-- Class card -->
+          <div style="background:white;border:2px solid #e0e7ff;border-radius:20px;padding:22px;margin-bottom:16px;box-shadow:0 4px 20px rgba(0,0,0,0.06);">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+              <div>
+                <div style="font-size:22px;font-weight:900;color:var(--text);">$199.6 <span style="font-size:13px;font-weight:500;color:var(--mute);">/ 4节课</span></div>
+                <div style="font-size:13px;color:var(--mute);margin-top:2px;">$49.9 / 节 · 一次付清</div>
+              </div>
+              <div style="background:#eff6ff;color:#1d4ed8;font-size:12px;font-weight:800;padding:6px 14px;border-radius:20px;">超值优惠</div>
+            </div>
+
+            <!-- Info grid -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;">
+              <div style="background:#f8fafc;border-radius:12px;padding:12px;">
+                <div style="font-size:10px;font-weight:700;color:var(--mute);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">教练</div>
+                <div style="font-size:14px;font-weight:800;">🎓 James</div>
+                <div style="font-size:11px;color:var(--mute);">NCAA D1 助理教练</div>
+              </div>
+              <div style="background:#f8fafc;border-radius:12px;padding:12px;">
+                <div style="font-size:10px;font-weight:700;color:var(--mute);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">班级人数</div>
+                <div style="font-size:14px;font-weight:800;">👥 最多 4 人</div>
+                <div style="font-size:11px;color:var(--mute);">小班精品教学</div>
+              </div>
+              <div style="background:#f8fafc;border-radius:12px;padding:12px;">
+                <div style="font-size:10px;font-weight:700;color:var(--mute);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">上课时间</div>
+                <div style="font-size:14px;font-weight:800;">📅 每周三</div>
+                <div style="font-size:11px;color:var(--mute);">7:00 – 8:30 PM</div>
+              </div>
+              <div style="background:#f8fafc;border-radius:12px;padding:12px;">
+                <div style="font-size:10px;font-weight:700;color:var(--mute);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">课程时长</div>
+                <div style="font-size:14px;font-weight:800;">⏱ 1.5 小时</div>
+                <div style="font-size:11px;color:var(--mute);">每节课</div>
+              </div>
+            </div>
+
+            <!-- Location -->
+            <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:12px 14px;margin-bottom:18px;display:flex;align-items:flex-start;gap:10px;">
+              <span style="font-size:18px;">📍</span>
+              <div>
+                <div style="font-size:13px;font-weight:700;color:#15803d;">Virginia Highlands Park</div>
+                <div style="font-size:11px;color:#6b7280;margin-top:2px;">Subject to change due to court availability</div>
+              </div>
+            </div>
+
+            <!-- CTA -->
+            <button onclick="openGroupClassModal()" style="width:100%;padding:14px;background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:white;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 15px rgba(59,130,246,0.35);">
+              🙋 立即报名 · $199.6
+            </button>
+          </div>
+
+          <!-- Note -->
+          <div style="background:#fafafa;border-radius:12px;padding:16px;font-size:12px;color:var(--sub);line-height:1.9;">
+            <div style="font-weight:800;color:var(--text);margin-bottom:8px;">📋 报名说明</div>
+            <div>✅ 报名后通过 <strong>Zelle</strong> 扫码支付 $199.6（4节课费用）</div>
+            <div>📱 客服会在 <strong>24小时内</strong>通过微信确认报名</div>
+            <div>📍 场地如有变化会提前通知</div>
+            <div>❌ 报名后如需退款，请提前联系客服</div>
+          </div>
+
+        </div>
       </div>
 
       <!-- BENEFIT PANEL -->
@@ -3408,6 +3440,9 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
     </div>
     <div class="mob-nav-item" id="mobnav-packages" onclick="mobileNav('packages',this)">
       <div class="mob-nav-icon">📦</div><span data-i18n="nav_packages_short">套餐</span>
+    </div>
+    <div class="mob-nav-item" id="mobnav-group-class" onclick="mobileNav('group-class',this)">
+      <div class="mob-nav-icon">👥</div><span data-i18n="nav_group_short">团课</span>
     </div>
     <div class="mob-nav-item" id="mobnav-benefit" onclick="mobileNav('benefit',this)">
       <div class="mob-nav-icon">🎁</div><span data-i18n="nav_benefit_short">好处</span>
@@ -4780,7 +4815,7 @@ function openCoachProfile(coachId) {
 function goBackFromProfile() {
   showPanel(profileFromPanel, null);
   // Re-highlight correct nav item
-  var navMap = { home:0, coaches:1, 'my-bookings':2, packages:3 };
+  var navMap = { home:0, coaches:1, 'my-bookings':2, packages:3, 'group-class':4 };
   var items = document.querySelectorAll('.nav-item');
   if(items[navMap[profileFromPanel]]) items[navMap[profileFromPanel]].classList.add('active');
 }
@@ -5033,6 +5068,7 @@ var LANG = {
     nav_home: '首页', nav_coaches: '找教练', nav_mybookings: '我的预约',
     nav_packages: '课程套餐', nav_benefit: '平台好处', nav_admin: '管理后台',
     nav_region: '地区筛选', logout: '退出登录', login_prompt: '登录 / 注册',
+    nav_group: '小班团课', nav_group_short: '团课',
     // Topbar
     search_placeholder: '搜索教练…',
     // Home
@@ -5147,6 +5183,7 @@ var LANG = {
     nav_home: 'Home', nav_coaches: 'Find Coaches', nav_mybookings: 'My Bookings',
     nav_packages: 'Packages', nav_benefit: 'Why Us', nav_admin: 'Admin',
     nav_region: 'Region', logout: 'Log Out', login_prompt: 'Log In / Sign Up',
+    nav_group: 'Group Classes', nav_group_short: 'Group',
     // Topbar
     search_placeholder: 'Search coaches…',
     // Home
@@ -5311,6 +5348,7 @@ var panelTitles = {
   'coaches': '找教练',
   'my-bookings': '我的预约',
   'packages': '课程套餐',
+  'group-class': '小班团课',
   'benefit': '平台好处',
   'coach-profile': '教练详情'
 };
@@ -5326,6 +5364,7 @@ function showPanel(id, navEl) {
   if(id==='coaches') renderCoaches();
   if(id==='my-bookings') loadMyBookings();
   if(id==='admin') adminLoadBookings();
+  if(id==='group-class') { var qr=document.getElementById('group-zelle-qr'); if(qr&&typeof ZELLE_PAY_QR!=='undefined') qr.src=ZELLE_PAY_QR; }
 }
 
 function mobileNav(id, el) {
