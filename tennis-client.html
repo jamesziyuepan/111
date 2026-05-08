@@ -4999,7 +4999,7 @@ function bookingCardHTML(b) {
 // ═══════════════════════════════════════
 // ── GROUP CLASS ──
 function openGroupClassModal() {
-  if(!currentUser) { openLoginGate(); return; }
+  if(!currentUser) { showLoginGate(); return; }
   var el = document.getElementById('group-class-overlay');
   el.style.display = 'flex';
   document.body.style.overflow = 'hidden';
