@@ -2771,9 +2771,9 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
           </div>
         </div>
         <div style="display:flex;gap:8px;margin-bottom:14px;">
-          <div class="fchip active" onclick="setLang('all',this)" data-i18n="all_langs">全部语言</div>
-          <div class="fchip" onclick="setLang('zh',this)" data-i18n="lang_chinese">🗣 中文</div>
-          <div class="fchip" onclick="setLang('en',this)">🗣 English</div>
+          <div class="fchip active" onclick="setCoachLang('all',this)" data-i18n="all_langs">全部语言</div>
+          <div class="fchip" onclick="setCoachLang('zh',this)" data-i18n="lang_chinese">🗣 中文</div>
+          <div class="fchip" onclick="setCoachLang('en',this)">🗣 English</div>
         </div>
         <div style="font-size:13px;color:var(--mute);margin-bottom:12px;" id="coach-count">共 11 位教练</div>
         <div class="coach-grid" id="coaches-grid"></div>
@@ -3657,6 +3657,294 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 // ═══════════════════════════
 const SB_URL = 'https://kbllubfoxwbcmcgrklgh.supabase.co';
 const SB_KEY = 'sb_publishable_xDL0OkqVVBhRFuYm2GrqZg_o6wBlKCM';
+// Language must be declared early — used throughout all functions
+var currentLangUI = (typeof localStorage !== 'undefined' && localStorage.getItem('lang')) || 'zh';
+
+// I18N - BILINGUAL SYSTEM
+// ═══════════════════════════════════════
+
+var LANG = {
+  zh: {
+    // Nav
+    nav_student_center: '学员中心',
+    nav_home: '首页', nav_coaches: '找教练', nav_mybookings: '我的预约',
+    nav_packages: '课程套餐', nav_benefit: '平台好处', nav_admin: '管理后台',
+    nav_region: '地区筛选', logout: '退出登录', login_prompt: '登录 / 注册',
+    nav_group: '小班团课', nav_group_short: '团课',
+    // Topbar
+    search_placeholder: '搜索教练…',
+    // Home
+    hero_title: '找到最好的<br>DC/MD/VA 网球教练',
+    stat_upcoming: '即将上课', stat_done: '已完成课时',
+    stat_coaches: '认证教练', stat_regions: '服务地区',
+    sec_upcoming: '📅 即将到来的课程', see_all: '查看全部 ›',
+    sec_recommended: '推荐教练', all: '全部',
+    empty_upcoming: '暂无即将到来的课程', empty_bookings: '暂无预约记录',
+    refresh: '🔄 刷新',
+    // Booking modal
+    bk_title: '📅 预约课程',
+    step_type: '选择课程类型', step_date: '选择日期',
+    step_time: '选择时间段', step_court: '选择球场',
+    type_tennis_name: '网球入门 & 提升',
+    type_1v1_desc: '1对1私教，60分钟', type_1v2_desc: '1对2双人，60分钟',
+    type_strength_name: '运动表现 & 体能', type_strength_desc: 'Strength & Conditioning',
+    bk_summary: '📋 预约小结',
+    lbl_type: '课程类型', lbl_datetime: '日期时间', lbl_court: '球场',
+    lbl_coach: '教练', lbl_date: '日期', lbl_time: '时间',
+    lbl_total: '应付金额', btn_confirm: '确认预约',
+    bk_advance_notice: '请提前48小时（2天）预约',
+    suc_title: '预约成功！', suc_sub: '请等待教练确认，确认后将收到通知',
+    btn_back_home: '好的，返回首页',
+    // Pay overlay
+    pay_title: '💰 支付课程押金',
+    pay_cny_lbl: '人民币参考',
+    pay_contact_lbl: '📱 留下联系方式（客服确认用）',
+    pay_wechat_ph: '微信号 *', pay_phone_ph: '手机号（含国家区号，如 +1）*',
+    btn_paid: '✅ 我已付款，确认预约', btn_goback: '← 返回修改',
+    policy_title: '📋 取消与退款政策',
+    // Auth
+    btn_login: '登录账号', btn_register: '免费注册',
+    // Booking status labels
+    status_pending_payment: '💳 待支付', status_pending: '⏳ 待确认',
+    status_confirmed: '✅ 已确认', status_cancelled: '❌ 已取消',
+    // Coach card
+    btn_view_detail: '查看详情 →', btn_book: '立即预约',
+    // Calendar
+    cal_weeks: ['日','一','二','三','四','五','六'],
+    cal_months: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
+    // My bookings
+    bk_no_slots: '⚠️ 该日暂无可约时段（需提前48小时预约）',
+    bk_select_date: '请先选择日期',
+    bk_slot_too_soon: '约课需至少提前48小时（2天），\n请选择更晚的日期。',
+    // Panel titles
+    panel_home: '首页', panel_coaches: '找教练', panel_mybookings: '我的预约',
+    panel_packages: '课程套餐', panel_benefit: '平台好处', panel_profile: '教练详情',
+    // Packages
+    pkg_sub: '买得越多，省得越多 · 套餐课时永久有效',
+    pkg_standard: '标准教练', pkg_standard_sub: '单次课 $75 / 小时 · 含场地费',
+    pkg_premium: '高级教练', pkg_premium_sub: '单次课 $100 / 小时 · 含场地费',
+    pkg_single: '单次课', pkg_per_lesson: '/ 节', pkg_flexible: '按次付款，灵活无压力',
+    pkg_total: '总价', pkg_best_value: '最划算',
+    btn_find_coach: '立即找教练',
+    // Auth
+    btn_register_short: '注册', tab_login: '登录账号', tab_register: '新用户注册',
+    lbl_name: '你的姓名', lbl_email: '邮箱地址', lbl_password: '密码',
+    ph_name: '中文或英文名', ph_password: '至少 6 位',
+    auth_tagline: 'DC/MD/VA 华人网球教练预约平台<br>注册后即可在线预约课程',
+    auth_no_account: '还没有账号？点上方「新用户注册」免费创建',
+    site_name: '网球教练平台', site_sub: 'DC · MD · VA 华人网球社区',
+    // Reset password
+    reset_title: '重置密码', reset_sub: '输入注册邮箱，我们会发送<br>重置密码链接到您的邮箱',
+    btn_send_reset: '发送重置链接', btn_cancel: '取消',
+    // Coaches
+    all_regions: '全部地区', all_langs: '全部语言', lang_chinese: '🗣 中文',
+    back_coaches: '‹ 返回教练列表',
+    // Admin
+    admin_sub: '所有预约管理', all_status: '全部状态',
+    status_pending_payment_short: '待支付', status_pending_short: '待确认',
+    status_confirmed_short: '已确认', status_cancelled_short: '已取消',
+    admin_search_ph: '搜索姓名 / 邮箱…',
+    // Login gate
+    gate_title: '登录后才能预约', gate_sub: '请先登录或注册账号<br>预约记录将保存到你的账户',
+    gate_skip: '稍后再说，先浏览教练',
+    // Loyalty
+    loyalty_title: 'Tennis Warehouse 专属折扣',
+    loyalty_sub: '累计约课满 10 次解锁 30% 优惠码',
+    loyalty_badge: '忠实会员专享',
+    // Pay overlay
+    pay_recommended: '推荐',
+    pay_qr_label: '扫码支付（免手续费）',
+    pay_qr_instruction: '扫码付款后点击下方 <strong>「✅ 我已付款，确认预约」</strong> 按钮，客服将核实后确认预约。',
+    pay_card_label: '信用卡 / Apple Pay / Google Pay',
+    pay_fee_notice: '⚠️ 信用卡支付含 <strong>2.9% + $0.30</strong> 手续费由客户承担。<br>推荐使用 <strong>Zelle 扫码支付</strong>，零手续费。',
+    pay_stripe_desc: '通过 Stripe 安全支付，支付完成后自动确认预约。',
+    btn_stripe: '💳 前往 Stripe 完成支付',
+    policy_body: '✅ 上课 <strong>48小时前</strong>取消 → 教练费<strong>全额退还</strong><br>❌ 预约成功后 → 场地费 <strong>$12 不可退还</strong><br>⚠️ 上课 <strong>48小时内</strong>取消 → 费用不予退还',
+    pay_secure_note: '扫码支付安全可靠，客服 24 小时内确认',
+    // Benefit
+    benefit_features_title: '🎯 平台好处',
+    benefit_f1_title: '中文平台界面', benefit_f1_desc: '平台界面、教练简介、约课流程全部中文显示。部分教练提供中文教学，可在筛选时选择。',
+    benefit_f2_title: '透明公开定价', benefit_f2_desc: '每位教练的课时费一目了然，无隐藏费用，无中间商差价。你看到的价格就是你付的价格。',
+    benefit_f3_title: '灵活约课时间', benefit_f3_desc: '实时查看教练可用时间，按自己的日程安排上课，周末、工作日均可。',
+    benefit_f4_title: '按需匹配教练', benefit_f4_desc: '按技术水平、训练目标、上课地点筛选教练。入门、进阶、儿童训练均有对应教练。',
+    benefit_f5_title: 'DC/MD/VA 本地覆盖', benefit_f5_desc: '平台聚焦大华盛顿地区，教练均在本地，上课地点近、接送方便，真正的社区平台。',
+    benefit_f6_title: '提前 48 小时取消', benefit_f6_desc: '只需提前 48 小时取消预约，无需支付任何费用，灵活应对临时变化，零压力约课。',
+    stat_bookings_done: '成功约课', stat_rating: '平均评分', stat_states: '3州',
+    loading: '加载中…',
+    btn_got_it: '我知道了',
+    loyalty_code_sent: '🎉 恭喜！优惠码已发送至你的注册邮箱',
+    loyalty_code_check: '如未收到请检查垃圾邮件，或联系我们重发',
+    annual_perk: '年度福利', coming_soon: '即将上线', forgot_pwd: '忘记密码？',
+    benefit_title: '加入平台，享受专属好处',
+    benefit_sub: '透明定价 · 灵活约课 · 本地教练 · 忠实会员专享福利',
+    nav_benefit_short: '好处', nav_packages_short: '套餐',
+  },
+  en: {
+    // Nav
+    nav_student_center: 'Menu',
+    nav_home: 'Home', nav_coaches: 'Find Coaches', nav_mybookings: 'My Bookings',
+    nav_packages: 'Packages', nav_benefit: 'Why Us', nav_admin: 'Admin',
+    nav_region: 'Region', logout: 'Log Out', login_prompt: 'Log In / Sign Up',
+    nav_group: 'Group Classes', nav_group_short: 'Group',
+    // Topbar
+    search_placeholder: 'Search coaches…',
+    // Home
+    hero_title: 'Find the Best<br>DC/MD/VA Tennis Coach',
+    stat_upcoming: 'Upcoming', stat_done: 'Completed',
+    stat_coaches: 'Coaches', stat_regions: 'Areas',
+    sec_upcoming: '📅 Upcoming Lessons', see_all: 'See All ›',
+    sec_recommended: 'Featured Coaches', all: 'All',
+    empty_upcoming: 'No upcoming lessons', empty_bookings: 'No bookings yet',
+    refresh: '🔄 Refresh',
+    // Booking modal
+    bk_title: '📅 Book a Lesson',
+    step_type: 'Select Lesson Type', step_date: 'Select Date',
+    step_time: 'Select Time', step_court: 'Select Court',
+    type_tennis_name: 'Tennis Fundamentals & Improvement',
+    type_1v1_desc: '1-on-1 private lesson, 60 min', type_1v2_desc: '1-on-2 group lesson, 60 min',
+    type_strength_name: 'Strength & Conditioning', type_strength_desc: 'Athletic performance training',
+    bk_summary: '📋 Booking Summary',
+    lbl_type: 'Lesson Type', lbl_datetime: 'Date & Time', lbl_court: 'Court',
+    lbl_coach: 'Coach', lbl_date: 'Date', lbl_time: 'Time',
+    lbl_total: 'Total', btn_confirm: 'Confirm Booking',
+    bk_advance_notice: 'Booking must be made 48 hours in advance',
+    suc_title: 'Booking Submitted!', suc_sub: 'Awaiting coach confirmation. You will be notified.',
+    btn_back_home: 'Back to Home',
+    // Pay overlay
+    pay_title: '💰 Pay Lesson Deposit',
+    pay_cny_lbl: 'CNY (reference)',
+    pay_contact_lbl: '📱 Contact info (for our team to confirm)',
+    pay_wechat_ph: 'WeChat ID *', pay_phone_ph: 'Phone number (incl. country code, e.g. +1) *',
+    btn_paid: '✅ I\'ve Paid — Confirm Booking', btn_goback: '← Go Back',
+    policy_title: '📋 Cancellation Policy',
+    // Auth
+    btn_login: 'Log In', btn_register: 'Sign Up Free',
+    // Booking status labels
+    status_pending_payment: '💳 Awaiting Payment', status_pending: '⏳ Pending',
+    status_confirmed: '✅ Confirmed', status_cancelled: '❌ Cancelled',
+    // Coach card
+    btn_view_detail: 'View Details →', btn_book: 'Book Now',
+    // Calendar
+    cal_weeks: ['Su','Mo','Tu','We','Th','Fr','Sa'],
+    cal_months: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    // My bookings
+    bk_no_slots: '⚠️ No available slots (48hr advance booking required)',
+    bk_select_date: 'Please select a date first',
+    bk_slot_too_soon: 'Booking must be made at least 48 hours in advance.\nPlease choose a later date.',
+    // Panel titles
+    panel_home: 'Home', panel_coaches: 'Find Coaches', panel_mybookings: 'My Bookings',
+    panel_packages: 'Packages', panel_benefit: 'Why Us', panel_profile: 'Coach Profile',
+    // Packages
+    pkg_sub: 'More lessons, more savings · Credits never expire',
+    pkg_standard: 'Standard Coach', pkg_standard_sub: '$75 / hr · Court fee included',
+    pkg_premium: 'Premium Coach', pkg_premium_sub: '$100 / hr · Court fee included',
+    pkg_single: 'Single Lesson', pkg_per_lesson: '/ lesson', pkg_flexible: 'Pay per lesson, no commitment',
+    pkg_total: 'Total', pkg_best_value: 'Best Value',
+    btn_find_coach: 'Find a Coach',
+    // Auth
+    btn_register_short: 'Sign Up', tab_login: 'Log In', tab_register: 'Sign Up',
+    lbl_name: 'Your Name', lbl_email: 'Email', lbl_password: 'Password',
+    ph_name: 'Your name', ph_password: 'At least 6 characters',
+    auth_tagline: 'DC/MD/VA Tennis Coaching Platform<br>Sign up to book lessons online',
+    auth_no_account: 'No account? Click "Sign Up" above to register free.',
+    site_name: 'Tennis Coach Platform', site_sub: 'DC · MD · VA Community',
+    // Reset password
+    reset_title: 'Reset Password', reset_sub: 'Enter your email and we\'ll send<br>a password reset link',
+    btn_send_reset: 'Send Reset Link', btn_cancel: 'Cancel',
+    // Coaches
+    all_regions: 'All Areas', all_langs: 'All Languages', lang_chinese: '🗣 Chinese',
+    back_coaches: '‹ Back to Coaches',
+    // Admin
+    admin_sub: 'All Bookings Management', all_status: 'All Statuses',
+    status_pending_payment_short: 'Awaiting Payment', status_pending_short: 'Pending',
+    status_confirmed_short: 'Confirmed', status_cancelled_short: 'Cancelled',
+    admin_search_ph: 'Search name / email…',
+    // Login gate
+    gate_title: 'Log in to Book', gate_sub: 'Please log in or sign up<br>Your bookings will be saved to your account',
+    gate_skip: 'Maybe later, just browsing',
+    // Loyalty
+    loyalty_title: 'Tennis Warehouse Exclusive Discount',
+    loyalty_sub: 'Book 10 lessons to unlock a 30% promo code',
+    loyalty_badge: 'Loyal Member Perk',
+    // Pay overlay
+    pay_recommended: 'Recommended',
+    pay_qr_label: 'Scan to Pay (No fees)',
+    pay_qr_instruction: 'After scanning and paying, click <strong>"✅ I\'ve Paid — Confirm Booking"</strong> below. Our team will verify and confirm.',
+    pay_card_label: 'Credit Card / Apple Pay / Google Pay',
+    pay_fee_notice: '⚠️ Credit card payments include a <strong>2.9% + $0.30</strong> fee charged to customer.<br>Use <strong>Zelle</strong> to avoid fees.',
+    pay_stripe_desc: 'Secure payment via Stripe. Booking confirmed automatically after payment.',
+    btn_stripe: '💳 Pay with Stripe',
+    policy_body: '✅ Cancel <strong>48+ hours</strong> before → Full coach fee refund<br>❌ After booking → Court fee <strong>$12 non-refundable</strong><br>⚠️ Cancel within <strong>48 hours</strong> → No refund',
+    pay_secure_note: 'Scan-to-pay is safe and secure. Confirmed within 24 hours.',
+    // Benefit
+    benefit_features_title: '🎯 Platform Benefits',
+    benefit_f1_title: 'Bilingual Platform', benefit_f1_desc: 'Full Chinese & English interface. Some coaches offer Chinese instruction — filter by language when searching.',
+    benefit_f2_title: 'Transparent Pricing', benefit_f2_desc: 'All coach rates are clearly listed. No hidden fees, no markups. The price you see is the price you pay.',
+    benefit_f3_title: 'Flexible Scheduling', benefit_f3_desc: 'View real-time coach availability. Book at your own pace — weekdays and weekends available.',
+    benefit_f4_title: 'Find Your Coach', benefit_f4_desc: 'Filter by skill level, training goals, and location. Beginner, advanced, and junior coaches all available.',
+    benefit_f5_title: 'DC/MD/VA Coverage', benefit_f5_desc: 'Focused on the greater DC area. All coaches are local — easy access, convenient courts.',
+    benefit_f6_title: 'Free 48-Hour Cancellation', benefit_f6_desc: 'Cancel up to 48 hours before your lesson at no charge. Stress-free, flexible booking.',
+    benefit_title: '加入平台，享受专属好处',
+    benefit_sub: '透明定价 · 灵活约课 · 本地教练 · 忠实会员专享福利',
+    nav_benefit_short: '好处', nav_packages_short: '套餐',
+    stat_bookings_done: 'Lessons Booked', stat_rating: 'Avg Rating', stat_states: '3 States',
+    loading: 'Loading…',
+    btn_got_it: 'Got it',
+    benefit_title: 'Join Our Platform',
+    benefit_sub: 'Transparent pricing · Flexible booking · Local coaches · Loyalty rewards',
+    nav_benefit_short: 'Benefits', nav_packages_short: 'Pkgs',
+    loyalty_code_sent: '🎉 Congrats! Promo code sent to your registered email',
+    loyalty_code_check: 'Check spam if not received, or contact us to resend',
+    annual_perk: 'Annual Perk', coming_soon: 'Coming Soon', forgot_pwd: 'Forgot Password?',
+  }
+};
+
+function t(key) {
+  return (LANG[currentLangUI] && LANG[currentLangUI][key]) || (LANG.zh[key]) || key;
+}
+
+function setLang(lang) {
+  currentLangUI = lang;
+  localStorage.setItem('lang', lang);
+  // Update toggle button
+  var btn = document.getElementById('lang-btn');
+  if(btn) btn.textContent = lang === 'zh' ? 'EN' : '中文';
+  // Update all data-i18n elements
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    var val = t(key);
+    if(el.tagName === 'INPUT') el.placeholder = val;
+    else el.innerHTML = val;
+  });
+  // Update placeholders
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+    el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
+  });
+  // Update week head labels
+  var wLabels = t('cal_weeks');
+  for(var wi=0;wi<7;wi++){var wEl=document.getElementById('wh'+wi);if(wEl)wEl.textContent=wLabels[wi];}
+  // Update panel title
+  updateTopbarTitle();
+  // Re-render dynamic content
+  if(typeof renderCoaches === 'function') renderCoaches();
+  if(typeof loadMyBookings === 'function' && (currentPanel === 'my-bookings' || currentPanel === 'home')) loadMyBookings();
+}
+
+function toggleLang() {
+  setLang(currentLangUI === 'zh' ? 'en' : 'zh');
+}
+
+function updateTopbarTitle() {
+  var titleMap = {
+    'home': t('panel_home'), 'coaches': t('panel_coaches'),
+    'my-bookings': t('panel_mybookings'), 'packages': t('panel_packages'),
+    'benefit': t('panel_benefit'), 'coach-profile': t('panel_profile'),
+    'admin': t('nav_admin')
+  };
+  var el = document.getElementById('topbar-title');
+  if(el) el.textContent = titleMap[currentPanel] || currentPanel;
+}
+
 // Stripe Payment Links — James 1v1 $100 / 1v2 $150；其他教练 1v1 $75 / 1v2 $120
 const STRIPE_LINKS = {
   james_1v1: 'https://buy.stripe.com/7sYbJ291gasL3tk8AM2kw06',
@@ -4709,7 +4997,7 @@ function setRegion(region, el) {
   renderCoaches();
 }
 
-function setLang(lang, el) {
+function setCoachLang(lang, el) {
   currentLang = lang;
   document.querySelectorAll('#panel-coaches .fchip:not(#region-chips .fchip)').forEach(function(c){ c.classList.remove('active'); });
   if (el) el.classList.add('active');
@@ -5058,292 +5346,6 @@ async function submitGroupClass() {
   btn.style.display='none';
   document.getElementById('gc-back-btn').style.display='none';
   document.getElementById('gc-success').style.display='block';
-}
-
-// I18N - BILINGUAL SYSTEM
-// ═══════════════════════════════════════
-var currentLangUI = localStorage.getItem('lang') || 'zh';
-
-var LANG = {
-  zh: {
-    // Nav
-    nav_student_center: '学员中心',
-    nav_home: '首页', nav_coaches: '找教练', nav_mybookings: '我的预约',
-    nav_packages: '课程套餐', nav_benefit: '平台好处', nav_admin: '管理后台',
-    nav_region: '地区筛选', logout: '退出登录', login_prompt: '登录 / 注册',
-    nav_group: '小班团课', nav_group_short: '团课',
-    // Topbar
-    search_placeholder: '搜索教练…',
-    // Home
-    hero_title: '找到最好的<br>DC/MD/VA 网球教练',
-    stat_upcoming: '即将上课', stat_done: '已完成课时',
-    stat_coaches: '认证教练', stat_regions: '服务地区',
-    sec_upcoming: '📅 即将到来的课程', see_all: '查看全部 ›',
-    sec_recommended: '推荐教练', all: '全部',
-    empty_upcoming: '暂无即将到来的课程', empty_bookings: '暂无预约记录',
-    refresh: '🔄 刷新',
-    // Booking modal
-    bk_title: '📅 预约课程',
-    step_type: '选择课程类型', step_date: '选择日期',
-    step_time: '选择时间段', step_court: '选择球场',
-    type_tennis_name: '网球入门 & 提升',
-    type_1v1_desc: '1对1私教，60分钟', type_1v2_desc: '1对2双人，60分钟',
-    type_strength_name: '运动表现 & 体能', type_strength_desc: 'Strength & Conditioning',
-    bk_summary: '📋 预约小结',
-    lbl_type: '课程类型', lbl_datetime: '日期时间', lbl_court: '球场',
-    lbl_coach: '教练', lbl_date: '日期', lbl_time: '时间',
-    lbl_total: '应付金额', btn_confirm: '确认预约',
-    bk_advance_notice: '请提前48小时（2天）预约',
-    suc_title: '预约成功！', suc_sub: '请等待教练确认，确认后将收到通知',
-    btn_back_home: '好的，返回首页',
-    // Pay overlay
-    pay_title: '💰 支付课程押金',
-    pay_cny_lbl: '人民币参考',
-    pay_contact_lbl: '📱 留下联系方式（客服确认用）',
-    pay_wechat_ph: '微信号 *', pay_phone_ph: '手机号（含国家区号，如 +1）*',
-    btn_paid: '✅ 我已付款，确认预约', btn_goback: '← 返回修改',
-    policy_title: '📋 取消与退款政策',
-    // Auth
-    btn_login: '登录账号', btn_register: '免费注册',
-    // Booking status labels
-    status_pending_payment: '💳 待支付', status_pending: '⏳ 待确认',
-    status_confirmed: '✅ 已确认', status_cancelled: '❌ 已取消',
-    // Coach card
-    btn_view_detail: '查看详情 →', btn_book: '立即预约',
-    // Calendar
-    cal_weeks: ['日','一','二','三','四','五','六'],
-    cal_months: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-    // My bookings
-    bk_no_slots: '⚠️ 该日暂无可约时段（需提前48小时预约）',
-    bk_select_date: '请先选择日期',
-    bk_slot_too_soon: '约课需至少提前48小时（2天），\n请选择更晚的日期。',
-    // Panel titles
-    panel_home: '首页', panel_coaches: '找教练', panel_mybookings: '我的预约',
-    panel_packages: '课程套餐', panel_benefit: '平台好处', panel_profile: '教练详情',
-    // Packages
-    pkg_sub: '买得越多，省得越多 · 套餐课时永久有效',
-    pkg_standard: '标准教练', pkg_standard_sub: '单次课 $75 / 小时 · 含场地费',
-    pkg_premium: '高级教练', pkg_premium_sub: '单次课 $100 / 小时 · 含场地费',
-    pkg_single: '单次课', pkg_per_lesson: '/ 节', pkg_flexible: '按次付款，灵活无压力',
-    pkg_total: '总价', pkg_best_value: '最划算',
-    btn_find_coach: '立即找教练',
-    // Auth
-    btn_register_short: '注册', tab_login: '登录账号', tab_register: '新用户注册',
-    lbl_name: '你的姓名', lbl_email: '邮箱地址', lbl_password: '密码',
-    ph_name: '中文或英文名', ph_password: '至少 6 位',
-    auth_tagline: 'DC/MD/VA 华人网球教练预约平台<br>注册后即可在线预约课程',
-    auth_no_account: '还没有账号？点上方「新用户注册」免费创建',
-    site_name: '网球教练平台', site_sub: 'DC · MD · VA 华人网球社区',
-    // Reset password
-    reset_title: '重置密码', reset_sub: '输入注册邮箱，我们会发送<br>重置密码链接到您的邮箱',
-    btn_send_reset: '发送重置链接', btn_cancel: '取消',
-    // Coaches
-    all_regions: '全部地区', all_langs: '全部语言', lang_chinese: '🗣 中文',
-    back_coaches: '‹ 返回教练列表',
-    // Admin
-    admin_sub: '所有预约管理', all_status: '全部状态',
-    status_pending_payment_short: '待支付', status_pending_short: '待确认',
-    status_confirmed_short: '已确认', status_cancelled_short: '已取消',
-    admin_search_ph: '搜索姓名 / 邮箱…',
-    // Login gate
-    gate_title: '登录后才能预约', gate_sub: '请先登录或注册账号<br>预约记录将保存到你的账户',
-    gate_skip: '稍后再说，先浏览教练',
-    // Loyalty
-    loyalty_title: 'Tennis Warehouse 专属折扣',
-    loyalty_sub: '累计约课满 10 次解锁 30% 优惠码',
-    loyalty_badge: '忠实会员专享',
-    // Pay overlay
-    pay_recommended: '推荐',
-    pay_qr_label: '扫码支付（免手续费）',
-    pay_qr_instruction: '扫码付款后点击下方 <strong>「✅ 我已付款，确认预约」</strong> 按钮，客服将核实后确认预约。',
-    pay_card_label: '信用卡 / Apple Pay / Google Pay',
-    pay_fee_notice: '⚠️ 信用卡支付含 <strong>2.9% + $0.30</strong> 手续费由客户承担。<br>推荐使用 <strong>Zelle 扫码支付</strong>，零手续费。',
-    pay_stripe_desc: '通过 Stripe 安全支付，支付完成后自动确认预约。',
-    btn_stripe: '💳 前往 Stripe 完成支付',
-    policy_body: '✅ 上课 <strong>48小时前</strong>取消 → 教练费<strong>全额退还</strong><br>❌ 预约成功后 → 场地费 <strong>$12 不可退还</strong><br>⚠️ 上课 <strong>48小时内</strong>取消 → 费用不予退还',
-    pay_secure_note: '扫码支付安全可靠，客服 24 小时内确认',
-    // Benefit
-    benefit_features_title: '🎯 平台好处',
-    benefit_f1_title: '中文平台界面', benefit_f1_desc: '平台界面、教练简介、约课流程全部中文显示。部分教练提供中文教学，可在筛选时选择。',
-    benefit_f2_title: '透明公开定价', benefit_f2_desc: '每位教练的课时费一目了然，无隐藏费用，无中间商差价。你看到的价格就是你付的价格。',
-    benefit_f3_title: '灵活约课时间', benefit_f3_desc: '实时查看教练可用时间，按自己的日程安排上课，周末、工作日均可。',
-    benefit_f4_title: '按需匹配教练', benefit_f4_desc: '按技术水平、训练目标、上课地点筛选教练。入门、进阶、儿童训练均有对应教练。',
-    benefit_f5_title: 'DC/MD/VA 本地覆盖', benefit_f5_desc: '平台聚焦大华盛顿地区，教练均在本地，上课地点近、接送方便，真正的社区平台。',
-    benefit_f6_title: '提前 48 小时取消', benefit_f6_desc: '只需提前 48 小时取消预约，无需支付任何费用，灵活应对临时变化，零压力约课。',
-    stat_bookings_done: '成功约课', stat_rating: '平均评分', stat_states: '3州',
-    loading: '加载中…',
-    btn_got_it: '我知道了',
-    loyalty_code_sent: '🎉 恭喜！优惠码已发送至你的注册邮箱',
-    loyalty_code_check: '如未收到请检查垃圾邮件，或联系我们重发',
-    annual_perk: '年度福利', coming_soon: '即将上线', forgot_pwd: '忘记密码？',
-    benefit_title: '加入平台，享受专属好处',
-    benefit_sub: '透明定价 · 灵活约课 · 本地教练 · 忠实会员专享福利',
-    nav_benefit_short: '好处', nav_packages_short: '套餐',
-  },
-  en: {
-    // Nav
-    nav_student_center: 'Menu',
-    nav_home: 'Home', nav_coaches: 'Find Coaches', nav_mybookings: 'My Bookings',
-    nav_packages: 'Packages', nav_benefit: 'Why Us', nav_admin: 'Admin',
-    nav_region: 'Region', logout: 'Log Out', login_prompt: 'Log In / Sign Up',
-    nav_group: 'Group Classes', nav_group_short: 'Group',
-    // Topbar
-    search_placeholder: 'Search coaches…',
-    // Home
-    hero_title: 'Find the Best<br>DC/MD/VA Tennis Coach',
-    stat_upcoming: 'Upcoming', stat_done: 'Completed',
-    stat_coaches: 'Coaches', stat_regions: 'Areas',
-    sec_upcoming: '📅 Upcoming Lessons', see_all: 'See All ›',
-    sec_recommended: 'Featured Coaches', all: 'All',
-    empty_upcoming: 'No upcoming lessons', empty_bookings: 'No bookings yet',
-    refresh: '🔄 Refresh',
-    // Booking modal
-    bk_title: '📅 Book a Lesson',
-    step_type: 'Select Lesson Type', step_date: 'Select Date',
-    step_time: 'Select Time', step_court: 'Select Court',
-    type_tennis_name: 'Tennis Fundamentals & Improvement',
-    type_1v1_desc: '1-on-1 private lesson, 60 min', type_1v2_desc: '1-on-2 group lesson, 60 min',
-    type_strength_name: 'Strength & Conditioning', type_strength_desc: 'Athletic performance training',
-    bk_summary: '📋 Booking Summary',
-    lbl_type: 'Lesson Type', lbl_datetime: 'Date & Time', lbl_court: 'Court',
-    lbl_coach: 'Coach', lbl_date: 'Date', lbl_time: 'Time',
-    lbl_total: 'Total', btn_confirm: 'Confirm Booking',
-    bk_advance_notice: 'Booking must be made 48 hours in advance',
-    suc_title: 'Booking Submitted!', suc_sub: 'Awaiting coach confirmation. You will be notified.',
-    btn_back_home: 'Back to Home',
-    // Pay overlay
-    pay_title: '💰 Pay Lesson Deposit',
-    pay_cny_lbl: 'CNY (reference)',
-    pay_contact_lbl: '📱 Contact info (for our team to confirm)',
-    pay_wechat_ph: 'WeChat ID *', pay_phone_ph: 'Phone number (incl. country code, e.g. +1) *',
-    btn_paid: '✅ I\'ve Paid — Confirm Booking', btn_goback: '← Go Back',
-    policy_title: '📋 Cancellation Policy',
-    // Auth
-    btn_login: 'Log In', btn_register: 'Sign Up Free',
-    // Booking status labels
-    status_pending_payment: '💳 Awaiting Payment', status_pending: '⏳ Pending',
-    status_confirmed: '✅ Confirmed', status_cancelled: '❌ Cancelled',
-    // Coach card
-    btn_view_detail: 'View Details →', btn_book: 'Book Now',
-    // Calendar
-    cal_weeks: ['Su','Mo','Tu','We','Th','Fr','Sa'],
-    cal_months: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-    // My bookings
-    bk_no_slots: '⚠️ No available slots (48hr advance booking required)',
-    bk_select_date: 'Please select a date first',
-    bk_slot_too_soon: 'Booking must be made at least 48 hours in advance.\nPlease choose a later date.',
-    // Panel titles
-    panel_home: 'Home', panel_coaches: 'Find Coaches', panel_mybookings: 'My Bookings',
-    panel_packages: 'Packages', panel_benefit: 'Why Us', panel_profile: 'Coach Profile',
-    // Packages
-    pkg_sub: 'More lessons, more savings · Credits never expire',
-    pkg_standard: 'Standard Coach', pkg_standard_sub: '$75 / hr · Court fee included',
-    pkg_premium: 'Premium Coach', pkg_premium_sub: '$100 / hr · Court fee included',
-    pkg_single: 'Single Lesson', pkg_per_lesson: '/ lesson', pkg_flexible: 'Pay per lesson, no commitment',
-    pkg_total: 'Total', pkg_best_value: 'Best Value',
-    btn_find_coach: 'Find a Coach',
-    // Auth
-    btn_register_short: 'Sign Up', tab_login: 'Log In', tab_register: 'Sign Up',
-    lbl_name: 'Your Name', lbl_email: 'Email', lbl_password: 'Password',
-    ph_name: 'Your name', ph_password: 'At least 6 characters',
-    auth_tagline: 'DC/MD/VA Tennis Coaching Platform<br>Sign up to book lessons online',
-    auth_no_account: 'No account? Click "Sign Up" above to register free.',
-    site_name: 'Tennis Coach Platform', site_sub: 'DC · MD · VA Community',
-    // Reset password
-    reset_title: 'Reset Password', reset_sub: 'Enter your email and we\'ll send<br>a password reset link',
-    btn_send_reset: 'Send Reset Link', btn_cancel: 'Cancel',
-    // Coaches
-    all_regions: 'All Areas', all_langs: 'All Languages', lang_chinese: '🗣 Chinese',
-    back_coaches: '‹ Back to Coaches',
-    // Admin
-    admin_sub: 'All Bookings Management', all_status: 'All Statuses',
-    status_pending_payment_short: 'Awaiting Payment', status_pending_short: 'Pending',
-    status_confirmed_short: 'Confirmed', status_cancelled_short: 'Cancelled',
-    admin_search_ph: 'Search name / email…',
-    // Login gate
-    gate_title: 'Log in to Book', gate_sub: 'Please log in or sign up<br>Your bookings will be saved to your account',
-    gate_skip: 'Maybe later, just browsing',
-    // Loyalty
-    loyalty_title: 'Tennis Warehouse Exclusive Discount',
-    loyalty_sub: 'Book 10 lessons to unlock a 30% promo code',
-    loyalty_badge: 'Loyal Member Perk',
-    // Pay overlay
-    pay_recommended: 'Recommended',
-    pay_qr_label: 'Scan to Pay (No fees)',
-    pay_qr_instruction: 'After scanning and paying, click <strong>"✅ I\'ve Paid — Confirm Booking"</strong> below. Our team will verify and confirm.',
-    pay_card_label: 'Credit Card / Apple Pay / Google Pay',
-    pay_fee_notice: '⚠️ Credit card payments include a <strong>2.9% + $0.30</strong> fee charged to customer.<br>Use <strong>Zelle</strong> to avoid fees.',
-    pay_stripe_desc: 'Secure payment via Stripe. Booking confirmed automatically after payment.',
-    btn_stripe: '💳 Pay with Stripe',
-    policy_body: '✅ Cancel <strong>48+ hours</strong> before → Full coach fee refund<br>❌ After booking → Court fee <strong>$12 non-refundable</strong><br>⚠️ Cancel within <strong>48 hours</strong> → No refund',
-    pay_secure_note: 'Scan-to-pay is safe and secure. Confirmed within 24 hours.',
-    // Benefit
-    benefit_features_title: '🎯 Platform Benefits',
-    benefit_f1_title: 'Bilingual Platform', benefit_f1_desc: 'Full Chinese & English interface. Some coaches offer Chinese instruction — filter by language when searching.',
-    benefit_f2_title: 'Transparent Pricing', benefit_f2_desc: 'All coach rates are clearly listed. No hidden fees, no markups. The price you see is the price you pay.',
-    benefit_f3_title: 'Flexible Scheduling', benefit_f3_desc: 'View real-time coach availability. Book at your own pace — weekdays and weekends available.',
-    benefit_f4_title: 'Find Your Coach', benefit_f4_desc: 'Filter by skill level, training goals, and location. Beginner, advanced, and junior coaches all available.',
-    benefit_f5_title: 'DC/MD/VA Coverage', benefit_f5_desc: 'Focused on the greater DC area. All coaches are local — easy access, convenient courts.',
-    benefit_f6_title: 'Free 48-Hour Cancellation', benefit_f6_desc: 'Cancel up to 48 hours before your lesson at no charge. Stress-free, flexible booking.',
-    benefit_title: '加入平台，享受专属好处',
-    benefit_sub: '透明定价 · 灵活约课 · 本地教练 · 忠实会员专享福利',
-    nav_benefit_short: '好处', nav_packages_short: '套餐',
-    stat_bookings_done: 'Lessons Booked', stat_rating: 'Avg Rating', stat_states: '3 States',
-    loading: 'Loading…',
-    btn_got_it: 'Got it',
-    benefit_title: 'Join Our Platform',
-    benefit_sub: 'Transparent pricing · Flexible booking · Local coaches · Loyalty rewards',
-    nav_benefit_short: 'Benefits', nav_packages_short: 'Pkgs',
-    loyalty_code_sent: '🎉 Congrats! Promo code sent to your registered email',
-    loyalty_code_check: 'Check spam if not received, or contact us to resend',
-    annual_perk: 'Annual Perk', coming_soon: 'Coming Soon', forgot_pwd: 'Forgot Password?',
-  }
-};
-
-function t(key) {
-  return (LANG[currentLangUI] && LANG[currentLangUI][key]) || (LANG.zh[key]) || key;
-}
-
-function setLang(lang) {
-  currentLangUI = lang;
-  localStorage.setItem('lang', lang);
-  // Update toggle button
-  var btn = document.getElementById('lang-btn');
-  if(btn) btn.textContent = lang === 'zh' ? 'EN' : '中文';
-  // Update all data-i18n elements
-  document.querySelectorAll('[data-i18n]').forEach(function(el) {
-    var key = el.getAttribute('data-i18n');
-    var val = t(key);
-    if(el.tagName === 'INPUT') el.placeholder = val;
-    else el.innerHTML = val;
-  });
-  // Update placeholders
-  document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
-    el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
-  });
-  // Update week head labels
-  var wLabels = t('cal_weeks');
-  for(var wi=0;wi<7;wi++){var wEl=document.getElementById('wh'+wi);if(wEl)wEl.textContent=wLabels[wi];}
-  // Update panel title
-  updateTopbarTitle();
-  // Re-render dynamic content
-  if(typeof renderCoaches === 'function') renderCoaches();
-  if(typeof loadMyBookings === 'function' && (currentPanel === 'my-bookings' || currentPanel === 'home')) loadMyBookings();
-}
-
-function toggleLang() {
-  setLang(currentLangUI === 'zh' ? 'en' : 'zh');
-}
-
-function updateTopbarTitle() {
-  var titleMap = {
-    'home': t('panel_home'), 'coaches': t('panel_coaches'),
-    'my-bookings': t('panel_mybookings'), 'packages': t('panel_packages'),
-    'benefit': t('panel_benefit'), 'coach-profile': t('panel_profile'),
-    'admin': t('nav_admin')
-  };
-  var el = document.getElementById('topbar-title');
-  if(el) el.textContent = titleMap[currentPanel] || currentPanel;
 }
 
 var panelTitles = {
