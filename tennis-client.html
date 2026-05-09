@@ -2588,6 +2588,10 @@ body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); height: 1
 ══════════════════════════════ -->
 <div id="auth-screen">
   <div class="auth-card">
+    <!-- Language toggle on auth screen -->
+    <div style="text-align:right;margin-bottom:12px;">
+      <button id="auth-lang-btn" onclick="toggleLang()" style="background:none;border:1.5px solid var(--border);border-radius:8px;padding:4px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;color:var(--sub);">EN</button>
+    </div>
     <div class="auth-logo">
       <div class="auth-logo-icon">🎾</div>
       <div class="auth-logo-title" data-i18n="site_name">网球教练平台</div>
@@ -3906,9 +3910,11 @@ function t(key) {
 function setLang(lang) {
   currentLangUI = lang;
   localStorage.setItem('lang', lang);
-  // Update toggle button
-  var btn = document.getElementById('lang-btn');
-  if(btn) btn.textContent = lang === 'zh' ? 'EN' : '中文';
+  var label = lang === 'zh' ? 'EN' : '中文';
+  // Update ALL lang buttons across every screen
+  document.querySelectorAll('#lang-btn, #auth-lang-btn, .lang-toggle-btn').forEach(function(b){ b.textContent = label; });
+  // Update page title
+  document.title = lang==='en' ? '🎾 Tennis Coach Platform · DC/MD/VA' : '🎾 网球教练平台 · DC/MD/VA';
   // Update all data-i18n elements
   document.querySelectorAll('[data-i18n]').forEach(function(el) {
     var key = el.getAttribute('data-i18n');
@@ -4225,11 +4231,7 @@ function onUserLoggedIn() {
 function initApp() {
   updateSidebarUser();
   loadCoachesFromDB();
-  // Apply saved language
   setLang(currentLangUI);
-  var btn = document.getElementById('lang-btn');
-  if(btn) btn.textContent = currentLangUI === 'zh' ? 'EN' : '中文';
-  document.title = currentLangUI==='en' ? '🎾 Tennis Coach Platform · DC/MD/VA' : '🎾 网球教练平台 · DC/MD/VA';
 }
 
 function launchApp() {
@@ -5931,6 +5933,9 @@ fetchAnnouncement();
 
 // 关闭穿线弹窗点击背景
 document.addEventListener('DOMContentLoaded', function(){
+  // Apply saved language immediately (syncs auth screen button)
+  setLang(currentLangUI);
+
   var so = document.getElementById('stringing-overlay');
   if(so) so.addEventListener('click', function(e){ if(e.target===this) closeStringingModal(); });
 
