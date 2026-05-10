@@ -4278,7 +4278,12 @@ function dbCoachToLocal(row) {
     ranking:         row.ranking         || '—',
     cert:            row.badge           || '—',
     bio:             row.bio             || '',
+    bio_en:          row.bio_en          || '',
     achievements:    row.achievements    || [],
+    achievements_en: row.achievements_en || [],
+    badge_en:        row.badge_en        || '',
+    sub_en:          row.sub_en          || '',
+    ranking_en:      row.ranking_en      || '',
     specs:           row.specs           || row.tags || [],
     courts:          courts,
     avail:           avail,
@@ -5043,13 +5048,13 @@ function openCoachProfile(coachId) {
     +'<div class="profile-stats-row">'
     +'<div class="profile-stat"><div class="profile-stat-val">'+c.utr+'</div><div class="profile-stat-lbl">最高 UTR</div></div>'
     +'<div class="profile-stat-div"></div>'
-    +'<div class="profile-stat"><div class="profile-stat-val">'+(c.ranking||'—')+'</div><div class="profile-stat-lbl">排名</div></div>'
+    +'<div class="profile-stat"><div class="profile-stat-val">'+(currentLangUI==="en"&&c.ranking_en?c.ranking_en:(c.ranking||'—'))+'</div><div class="profile-stat-lbl">'+(currentLangUI==="en"?"Ranking":"排名")+'</div></div>'
     +'<div class="profile-stat-div"></div>'
-    +'<div class="profile-stat"><div class="profile-stat-val">'+c.cert+'</div><div class="profile-stat-lbl">认证</div></div>'
+    +'<div class="profile-stat"><div class="profile-stat-val">'+(currentLangUI==="en"&&c.badge_en?c.badge_en:c.cert)+'</div><div class="profile-stat-lbl">'+(currentLangUI==="en"?"Cert":"认证")+'</div></div>'
     +'</div>'
     +'<div class="profile-info">'
     +'<div class="profile-name">'+c.name+'</div>'
-    +'<div class="profile-sub-txt">'+c.sub+'</div>'
+    +'<div class="profile-sub-txt">'+(currentLangUI==="en"&&c.sub_en?c.sub_en:c.sub)+'</div>'
     +'<div class="profile-price">'+c.price+'</div>'
     +'<div class="profile-meta">'
     +'<div class="profile-meta-row">📍 '+c.location+'</div>'
@@ -5061,7 +5066,8 @@ function openCoachProfile(coachId) {
     +'</div></div>';
 
   // Build main content
-  var achHtml = (c.achievements||[]).map(function(a){
+  var achList = (currentLangUI==="en" && c.achievements_en && c.achievements_en.length) ? c.achievements_en : (c.achievements||[]);
+  var achHtml = achList.map(function(a){
     return '<div class="ach-item"><span class="ach-ck">✅</span><span class="ach-txt">'+a+'</span></div>';
   }).join('');
 
@@ -5075,7 +5081,7 @@ function openCoachProfile(coachId) {
 
   document.getElementById('profile-main-content').innerHTML =
     '<div class="pcard"><div class="pcard-title">👋 '+(currentLangUI==="en"?"About Me":"关于我")+'</div>'
-    +'<div style="font-size:13px;color:var(--sub);line-height:1.8;">'+(c.bio||'')+'</div></div>'
+    +'<div style="font-size:13px;color:var(--sub);line-height:1.8;">'+(currentLangUI==="en"&&c.bio_en ? c.bio_en : (c.bio||''))+'</div></div>'
 
     +'<div class="pcard"><div class="pcard-title">🏆 '+(currentLangUI==="en"?"Background":"运动履历")+'</div>'+achHtml+'</div>'
 
