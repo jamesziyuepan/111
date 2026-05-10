@@ -24,32 +24,37 @@ h1 { font-size: 24px; font-weight: 900; color: #111; margin-bottom: 6px; }
 .footer { font-size: 11px; color: #bbb; margin-top: 8px; }
 </style>
 <script>
+// Forward password reset links
 var hash = window.location.hash;
 if(hash.includes('access_token') && hash.includes('type=recovery')) {
   window.location.href = '/tennis-client.html' + hash;
 }
 
+// Read saved language (shared with tennis-client.html via localStorage)
+var currentLang = localStorage.getItem('lang') || 'zh';
+
 function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('lang', lang); // tennis-client.html reads this same key
   if(lang === 'en') {
     document.getElementById('title').textContent = 'Tennis Coaching Platform';
-    document.getElementById('subtitle').textContent = 'DC · MD · VA Chinese Tennis Community';
-    document.getElementById('client-btn').href = '/tennis-client-en.html';
+    document.getElementById('subtitle').textContent = 'DC · MD · VA Tennis Community';
     document.getElementById('client-btn').innerHTML = '🎾 Student Portal<span class="btn-sub">Browse coaches · Book lessons · View bookings</span>';
     document.getElementById('admin-btn').innerHTML = '⚙️ Admin Dashboard<span class="btn-sub">Platform administrators only</span>';
-    document.getElementById('footer').textContent = '© 2026 Tennis Platform DC/MD/VA';
     document.getElementById('lang-zh').classList.remove('active');
     document.getElementById('lang-en').classList.add('active');
   } else {
     document.getElementById('title').textContent = '网球教练平台';
     document.getElementById('subtitle').textContent = 'DC · MD · VA 华人网球社区';
-    document.getElementById('client-btn').href = '/tennis-client.html';
     document.getElementById('client-btn').innerHTML = '🎾 学员入口<span class="btn-sub">浏览教练 · 在线约课 · 查看预约</span>';
     document.getElementById('admin-btn').innerHTML = '⚙️ 管理后台<span class="btn-sub">平台管理员专用</span>';
-    document.getElementById('footer').textContent = '© 2026 Tennis Platform DC/MD/VA';
     document.getElementById('lang-zh').classList.add('active');
     document.getElementById('lang-en').classList.remove('active');
   }
 }
+
+// Apply on load
+window.onload = function() { setLang(currentLang); };
 </script>
 </head>
 <body>
@@ -61,6 +66,7 @@ function setLang(lang) {
   <div class="logo">🎾</div>
   <h1 id="title">网球教练平台</h1>
   <p class="sub" id="subtitle">DC · MD · VA 华人网球社区</p>
+  <!-- Always link to tennis-client.html — language is passed via localStorage -->
   <a class="btn btn-client" id="client-btn" href="/tennis-client.html">
     🎾 学员入口
     <span class="btn-sub">浏览教练 · 在线约课 · 查看预约</span>
